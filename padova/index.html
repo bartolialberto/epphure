@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Un giorno a Padova</title>
+<meta name="description" content="Itinerario di un giorno nel centro di Padova senza la Cappella degli Scrovegni, con mappa, orari e prezzi.">
+<meta property="og:title" content="Un giorno a Padova">
+<meta property="og:description" content="Itinerario di un giorno nel centro di Padova senza la Cappella degli Scrovegni, con mappa, orari e prezzi.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+:root{
+  color-scheme: light dark;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --ground:#EDEEE9; --surface:#F9F9F4; --surface-2:#F2F2EB;
+  --land:#E5DFD3; --land-hi:#DBD4C5; --water:#93AEC6; --water-deep:#84A1BC;
+  --road:#FCFBF6; --road-case:#CDC7B8;
+  --ink:#22231E; --ink-soft:#66675D; --ink-faint:#93948A;
+  --rule:#D5D3C6; --rule-soft:#E3E1D6;
+  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16;
+  --marker-ring:#F9F9F4;
+  --shadow:0 1px 2px rgba(34,35,30,.07), 0 6px 18px rgba(34,35,30,.06);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
+  --land:#2B2C27; --land-hi:#34352E; --water:#1B3142; --water-deep:#152838;
+  --road:#494C44; --road-case:#212420;
+  --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
+  --rule:#343836; --rule-soft:#282B2A;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --marker-ring:#16181A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
+  --land:#2B2C27; --land-hi:#34352E; --water:#1B3142; --water-deep:#152838;
+  --road:#494C44; --road-case:#212420;
+  --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
+  --rule:#343836; --rule-soft:#282B2A;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --marker-ring:#16181A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit}
+.wrap{max-width:960px;margin:0 auto;padding-inline:20px;padding-block:24px 60px}
+
+.sitenav{display:flex;flex-wrap:wrap;align-items:center;gap:9px;font-size:13px;letter-spacing:.03em;margin-bottom:20px}
+.sitenav a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.sitenav a:hover{color:var(--ink);border-bottom-color:var(--rule)}
+.sitenav a[aria-current]{color:var(--ink);font-weight:600}
+.sitenav a:focus-visible{outline:2px solid var(--card);outline-offset:3px;border-radius:2px}
+.sitenav .sep{color:var(--ink-faint)}
+
+.masthead{border-bottom:1px solid var(--rule);padding-bottom:20px;margin-bottom:26px}
+.eyebrow{font-size:12px;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-faint);
+  font-weight:600;margin:0 0 10px}
+h1{font-family:'EB Garamond',Garamond,'Times New Roman',serif;font-weight:600;
+  font-size:clamp(38px,7vw,60px);line-height:1.0;margin:0;letter-spacing:-.012em;text-wrap:balance}
+h1 em{font-style:italic;color:var(--route)}
+.standfirst{margin:14px 0 0;max-width:64ch;color:var(--ink-soft);font-size:16.5px}
+.standfirst a{color:var(--ink);text-underline-offset:3px}
+
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0;padding:0;list-style:none}
+.legend li{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--rule);
+  background:var(--surface);border-radius:999px;padding:5px 13px 5px 10px;
+  font-size:13px;color:var(--ink-soft)}
+.legend i{width:11px;height:11px;border-radius:50%;background:var(--c);flex:none}
+.legend i.dia{border-radius:0;width:13px;height:13px;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.legend i.bar{width:20px;height:4px;border-radius:2px}
+
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--ink-faint);max-width:80ch}
+footer p{margin:0 0 8px}
+footer a{color:var(--ink-soft)}
+footer b{color:var(--ink-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+
+.mapcard{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:22px;align-items:center;
+  background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:20px 22px;
+  margin-bottom:12px;text-decoration:none;color:inherit;box-shadow:var(--shadow);
+  transition:border-color .15s,transform .15s}
+.mapcard:hover{border-color:var(--ink-faint);transform:translateY(-1px)}
+.mapcard:focus-visible{outline:2px solid var(--card);outline-offset:3px}
+@media (max-width:620px){.mapcard{grid-template-columns:1fr;gap:16px}
+  .mapcard .thumb{order:-1;max-width:170px;margin-inline:auto}}
+.mapcard .thumb{line-height:0;border-radius:3px;overflow:hidden;border:1px solid var(--rule)}
+.mapcard .thumb svg{display:block;width:100%;height:auto}
+.cardrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 36px}
+@media (max-width:700px){.cardrow{grid-template-columns:1fr}}
+.linkcard{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--rule);
+  border-radius:4px;padding:18px 20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);
+  transition:border-color .15s,transform .15s}
+.linkcard:hover{border-color:var(--ink-faint);transform:translateY(-1px)}
+.linkcard:focus-visible{outline:2px solid var(--card);outline-offset:3px}
+.kicker{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  font-weight:700;margin:0 0 7px}
+.mapcard h2,.linkcard h2{margin:0;font-family:'EB Garamond',Garamond,serif;font-weight:600;
+  font-size:26px;line-height:1.1;letter-spacing:-.005em}
+.linkcard h2{font-size:23px}
+.mapcard p,.linkcard p{margin:9px 0 0;font-size:14.5px;color:var(--ink-soft);line-height:1.45}
+.linkcard p{flex:1}
+.marks{display:flex;gap:7px;margin-top:15px;align-self:flex-start}
+.marks i{width:19px;height:19px;border-radius:50%;background:var(--c);display:block;flex:none}
+.marks i.dia{border-radius:0;width:21px;height:21px;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.go{margin-top:12px;align-self:flex-start;font-size:13.5px;font-weight:600;
+  color:var(--route);letter-spacing:.02em}
+
+.sechead{display:flex;align-items:baseline;gap:12px;padding-bottom:9px;
+  border-bottom:2px solid var(--ink);margin:0 0 4px}
+.sechead h2{margin:0;font-family:'Jost',sans-serif;font-size:12.5px;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase}
+.sechead .cnt{margin-left:auto;font-size:12.5px;color:var(--ink-faint)}
+
+.day{list-style:none;margin:0 0 38px;padding:0}
+.stop{display:grid;grid-template-columns:62px 38px minmax(0,1fr);gap:0 14px;
+  padding:18px 0 20px;border-bottom:1px solid var(--rule-soft)}
+@media (max-width:560px){.stop{grid-template-columns:38px minmax(0,1fr)}
+  .stop .ora{grid-column:2;margin-bottom:4px}}
+.stop .ora{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;
+  color:var(--ink);letter-spacing:.01em;padding-top:3px}
+.stop .bullet{grid-row:1/span 5;display:flex;justify-content:center;position:relative}
+@media (max-width:560px){.stop .bullet{grid-row:1/span 5;grid-column:1}}
+.stop .bullet span{width:32px;height:32px;border-radius:50%;background:var(--c,var(--route));
+  color:var(--marker-ring);display:flex;align-items:center;justify-content:center;
+  font-size:14.5px;font-weight:600;font-variant-numeric:tabular-nums;z-index:1;margin-top:1px}
+.stop .bullet::after{content:"";position:absolute;top:34px;bottom:-22px;width:2px;
+  background:var(--rule);left:50%;transform:translateX(-50%)}
+.stop:last-child .bullet::after{display:none}
+.stop h3{margin:0;font-family:'EB Garamond',Garamond,serif;font-weight:600;
+  font-size:23px;line-height:1.15;letter-spacing:-.005em}
+.stop .meta{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:7px}
+.pill{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  border:1px solid var(--rule);border-radius:3px;padding:2px 8px;color:var(--ink-soft)}
+.pill.price{border-color:var(--route);color:var(--route)}
+.pill.free{border-color:var(--other);color:var(--other)}
+.pill.incard{border-color:var(--card);color:var(--card)}
+.stop p.testo{margin:10px 0 0;font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:62ch}
+.stop p.nota{margin:9px 0 0;font-size:13.5px;color:var(--ink-faint);line-height:1.5;
+  border-left:2px solid var(--rule);padding-left:11px;max-width:60ch}
+.stop p.nota b{color:var(--ink-soft)}
+
+.conti{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 20px}
+@media (max-width:640px){.conti{grid-template-columns:1fr}}
+.conto{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:17px 19px}
+.conto.win{border-color:var(--card);border-width:2px}
+.conto h3{margin:0 0 3px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.conto ul{list-style:none;margin:12px 0 0;padding:0}
+.conto li{display:flex;justify-content:space-between;gap:12px;font-size:14px;
+  padding:5px 0;border-bottom:1px solid var(--rule-soft);color:var(--ink-soft)}
+.conto li span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+.conto .tot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  margin-top:12px;padding-top:11px;border-top:2px solid var(--ink)}
+.conto .tot b{font-family:'Jost',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.conto .tot em{font-style:normal;font-family:'EB Garamond',Garamond,serif;
+  font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.verdetto{border-left:3px solid var(--card);background:var(--surface-2);padding:14px 17px;
+  border-radius:0 3px 3px 0;margin:0 0 34px;font-size:14.5px;color:var(--ink-soft);line-height:1.55}
+.verdetto b{color:var(--ink);font-weight:600}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="sitenav">
+    <a href="./" aria-current="page">Un giorno a Padova</a>
+    <span class="sep">/</span>
+    <a href="mappa.html">Mappa</a>
+    <span class="sep">/</span>
+    <a href="padova-card.html">Padova Card</a>
+    <span class="sep">/</span>
+    <a href="altri-luoghi.html">Altri luoghi</a>
+  </nav>
+
+  <header class="masthead">
+    <p class="eyebrow">Arrivo 9:00 &middot; pranzo 13:00 &middot; senza Scrovegni</p>
+    <h1>Un giorno a <em>Padova</em></h1>
+    <p class="standfirst">Dieci tappe fra la stazione e il Prato della Valle, costruite attorno ai due orari fissi
+    della giornata: il treno delle nove e il tavolo delle tredici. Senza la Cappella degli Scrovegni &mdash;
+    al suo posto, il <b>Battistero del Duomo</b>, che ha un ciclo di affreschi altrettanto grande e quasi nessuna coda.</p>
+    <ul class="legend">
+      <li style="--c:var(--route)"><i class="bar"></i>Il percorso a piedi</li>
+      <li style="--c:var(--card)"><i class="dia"></i>Nella Padova Card</li>
+      <li style="--c:var(--other)"><i></i>Altri luoghi</li>
+      <li style="--c:var(--food)"><i></i>Il pranzo</li>
+    </ul>
+  </header>
+
+  <a class="mapcard" href="mappa.html">
+    <div>
+      <p class="kicker">La mappa</p>
+      <h2>Il percorso disegnato sulla citt&agrave;</h2>
+      <p>Le dieci tappe proiettate dalle coordinate reali, il tracciato a piedi che le unisce, i canali che chiudono
+      il centro ad anello e la linea del tram per tornare in stazione.</p>
+      <span class="go">Apri la mappa &rarr;</span>
+    </div>
+    <div class="thumb"><rect width="1000" height="1287" fill="var(--land)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="var(--land-hi)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="none" stroke="var(--water)" stroke-width="15" stroke-linejoin="round"/><path d="M-85 -27C-76 -6,-55 62,-31 99C-6 135,38 172,62 192C85 212,100 215,108 219" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M831 383C853 376,921 351,962 340C1003 329,1058 321,1077 318" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M431 1249C405 1262,329 1304,277 1326C224 1348,142 1371,115 1381" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--marker-ring)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/><path class="routeline" d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--route)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><g><circle class="halo" cx="604" cy="126" r="40"/><circle class="pin" cx="604" cy="126" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="485" cy="619" r="40"/><circle class="pin" cx="485" cy="619" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="508" cy="663" r="40"/><circle class="pin" cx="508" cy="663" r="26" fill="var(--route)"/></g><g><circle cx="412" cy="635" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="412" cy="635" r="40"/><circle class="pin" cx="412" cy="635" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="308" cy="608" r="40"/><circle class="pin" cx="308" cy="608" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="324" cy="742" r="40"/><circle class="pin" cx="324" cy="742" r="26" fill="var(--food)"/></g><g><circle cx="265" cy="685" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="265" cy="685" r="40"/><circle class="pin" cx="265" cy="685" r="26" fill="var(--route)"/></g><g><circle cx="650" cy="964" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="650" cy="964" r="40"/><circle class="pin" cx="650" cy="964" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="623" cy="1074" r="40"/><circle class="pin" cx="623" cy="1074" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="500" cy="1118" r="40"/><circle class="pin" cx="500" cy="1118" r="26" fill="var(--route)"/></g></div>
+  </a>
+
+  <div class="cardrow">
+    <a class="linkcard" href="padova-card.html">
+      <p class="kicker">Padova Card</p>
+      <h2>Gli otto siti della card</h2>
+      <p>I cicli affrescati del Trecento, patrimonio UNESCO: cosa sono, quando aprono e quanto costerebbero uno per uno.</p>
+      <span class="marks" aria-hidden="true"><i class="dia" style="--c:var(--card)"></i><i class="dia" style="--c:var(--card)"></i><i class="dia" style="--c:var(--card)"></i><i class="dia" style="--c:var(--card)"></i></span>
+      <span class="go">Apri la tabella &rarr;</span>
+    </a>
+    <a class="linkcard" href="altri-luoghi.html">
+      <p class="kicker">Altri luoghi</p>
+      <h2>Fuori dalla card</h2>
+      <p>Palazzo del Bo, l&rsquo;Orto Botanico, il Prato della Valle, il Pedrocchi e il tavolo prenotato del Bacaro Padovano.</p>
+      <span class="marks" aria-hidden="true"><i style="--c:var(--other)"></i><i style="--c:var(--other)"></i><i style="--c:var(--other)"></i><i style="--c:var(--food)"></i></span>
+      <span class="go">Apri la tabella &rarr;</span>
+    </a>
+  </div>
+
+  <div class="sechead"><h2>La giornata</h2><span class="cnt">10 tappe &middot; circa 5 km a piedi</span></div>
+  <ol class="day">
+    <li class="stop">
+      <span class="ora">09:00</span>
+      <span class="bullet"><span>1</span></span>
+      <h3>Stazione FS</h3>
+      <span class="meta"><span class="pill">20 min a piedi</span></span>
+      <p class="testo">Si esce e si prende <b>Corso del Popolo</b>, che diventa Corso Garibaldi: un chilometro dritto fino al centro. Passa accanto agli Eremitani — la Cappella degli Scrovegni resta sulla sinistra, e la si saluta da fuori.</p>
+      
+    </li>
+    <li class="stop">
+      <span class="ora">09:20</span>
+      <span class="bullet"><span>2</span></span>
+      <h3>Caffè Pedrocchi</h3>
+      <span class="meta"><span class="pill">45 min</span><span class="pill price">4,00 €</span></span>
+      <p class="testo">Il <b>caffè senza porte</b>, aperto giorno e notte per un secolo. Un caffè alla menta al banco, poi di sopra: il <b>Piano Nobile</b> di Jappelli è una sfilata di sale egizia, greca, etrusca, rinascimentale.</p>
+      <p class="nota">Il Piano Nobile apre alle 9:30: il quarto d’ora prima è esattamente quello del caffè.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">10:15</span>
+      <span class="bullet"><span>3</span></span>
+      <h3>Palazzo del Bo</h3>
+      <span class="meta"><span class="pill">45 min</span><span class="pill price">7,00 €</span></span>
+      <p class="testo">La sede storica dell’Università. Il <b>Teatro Anatomico del 1594</b>, il più antico al mondo ancora in piedi, la cattedra di Galileo, l’Aula Magna e la statua di Elena Lucrezia Cornaro Piscopia, prima laureata della storia.</p>
+      <p class="nota">Visita solo guidata, <b>prenotazione obbligatoria</b>. Il turno delle 10:30 è in italiano. Da lunedì a venerdì.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">11:20</span>
+      <span class="bullet"><span>4</span></span>
+      <h3>Palazzo della Ragione</h3>
+      <span class="meta"><span class="pill">55 min</span><span class="pill price">8,00 €</span><span class="pill incard">Nella card</span></span>
+      <p class="testo">Il <b>Salone</b>: 80 metri di sala pensile senza colonne, sotto una carena di nave rovesciata, e attorno 333 riquadri affrescati con il calendario astrologico di Pietro d’Abano. Sotto, le due piazze del mercato.</p>
+      
+    </li>
+    <li class="stop">
+      <span class="ora">12:15</span>
+      <span class="bullet"><span>5</span></span>
+      <h3>Piazza dei Signori</h3>
+      <span class="meta"><span class="pill">30 min</span><span class="pill free">Gratuito</span></span>
+      <p class="testo">La <b>Torre dell’Orologio</b> del 1344, con il quadrante astronomico che segna ore, fasi lunari e segni zodiacali — e che, per un errore diventato leggenda, la Bilancia non ce l’ha. Accanto, la Loggia del Consiglio.</p>
+      
+    </li>
+    <li class="stop">
+      <span class="ora">13:00</span>
+      <span class="bullet" style="--c:var(--food)"><span>6</span></span>
+      <h3>Bacaro Padovano</h3>
+      <span class="meta"><span class="pill">90 min</span><span class="pill free">—</span></span>
+      <p class="testo">Pranzo prenotato. Cicchetteria e cucina veneziana a due passi dal Duomo: dalla piazza si arriva in tre minuti.</p>
+      <p class="nota">A pranzo apre <b>solo venerdì, sabato e domenica</b>. Martedì chiuso tutto il giorno.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">14:30</span>
+      <span class="bullet"><span>7</span></span>
+      <h3>Duomo e Battistero</h3>
+      <span class="meta"><span class="pill">70 min</span><span class="pill price">15,00 €</span><span class="pill incard">Nella card</span></span>
+      <p class="testo">Il pezzo forte della giornata. Il <b>Battistero</b> è interamente affrescato da <b>Giusto de’ Menabuoi</b> (1375-78): un Paradiso di centinaia di figure sotto la cupola. È il grande sostituto della Cappella degli Scrovegni, e quasi sempre lo si ha per sé. Il biglietto comprende il Museo Diocesano e il Salone dei Vescovi.</p>
+      
+    </li>
+    <li class="stop">
+      <span class="ora">15:45</span>
+      <span class="bullet"><span>8</span></span>
+      <h3>Basilica del Santo</h3>
+      <span class="meta"><span class="pill">90 min</span><span class="pill price">10,00 €</span><span class="pill incard">Nella card</span></span>
+      <p class="testo">La basilica è gratuita: cupole orientali, il Donatello dell’altare maggiore, la Cappella del Santo. Fuori, il <b>Gattamelata</b>, primo monumento equestre in bronzo del Rinascimento. Accanto, l’<b>Oratorio di San Giorgio</b> con gli affreschi di Altichiero e la Scoletta del Santo.</p>
+      <p class="nota">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che chiudono alle 18.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">17:15</span>
+      <span class="bullet"><span>9</span></span>
+      <h3>Orto Botanico</h3>
+      <span class="meta"><span class="pill">60 min</span><span class="pill price">10,00 €</span></span>
+      <p class="testo">Il <b>più antico orto botanico universitario del mondo</b> ancora nella sua posizione originale, 1545, patrimonio UNESCO. La palma di Goethe è lì dal 1585.</p>
+      <p class="nota">Da aprile a settembre chiude alle 19, ultimo ingresso 18:15. Chiuso il lunedì.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">18:15</span>
+      <span class="bullet"><span>10</span></span>
+      <h3>Prato della Valle</h3>
+      <span class="meta"><span class="pill">30 min</span><span class="pill free">Gratuito</span></span>
+      <p class="testo">La <b>piazza più grande d’Italia</b>: un’isola ellittica in un canale, 78 statue in doppio anello, e la luce di fine giornata che è il momento giusto. Poi il tram dalla fermata Prato della Valle riporta in stazione in dieci minuti.</p>
+      
+    </li>
+  </ol>
+
+  <div class="sechead"><h2>Conviene la Padova Card?</h2><span class="cnt">solo per questa giornata</span></div>
+  <div class="conti" style="margin-top:18px">
+    <div class="conto"><h3>Biglietti singoli</h3><p class="kicker" style="margin:0;letter-spacing:.02em;text-transform:none;font-size:13px;color:var(--ink-soft);font-weight:400">pagando ogni ingresso dell’itinerario</p><ul><li><span>Caffè Pedrocchi, Piano Nobile</span><span>4,00 €</span></li><li><span>Palazzo del Bo</span><span>7,00 €</span></li><li><span>Palazzo della Ragione</span><span>8,00 €</span></li><li><span>Battistero della Cattedrale</span><span>15,00 €</span></li><li><span>Oratorio di San Giorgio e Scoletta</span><span>10,00 €</span></li><li><span>Orto Botanico</span><span>10,00 €</span></li></ul><div class="tot"><b>Totale</b><em>54,00 €</em></div></div>
+    <div class="conto win"><h3>Con la card</h3><p class="kicker" style="margin:0;letter-spacing:.02em;text-transform:none;font-size:13px;color:var(--ink-soft);font-weight:400">la card copre Ragione, Battistero e Oratorio</p><ul><li><span>Padova Urbs picta Card 48 ore</span><span>28,00 €</span></li><li><span>Caffè Pedrocchi, Piano Nobile</span><span>4,00 €</span></li><li><span>Palazzo del Bo</span><span>7,00 €</span></li><li><span>Orto Botanico</span><span>10,00 €</span></li></ul><div class="tot"><b>Totale</b><em>49,00 €</em></div></div>
+  </div>
+  <p class="verdetto"><b>Quasi in pari: 5,00 € di differenza.</b> La <b>Padova Urbs picta Card</b> costa 28,00 € per 48 ore
+  e vive di rendita sulla Cappella degli Scrovegni, che voi non fate. Senza quella, il margine si assottiglia.
+  Conviene comprarla se aggiungete anche solo <b>un altro sito della card</b> &mdash; l&rsquo;Oratorio di San Michele,
+  la Chiesa degli Eremitani, i Musei Civici &mdash; oppure se contate di usare il <b>tram</b>, che &egrave; compreso nel prezzo
+  e vi riporta in stazione dal Prato della Valle.</p>
+
+  <footer>
+    <p><b>Orari e prezzi raccolti il 22 settembre 2026</b> dai siti ufficiali di Musei Civici di Padova,
+    Universit&agrave; di Padova, Kalat&agrave;/Museo Diocesano, Basilica del Santo, Orto Botanico e Bacaro Padovano.
+    Cambiano spesso: vanno riverificati prima di partire, e due visite di questo itinerario
+    (Palazzo del Bo e il Battistero) <b>richiedono prenotazione</b>.</p>
+    <p>La Cappella degli Scrovegni non fa parte del programma per vostra scelta. Resta nella tabella
+    della card perch&eacute; &egrave; la voce che ne determina il prezzo.</p>
+  </footer>
+</div>
+</body>
+</html>

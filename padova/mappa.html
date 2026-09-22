@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mappa di un giorno a Padova</title>
+<meta name="description" content="Il percorso a piedi di una giornata a Padova, disegnato sulle coordinate reali.">
+<meta property="og:title" content="Mappa di un giorno a Padova">
+<meta property="og:description" content="Il percorso a piedi di una giornata a Padova, disegnato sulle coordinate reali.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+:root{
+  color-scheme: light dark;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --ground:#EDEEE9; --surface:#F9F9F4; --surface-2:#F2F2EB;
+  --land:#E5DFD3; --land-hi:#DBD4C5; --water:#93AEC6; --water-deep:#84A1BC;
+  --road:#FCFBF6; --road-case:#CDC7B8;
+  --ink:#22231E; --ink-soft:#66675D; --ink-faint:#93948A;
+  --rule:#D5D3C6; --rule-soft:#E3E1D6;
+  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16;
+  --marker-ring:#F9F9F4;
+  --shadow:0 1px 2px rgba(34,35,30,.07), 0 6px 18px rgba(34,35,30,.06);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
+  --land:#2B2C27; --land-hi:#34352E; --water:#1B3142; --water-deep:#152838;
+  --road:#494C44; --road-case:#212420;
+  --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
+  --rule:#343836; --rule-soft:#282B2A;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --marker-ring:#16181A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
+  --land:#2B2C27; --land-hi:#34352E; --water:#1B3142; --water-deep:#152838;
+  --road:#494C44; --road-case:#212420;
+  --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
+  --rule:#343836; --rule-soft:#282B2A;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --marker-ring:#16181A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:24px 60px}
+
+.sitenav{display:flex;flex-wrap:wrap;align-items:center;gap:9px;font-size:13px;letter-spacing:.03em;margin-bottom:20px}
+.sitenav a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.sitenav a:hover{color:var(--ink);border-bottom-color:var(--rule)}
+.sitenav a[aria-current]{color:var(--ink);font-weight:600}
+.sitenav a:focus-visible{outline:2px solid var(--card);outline-offset:3px;border-radius:2px}
+.sitenav .sep{color:var(--ink-faint)}
+
+.masthead{border-bottom:1px solid var(--rule);padding-bottom:20px;margin-bottom:26px}
+.eyebrow{font-size:12px;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-faint);
+  font-weight:600;margin:0 0 10px}
+h1{font-family:'EB Garamond',Garamond,'Times New Roman',serif;font-weight:600;
+  font-size:clamp(38px,7vw,60px);line-height:1.0;margin:0;letter-spacing:-.012em;text-wrap:balance}
+h1 em{font-style:italic;color:var(--route)}
+.standfirst{margin:14px 0 0;max-width:64ch;color:var(--ink-soft);font-size:16.5px}
+.standfirst a{color:var(--ink);text-underline-offset:3px}
+
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0;padding:0;list-style:none}
+.legend li{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--rule);
+  background:var(--surface);border-radius:999px;padding:5px 13px 5px 10px;
+  font-size:13px;color:var(--ink-soft)}
+.legend i{width:11px;height:11px;border-radius:50%;background:var(--c);flex:none}
+.legend i.dia{border-radius:0;width:13px;height:13px;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.legend i.bar{width:20px;height:4px;border-radius:2px}
+
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--ink-faint);max-width:80ch}
+footer p{margin:0 0 8px}
+footer a{color:var(--ink-soft)}
+footer b{color:var(--ink-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+
+.mapframe{background:var(--land);border:1px solid var(--rule);border-radius:3px;
+  overflow:hidden;box-shadow:var(--shadow);line-height:0}
+svg.map{display:block;width:100%;height:auto;max-width:100%;touch-action:manipulation}
+.marker{cursor:pointer}
+.marker .halo{fill:var(--route);opacity:0;transition:opacity .18s}
+.marker .pin{stroke:var(--marker-ring);stroke-width:3.5}
+.marker .num{fill:var(--marker-ring);font-family:'Jost',sans-serif;font-weight:600;font-size:23px;
+  text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.marker:hover .halo,.marker.on .halo{opacity:.22}
+.marker:focus-visible{outline:none}
+.marker:focus-visible .halo{opacity:.3}
+.maplabel{fill:var(--ink-soft);font-family:'Jost',sans-serif;font-weight:600;
+  font-size:19px;letter-spacing:.2em;text-anchor:middle;pointer-events:none;opacity:.55}
+.scaletxt{fill:var(--ink-soft);font-family:'Jost',sans-serif;font-size:17px;font-weight:500;opacity:.8}
+.mapnote{margin:11px 2px 0;font-size:12.5px;line-height:1.5;color:var(--ink-faint);max-width:58ch}
+
+.cols{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:34px;align-items:start}
+@media (max-width:920px){.cols{grid-template-columns:1fr;gap:26px}}
+.mapcol{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px)}
+@media (max-width:920px){.mapcol{position:static}}
+.items{list-style:none;margin:0;padding:0}
+.item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 13px;padding:13px 10px 13px 8px;
+  border-bottom:1px solid var(--rule-soft);cursor:pointer;transition:background .15s;border-radius:2px}
+.item:hover,.item.on{background:var(--surface-2)}
+.item.on{box-shadow:inset 3px 0 0 var(--c,var(--route))}
+.item:focus-visible{outline:2px solid var(--route);outline-offset:-2px}
+.item .n{grid-row:1/span 3;width:30px;height:30px;border-radius:50%;background:var(--c,var(--route));
+  color:var(--marker-ring);display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px}
+.item h3{margin:0;font-family:'EB Garamond',Garamond,serif;font-weight:600;font-size:20px;line-height:1.18}
+.item .ora{margin:3px 0 0;font-size:13px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.item .ora b{color:var(--ink-soft);font-weight:600}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="sitenav">
+    <a href="./">Un giorno a Padova</a>
+    <span class="sep">/</span>
+    <a href="mappa.html" aria-current="page">Mappa</a>
+    <span class="sep">/</span>
+    <a href="padova-card.html">Padova Card</a>
+    <span class="sep">/</span>
+    <a href="altri-luoghi.html">Altri luoghi</a>
+  </nav>
+
+  <header class="masthead">
+    <p class="eyebrow">Mappa &middot; 10 tappe &middot; circa 5 km</p>
+    <h1>Il percorso a <em>piedi</em></h1>
+    <p class="standfirst">Tutti i segnaposto sono proiettati dalle coordinate reali, quindi le distanze fra loro sono corrette.
+    Canali, strade e tracciato del tram sono schematici.</p>
+    <ul class="legend">
+      <li style="--c:var(--route)"><i class="bar"></i>Percorso a piedi</li>
+      <li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li>
+      <li style="--c:var(--card)"><i class="dia"></i>Sito della Padova Card</li>
+      <li style="--c:var(--other)"><i></i>Altro luogo</li>
+      <li style="--c:var(--tram)"><i class="bar"></i>Tram SIR1</li>
+    </ul>
+  </header>
+
+  <div class="cols">
+    <div class="mapcol">
+      <div class="mapframe"><svg class="map" id="svg" viewBox="0 0 1000 1287" role="img"
+        aria-label="Mappa schematica del centro di Padova con il percorso della giornata"><rect width="1000" height="1287" fill="var(--land)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="var(--land-hi)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="none" stroke="var(--water)" stroke-width="15" stroke-linejoin="round"/><path d="M-85 -27C-76 -6,-55 62,-31 99C-6 135,38 172,62 192C85 212,100 215,108 219" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M831 383C853 376,921 351,962 340C1003 329,1058 321,1077 318" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M431 1249C405 1262,329 1304,277 1326C224 1348,142 1371,115 1381" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M623 27C621 50,615 114,608 164C600 215,588 274,577 329C565 383,550 453,538 493C527 533,515 550,508 570C500 590,495 606,492 614" fill="none" stroke="var(--road-case)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M492 614C485 619,467 628,450 646C433 665,404 694,392 723C380 752,371 787,377 822C383 856,413 895,431 931C449 968,472 1012,485 1041C497 1070,501 1096,504 1107" fill="none" stroke="var(--road-case)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M523 701C531 717,555 763,569 794C583 825,596 860,608 887C620 915,637 947,642 959" fill="none" stroke="var(--road-case)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M492 723C513 730,573 753,615 767C658 781,724 799,746 805" fill="none" stroke="var(--road-case)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M308 608C303 591,288 540,277 504C265 468,245 413,238 394" fill="none" stroke="var(--road-case)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M265 679C256 692,222 734,208 756C193 778,182 802,177 811" fill="none" stroke="var(--road-case)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M569 548C590 553,655 571,692 581C729 591,776 604,792 608" fill="none" stroke="var(--road-case)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M412 635C404 633,383 624,365 619C348 614,317 610,308 608" fill="none" stroke="var(--road-case)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M504 1107C519 1113,565 1138,592 1145C620 1152,656 1150,669 1150" fill="none" stroke="var(--road-case)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/><path d="M623 27C621 50,615 114,608 164C600 215,588 274,577 329C565 383,550 453,538 493C527 533,515 550,508 570C500 590,495 606,492 614" fill="none" stroke="var(--road)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M492 614C485 619,467 628,450 646C433 665,404 694,392 723C380 752,371 787,377 822C383 856,413 895,431 931C449 968,472 1012,485 1041C497 1070,501 1096,504 1107" fill="none" stroke="var(--road)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M523 701C531 717,555 763,569 794C583 825,596 860,608 887C620 915,637 947,642 959" fill="none" stroke="var(--road)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M492 723C513 730,573 753,615 767C658 781,724 799,746 805" fill="none" stroke="var(--road)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M308 608C303 591,288 540,277 504C265 468,245 413,238 394" fill="none" stroke="var(--road)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M265 679C256 692,222 734,208 756C193 778,182 802,177 811" fill="none" stroke="var(--road)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M569 548C590 553,655 571,692 581C729 591,776 604,792 608" fill="none" stroke="var(--road)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M412 635C404 633,383 624,365 619C348 614,317 610,308 608" fill="none" stroke="var(--road)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M504 1107C519 1113,565 1138,592 1145C620 1152,656 1150,669 1150" fill="none" stroke="var(--road)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><g id="tram"><path d="M615 55L604 126L577 329L508 575L423 701L369 794L446 942L508 1096L531 1260" fill="none" stroke="var(--marker-ring)" stroke-width="11" stroke-linecap="round" opacity=".6"/><path d="M615 55L604 126L577 329L508 575L423 701L369 794L446 942L508 1096L531 1260" fill="none" stroke="var(--tram)" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 11" stroke-linejoin="round"/><circle cx="604" cy="126" r="5.5" fill="var(--marker-ring)" stroke="var(--tram)" stroke-width="2.6"><title>Stazione FS — tram SIR1</title></circle><circle cx="508" cy="575" r="5.5" fill="var(--marker-ring)" stroke="var(--tram)" stroke-width="2.6"><title>Ponti Romani — tram SIR1</title></circle><circle cx="369" cy="794" r="5.5" fill="var(--marker-ring)" stroke="var(--tram)" stroke-width="2.6"><title>Tito Livio — tram SIR1</title></circle><circle cx="508" cy="1096" r="5.5" fill="var(--marker-ring)" stroke="var(--tram)" stroke-width="2.6"><title>Prato della Valle — tram SIR1</title></circle><circle cx="531" cy="1260" r="5.5" fill="var(--marker-ring)" stroke="var(--tram)" stroke-width="2.6"><title>Santa Croce — tram SIR1</title></circle></g><text class="maplabel" x="731" y="296" font-size="19">EREMITANI</text><text class="maplabel" x="185" y="493" font-size="19">CENTRO STORICO</text><text class="maplabel" x="769" y="1041" font-size="18">IL SANTO</text><text class="maplabel" x="854" y="592" font-size="16">PORTELLO</text><path d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--marker-ring)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/><path class="routeline" d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--route)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><g class="small"><path d="M0 -14 L14 0 L0 14 L-14 0 Z" transform="translate(618,380)" fill="var(--card)" stroke="var(--marker-ring)" stroke-width="3" opacity=".45"/><title>Cappella degli Scrovegni</title></g><g class="small"><path d="M0 -14 L14 0 L0 14 L-14 0 Z" transform="translate(593,997)" fill="var(--card)" stroke="var(--marker-ring)" stroke-width="3"/><title>Oratorio di San Giorgio</title></g><g class="small"><path d="M0 -14 L14 0 L0 14 L-14 0 Z" transform="translate(530,458)" fill="var(--card)" stroke="var(--marker-ring)" stroke-width="3"/><title>Chiesa degli Eremitani</title></g><g class="small"><path d="M0 -14 L14 0 L0 14 L-14 0 Z" transform="translate(212,718)" fill="var(--card)" stroke="var(--marker-ring)" stroke-width="3"/><title>Oratorio di San Michele</title></g><g class="small"><path d="M0 -14 L14 0 L0 14 L-14 0 Z" transform="translate(354,575)" fill="var(--card)" stroke="var(--marker-ring)" stroke-width="3"/><title>Cappella della Reggia Carrarese</title></g><g class="small"><circle cx="608" cy="1134" r="12" fill="var(--other)" stroke="var(--marker-ring)" stroke-width="3"/><title>Basilica di Santa Giustina</title></g><g class="small"><circle cx="580" cy="432" r="12" fill="var(--other)" stroke="var(--marker-ring)" stroke-width="3"/><title>Musei Civici agli Eremitani</title></g><g class="small"><circle cx="573" cy="378" r="12" fill="var(--other)" stroke="var(--marker-ring)" stroke-width="3"/><title>Palazzo Zuckermann</title></g><g class="small"><circle cx="719" cy="838" r="12" fill="var(--other)" stroke="var(--marker-ring)" stroke-width="3"/><title>Loggia e Odeo Cornaro</title></g><g class="small"><circle cx="604" cy="811" r="12" fill="var(--other)" stroke="var(--marker-ring)" stroke-width="3"/><title>MUSME — Museo di Storia della Medicina</title></g><g class="marker" data-n="1" tabindex="0" role="button" aria-label="Stazione FS"><circle class="halo" cx="604" cy="126" r="35"/><circle class="pin" cx="604" cy="126" r="21" fill="var(--route)"/><text class="num" x="604" y="126">1</text></g><g class="marker" data-n="2" tabindex="0" role="button" aria-label="Caffè Pedrocchi"><circle class="halo" cx="485" cy="619" r="35"/><circle class="pin" cx="485" cy="619" r="21" fill="var(--route)"/><text class="num" x="485" y="619">2</text></g><g class="marker" data-n="3" tabindex="0" role="button" aria-label="Palazzo del Bo"><circle class="halo" cx="508" cy="663" r="35"/><circle class="pin" cx="508" cy="663" r="21" fill="var(--route)"/><text class="num" x="508" y="663">3</text></g><g class="marker" data-n="4" tabindex="0" role="button" aria-label="Palazzo della Ragione"><circle cx="412" cy="635" r="26" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="412" cy="635" r="35"/><circle class="pin" cx="412" cy="635" r="21" fill="var(--route)"/><text class="num" x="412" y="635">4</text></g><g class="marker" data-n="5" tabindex="0" role="button" aria-label="Piazza dei Signori"><circle class="halo" cx="308" cy="608" r="35"/><circle class="pin" cx="308" cy="608" r="21" fill="var(--route)"/><text class="num" x="308" y="608">5</text></g><g class="marker" data-n="6" tabindex="0" role="button" aria-label="Bacaro Padovano"><circle class="halo" cx="324" cy="742" r="35"/><circle class="pin" cx="324" cy="742" r="21" fill="var(--food)"/><text class="num" x="324" y="742">6</text></g><g class="marker" data-n="7" tabindex="0" role="button" aria-label="Duomo e Battistero"><circle cx="265" cy="685" r="26" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="265" cy="685" r="35"/><circle class="pin" cx="265" cy="685" r="21" fill="var(--route)"/><text class="num" x="265" y="685">7</text></g><g class="marker" data-n="8" tabindex="0" role="button" aria-label="Basilica del Santo"><circle cx="650" cy="964" r="26" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="650" cy="964" r="35"/><circle class="pin" cx="650" cy="964" r="21" fill="var(--route)"/><text class="num" x="650" y="964">8</text></g><g class="marker" data-n="9" tabindex="0" role="button" aria-label="Orto Botanico"><circle class="halo" cx="623" cy="1074" r="35"/><circle class="pin" cx="623" cy="1074" r="21" fill="var(--route)"/><text class="num" x="623" y="1074">9</text></g><g class="marker" data-n="10" tabindex="0" role="button" aria-label="Prato della Valle"><circle class="halo" cx="500" cy="1118" r="35"/><circle class="pin" cx="500" cy="1118" r="21" fill="var(--route)"/><text class="num" x="500" y="1118">10</text></g><g opacity=".85"><line x1="36" y1="1247" x2="159" y2="1247" stroke="var(--ink-soft)" stroke-width="3"/><line x1="36" y1="1240" x2="36" y2="1254" stroke="var(--ink-soft)" stroke-width="3"/><line x1="159" y1="1240" x2="159" y2="1254" stroke="var(--ink-soft)" stroke-width="3"/><text class="scaletxt" x="36" y="1234">250 m</text></g><g opacity=".7" transform="translate(954,1237)"><path d="M0 -24 L7.5 9 L0 2.5 L-7.5 9 Z" fill="var(--ink-soft)"/><text class="scaletxt" x="0" y="26" text-anchor="middle">N</text></g></svg></div>
+      <p class="mapnote">Il cerchio azzurro attorno a una tappa vuol dire che &egrave; compresa nella Padova Card.
+      Il tratto viola &egrave; il pranzo. Passa il dito o il mouse sui pallini del tram per leggere il nome della fermata.</p>
+    </div>
+    <div>
+      <div class="sechead" style="display:flex;align-items:baseline;gap:12px;padding-bottom:9px;border-bottom:2px solid var(--ink);margin:0 0 4px">
+        <h2 style="margin:0;font-family:'Jost',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase">La giornata</h2>
+        <span style="margin-left:auto;font-size:12.5px;color:var(--ink-faint)">09:00 &rarr; 18:45</span>
+      </div>
+      <ul class="items">
+      <li class="item" data-n="1" tabindex="0"><span class="n">1</span><h3>Stazione FS</h3><p class="ora"><b>09:00</b> &middot; 20 min a piedi</p></li>
+      <li class="item" data-n="2" tabindex="0"><span class="n">2</span><h3>Caffè Pedrocchi</h3><p class="ora"><b>09:20</b> &middot; 45 min &middot; 4,00 €</p></li>
+      <li class="item" data-n="3" tabindex="0"><span class="n">3</span><h3>Palazzo del Bo</h3><p class="ora"><b>10:15</b> &middot; 45 min &middot; 7,00 €</p></li>
+      <li class="item" data-n="4" tabindex="0"><span class="n">4</span><h3>Palazzo della Ragione</h3><p class="ora"><b>11:20</b> &middot; 55 min &middot; 8,00 €</p></li>
+      <li class="item" data-n="5" tabindex="0"><span class="n">5</span><h3>Piazza dei Signori</h3><p class="ora"><b>12:15</b> &middot; 30 min &middot; Gratuito</p></li>
+      <li class="item" data-n="6" tabindex="0" style="--c:var(--food)"><span class="n">6</span><h3>Bacaro Padovano</h3><p class="ora"><b>13:00</b> &middot; 90 min &middot; —</p></li>
+      <li class="item" data-n="7" tabindex="0"><span class="n">7</span><h3>Duomo e Battistero</h3><p class="ora"><b>14:30</b> &middot; 70 min &middot; 15,00 €</p></li>
+      <li class="item" data-n="8" tabindex="0"><span class="n">8</span><h3>Basilica del Santo</h3><p class="ora"><b>15:45</b> &middot; 90 min &middot; 10,00 €</p></li>
+      <li class="item" data-n="9" tabindex="0"><span class="n">9</span><h3>Orto Botanico</h3><p class="ora"><b>17:15</b> &middot; 60 min &middot; 10,00 €</p></li>
+      <li class="item" data-n="10" tabindex="0"><span class="n">10</span><h3>Prato della Valle</h3><p class="ora"><b>18:15</b> &middot; 30 min &middot; Gratuito</p></li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <p><b>Orari e prezzi raccolti il 22 settembre 2026</b> dai siti ufficiali di Musei Civici di Padova,
+    Universit&agrave; di Padova, Kalat&agrave;/Museo Diocesano, Basilica del Santo, Orto Botanico e Bacaro Padovano.
+    Cambiano spesso: vanno riverificati prima di partire, e due visite di questo itinerario
+    (Palazzo del Bo e il Battistero) <b>richiedono prenotazione</b>.</p>
+    <p>La Cappella degli Scrovegni non fa parte del programma per vostra scelta. Resta nella tabella
+    della card perch&eacute; &egrave; la voce che ne determina il prezzo.</p>
+  </footer>
+
+<script>
+(function(){
+  "use strict";
+  var markers=document.querySelectorAll('.marker'), items=document.querySelectorAll('.item'), active=null;
+  function setActive(n,scroll){
+    active = (active===n) ? null : n;
+    markers.forEach(function(m){m.classList.toggle('on', +m.dataset.n===active);});
+    items.forEach(function(i){i.classList.toggle('on', +i.dataset.n===active);});
+    if(active!==null && scroll){
+      var el=document.querySelector('.item[data-n="'+active+'"]');
+      if(el) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+    }
+  }
+  function wire(el,scroll){
+    el.addEventListener('click',function(){setActive(+el.dataset.n,scroll);});
+    el.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();setActive(+el.dataset.n,scroll);}
+    });
+  }
+  markers.forEach(function(m){wire(m,true);});
+  items.forEach(function(i){wire(i,false);});
+})();
+</script>
+</div>
+</body>
+</html>

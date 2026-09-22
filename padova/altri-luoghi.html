@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Altri luoghi di Padova</title>
+<meta name="description" content="Palazzo del Bo, Orto Botanico, Prato della Valle, Caff&egrave; Pedrocchi e altri luoghi di Padova fuori dalla card.">
+<meta property="og:title" content="Altri luoghi di Padova">
+<meta property="og:description" content="Palazzo del Bo, Orto Botanico, Prato della Valle, Caff&egrave; Pedrocchi e altri luoghi di Padova fuori dalla card.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+:root{
+  color-scheme: light dark;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --ground:#EDEEE9; --surface:#F9F9F4; --surface-2:#F2F2EB;
+  --land:#E5DFD3; --land-hi:#DBD4C5; --water:#93AEC6; --water-deep:#84A1BC;
+  --road:#FCFBF6; --road-case:#CDC7B8;
+  --ink:#22231E; --ink-soft:#66675D; --ink-faint:#93948A;
+  --rule:#D5D3C6; --rule-soft:#E3E1D6;
+  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16;
+  --marker-ring:#F9F9F4;
+  --shadow:0 1px 2px rgba(34,35,30,.07), 0 6px 18px rgba(34,35,30,.06);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
+  --land:#2B2C27; --land-hi:#34352E; --water:#1B3142; --water-deep:#152838;
+  --road:#494C44; --road-case:#212420;
+  --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
+  --rule:#343836; --rule-soft:#282B2A;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --marker-ring:#16181A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
+  --land:#2B2C27; --land-hi:#34352E; --water:#1B3142; --water-deep:#152838;
+  --road:#494C44; --road-case:#212420;
+  --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
+  --rule:#343836; --rule-soft:#282B2A;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --marker-ring:#16181A;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:24px 60px}
+
+.sitenav{display:flex;flex-wrap:wrap;align-items:center;gap:9px;font-size:13px;letter-spacing:.03em;margin-bottom:20px}
+.sitenav a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.sitenav a:hover{color:var(--ink);border-bottom-color:var(--rule)}
+.sitenav a[aria-current]{color:var(--ink);font-weight:600}
+.sitenav a:focus-visible{outline:2px solid var(--card);outline-offset:3px;border-radius:2px}
+.sitenav .sep{color:var(--ink-faint)}
+
+.masthead{border-bottom:1px solid var(--rule);padding-bottom:20px;margin-bottom:26px}
+.eyebrow{font-size:12px;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-faint);
+  font-weight:600;margin:0 0 10px}
+h1{font-family:'EB Garamond',Garamond,'Times New Roman',serif;font-weight:600;
+  font-size:clamp(38px,7vw,60px);line-height:1.0;margin:0;letter-spacing:-.012em;text-wrap:balance}
+h1 em{font-style:italic;color:var(--route)}
+.standfirst{margin:14px 0 0;max-width:64ch;color:var(--ink-soft);font-size:16.5px}
+.standfirst a{color:var(--ink);text-underline-offset:3px}
+
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0;padding:0;list-style:none}
+.legend li{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--rule);
+  background:var(--surface);border-radius:999px;padding:5px 13px 5px 10px;
+  font-size:13px;color:var(--ink-soft)}
+.legend i{width:11px;height:11px;border-radius:50%;background:var(--c);flex:none}
+.legend i.dia{border-radius:0;width:13px;height:13px;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.legend i.bar{width:20px;height:4px;border-radius:2px}
+
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--ink-faint);max-width:80ch}
+footer p{margin:0 0 8px}
+footer a{color:var(--ink-soft)}
+footer b{color:var(--ink-soft)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+
+.tablebox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;
+  background:var(--surface);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;min-width:900px}
+thead th{background:var(--surface-2);text-align:left;font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  padding:13px 16px;border-bottom:2px solid var(--ink)}
+td{padding:17px 16px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr.off{opacity:.55}
+.c-nome{width:20%;min-width:175px;font-family:'EB Garamond',Garamond,serif;
+  font-weight:600;font-size:20px;line-height:1.16}
+.c-nome .tappa{display:inline-flex;align-items:center;justify-content:center;
+  width:23px;height:23px;border-radius:50%;background:var(--c,var(--route));color:var(--marker-ring);
+  font-family:'Jost',sans-serif;font-size:11.5px;font-weight:700;vertical-align:3px;margin-right:7px}
+.c-nome .skip{display:inline-block;margin-top:6px;font-family:'Jost',sans-serif;font-size:10px;
+  font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);
+  border:1px solid var(--rule);border-radius:3px;padding:2px 7px}
+.c-perche{width:34%;min-width:270px;font-size:14px;color:var(--ink-soft);line-height:1.5}
+.c-perche b{color:var(--ink);font-weight:600}
+.c-orari{width:26%;min-width:215px;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.c-prezzo{width:20%;min-width:165px;font-size:16px;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.c-orari em,.c-prezzo em{display:block;font-style:normal;font-weight:400;font-size:12.5px;
+  letter-spacing:0;color:var(--ink-faint);margin-top:5px;line-height:1.45}
+@media (max-width:880px){
+  .tablebox{overflow-x:visible;border:0;border-radius:0;background:transparent;box-shadow:none}
+  table{min-width:0}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  tbody tr{display:block;background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+    padding:16px 17px;margin-bottom:12px;box-shadow:var(--shadow)}
+  tbody tr:hover{background:var(--surface)}
+  td{display:block;width:auto!important;min-width:0!important;padding:0;border:0}
+  .c-perche,.c-orari,.c-prezzo{margin-top:12px}
+  .c-perche::before,.c-orari::before,.c-prezzo::before{content:attr(data-l);display:block;
+    font-family:'Jost',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+}
+.secnote{margin:16px 0 0;font-size:13px;line-height:1.55;color:var(--ink-faint);max-width:76ch}
+.secnote b{color:var(--ink-soft);font-weight:600}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="sitenav">
+    <a href="./">Un giorno a Padova</a>
+    <span class="sep">/</span>
+    <a href="mappa.html">Mappa</a>
+    <span class="sep">/</span>
+    <a href="padova-card.html">Padova Card</a>
+    <span class="sep">/</span>
+    <a href="altri-luoghi.html" aria-current="page">Altri luoghi</a>
+  </nav>
+
+  <header class="masthead">
+    <p class="eyebrow">Fuori dalla card &middot; 12 luoghi</p>
+    <h1>Fuori dalla <em>card</em></h1>
+    <p class="standfirst">Quello che la Padova Urbs picta Card non copre e che vale comunque la giornata: l&rsquo;universit&agrave;, l&rsquo;orto botanico, la piazza pi&ugrave; grande d&rsquo;Italia &mdash; e il tavolo prenotato per l&rsquo;una. Il numero indica le tappe del <a href="./">vostro itinerario</a>.</p>
+    <ul class="legend"><li style="--c:var(--other)"><i></i>Fuori dalla card</li><li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li><li style="--c:var(--food)"><i></i>Il pranzo</li></ul>
+  </header>
+
+  <div class="tablebox">
+    <table>
+      <thead>
+        <tr><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th><th>Prezzo senza card</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c-nome"><span class="tappa" style="--c:var(--food)">6</span>Bacaro Padovano</td>
+          <td class="c-perche" data-l="Perch&eacute; conta"><b>Il pranzo prenotato</b>, tappa n. 6. Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Ven e sab 12:00–15:30 e 19:00–24:00 · dom 12:00–15:30 · lun, mer, gio solo cena<em>chiuso il martedì; a pranzo apre solo ven, sab e dom</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">—<em>Via San Gregorio Barbarigo 3, tel. 049 8762777</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">3</span>Palazzo del Bo</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il <b>Teatro Anatomico del 1594</b>, il più antico conservato al mondo, la cattedra di Galileo e l’Aula Magna. Tappa n. 3. Nel fine settimana il giro cambia e include l’ala di Gio Ponti.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Giro storico lun–ven: 10:30, 11:30 (EN), 12:30, 15:30, 16:30 (EN), 17:30<em>45 minuti, prenotazione obbligatoria; sab e dom tour “Gio Ponti”</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">7,00 €<em>3,00 € per 13-25 anni; 5,00 € over 65</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">2</span>Caffè Pedrocchi — Piano Nobile</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le sale di Jappelli sopra il caffè, con il Museo del Risorgimento. Tappa n. 2, e il modo giusto di cominciare la giornata.</td>
+          <td class="c-orari" data-l="Orari e chiusura">09:30–12:30 e 15:30–18:00<em>chiuso il lunedì non festivo</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">4,00 €<em>ridotto 2,50 €; comprende il Museo del Risorgimento</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">9</span>Orto Botanico</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il più antico orto botanico universitario del mondo ancora al suo posto, 1545, patrimonio UNESCO dal 1997. Tappa n. 9.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Apr–set 10:00–19:00 · ott 10:00–18:00 · nov–mar 10:00–17:00<em>chiuso il lunedì; ultimo ingresso 45 minuti prima</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">10,00 €<em>8,00 € over 65; 6,00 € ridotto giovani</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">10</span>Prato della Valle</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">La piazza più grande d’Italia: isola ellittica, canale anulare, 78 statue. Tappa n. 10, al tramonto.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Sempre accessibile<em>il sabato ospita il mercato</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+        </tr>
+        <tr>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">5</span>Piazza dei Signori e Torre dell’Orologio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il quadrante astronomico del 1344 e la Loggia del Consiglio. Tappa n. 5.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Piazza sempre accessibile<em>la torre si visita solo su prenotazione</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>salita alla torre a pagamento, su prenotazione</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">7</span>Duomo di Padova</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">La cattedrale su progetto rimaneggiato di Michelangelo, austera e mai finita in facciata. È il portone accanto al Battistero, tappa n. 7.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Lun–sab 07:30–12:00 e 15:45–19:30 · dom 07:45–13:00 e 15:45–20:30</td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+        </tr>
+        <tr>
+          <td class="c-nome">Basilica di Santa Giustina</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Otto cupole affacciate sul Prato della Valle, il <b>Martirio di Santa Giustina</b> di Veronese e il pozzo dei martiri. Cinque minuti dalla tappa n. 10.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Lun–sab 07:30–12:00 e 15:00–20:00 · dom 06:30–13:00 e 15:00–20:00</td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+        </tr>
+        <tr>
+          <td class="c-nome">Musei Civici agli Eremitani</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Archeologia e pinacoteca: Giotto, Bellini, Tiziano, Tiepolo. Si entra dallo stesso cortile della Cappella.</td>
+          <td class="c-orari" data-l="Orari e chiusura">09:00–19:00, tutti i giorni</td>
+          <td class="c-prezzo" data-l="Prezzo senza card">11,00 €<em>ridotto 9,00 €; 15,00 € con la Cappella degli Scrovegni</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome">Palazzo Zuckermann</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Arti applicate e la collezione Bottacin di monete e medaglie, in un palazzo primo Novecento.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Mar–dom 10:00–19:00<em>chiuso il lunedì</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">11,00 €<em>stesso biglietto dei Musei Civici</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome">Loggia e Odeo Cornaro</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il teatro privato rinascimentale di Alvise Cornaro, dove nacque il teatro del Ruzante. Poco visitato e a dieci minuti dal Santo.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Mar–ven 10:00–13:00, sab e dom anche pomeriggio<em>chiuso il lunedì</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">5,00 €<em>ridotto 4,00 €</em></td>
+        </tr>
+        <tr>
+          <td class="c-nome">MUSME — Museo di Storia della Medicina</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Museo interattivo nell’antico ospedale di San Francesco, dove la medicina padovana ha davvero cominciato.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Mar–ven 14:30–19:00 · sab e dom 09:30–19:00<em>chiuso il lunedì</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">10,00 €<em>ridotto 8,00 €</em></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="secnote"><b>Il vincolo pi&ugrave; stretto della giornata &egrave; il ristorante:</b> il Bacaro Padovano serve a pranzo <b>solo venerd&igrave;, sabato e domenica</b>. E il <b>Giro storico</b> di Palazzo del Bo, quello con il Teatro Anatomico, si fa solo dal luned&igrave; al venerd&igrave;: nel fine settimana il tour &egrave; un altro. Le due condizioni si incrociano in un giorno solo, il <b>venerd&igrave;</b>.</p>
+
+  <footer>
+    <p><b>Orari e prezzi raccolti il 22 settembre 2026</b> dai siti ufficiali di Musei Civici di Padova,
+    Universit&agrave; di Padova, Kalat&agrave;/Museo Diocesano, Basilica del Santo, Orto Botanico e Bacaro Padovano.
+    Cambiano spesso: vanno riverificati prima di partire, e due visite di questo itinerario
+    (Palazzo del Bo e il Battistero) <b>richiedono prenotazione</b>.</p>
+    <p>La Cappella degli Scrovegni non fa parte del programma per vostra scelta. Resta nella tabella
+    della card perch&eacute; &egrave; la voce che ne determina il prezzo.</p>
+  </footer>
+</div>
+</body>
+</html>
