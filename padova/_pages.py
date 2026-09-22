@@ -1,16 +1,44 @@
 # -*- coding: utf-8 -*-
-"""Le quattro pagine."""
-import io, os
-from _build import (page, nav, write, build_map, MAP_CSS, VW, VH, eur, extra_markers)
-from _data import ITINERARIO, CARD_SITI, ALTRI_LUOGHI, CONTI, CARD_PREZZO
+"""Le quattro pagine del sito."""
+import io, os, re
+from _build import page, nav, write, build_map, MAP_CSS, VW, VH, eur, extra_markers, NUM
+from _data import (PLACES, VARIANTI, VARIANTE_A, VARIANTE_B, ORDINE_MAPPA,
+                   CARD_SITI, ALTRI_LUOGHI, CARD_PREZZO, TRASPORTI, GIORNO, ARRIVO, RIENTRO)
+
+CARD_N = 28.0
+BIGLIETTO_CORSA = 1.70
+
+
+def num(costo):
+    if not costo:
+        return 0.0
+    m = re.match(r'^(\d+),(\d+)', costo)
+    return float("%s.%s" % (m.group(1), m.group(2))) if m else 0.0
+
+
+def conti(v):
+    """(voci singoli, totale singoli, voci con card, totale con card)"""
+    singoli, concard = [], [(u"Padova Urbs picta Card 48 ore", CARD_N)]
+    visti = set()
+    for pid, _o, _d, costo in v['tappe']:
+        c = num(costo)
+        if c and pid not in visti:
+            visti.add(pid)
+            singoli.append((PLACES[pid]['nome'], c))
+            if not PLACES[pid]['card']:
+                concard.append((PLACES[pid]['nome'], c))
+    singoli.append((u"Trasporto urbano, due corse", 2 * BIGLIETTO_CORSA))
+    concard.append((u"Trasporto urbano", 0.0))
+    return singoli, sum(c for _, c in singoli), concard, sum(c for _, c in concard)
+
 
 FOOT = u"""  <footer>
-    <p><b>Orari e prezzi raccolti il 22 settembre 2026</b> dai siti ufficiali di Musei Civici di Padova,
-    Universit&agrave; di Padova, Kalat&agrave;/Museo Diocesano, Basilica del Santo, Orto Botanico e Bacaro Padovano.
-    Cambiano spesso: vanno riverificati prima di partire, e due visite di questo itinerario
-    (Palazzo del Bo e il Battistero) <b>richiedono prenotazione</b>.</p>
-    <p>La Cappella degli Scrovegni non fa parte del programma per vostra scelta. Resta nella tabella
-    della card perch&eacute; &egrave; la voce che ne determina il prezzo.</p>
+    <p><b>Orari e prezzi raccolti il 22 settembre 2026</b> dai siti ufficiali. Ogni riga delle due tabelle
+    porta il link alla fonte da cui viene il dato, cos&igrave; potete controllare voi;
+    dove la fonte manca l&rsquo;ho scritto invece di inventarla.</p>
+    <p>Due visite di questa giornata &mdash; <b>Palazzo del Bo</b> e il <b>Battistero</b> &mdash; vogliono la prenotazione.
+    La Cappella degli Scrovegni non fa parte del programma per vostra scelta: resta nella tabella della card
+    perch&eacute; &egrave; la voce che ne determina il prezzo.</p>
   </footer>"""
 
 # =========================================================== 1. la giornata
@@ -49,7 +77,26 @@ INDEX_CSS = u"""
   border-bottom:2px solid var(--ink);margin:0 0 4px}
 .sechead h2{margin:0;font-family:'Jost',sans-serif;font-size:12.5px;font-weight:700;
   letter-spacing:.15em;text-transform:uppercase}
-.sechead .cnt{margin-left:auto;font-size:12.5px;color:var(--ink-faint)}
+.sechead .cnt{margin-left:auto;font-size:12.5px;color:var(--ink-faint);text-align:right}
+
+/* --- lo scambio fra i due itinerari --- */
+.switch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0 26px}
+@media (max-width:620px){.switch{grid-template-columns:1fr}}
+.switch button{display:block;text-align:left;font-family:inherit;cursor:pointer;
+  background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:15px 17px;
+  color:inherit;transition:border-color .15s,background .15s}
+.switch button:hover{border-color:var(--ink-faint)}
+.switch button:focus-visible{outline:2px solid var(--route);outline-offset:3px}
+.switch button[aria-pressed="true"]{border-color:var(--route);border-width:2px;padding:14px 16px;
+  background:var(--surface-2)}
+.switch .sig{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+  border-radius:50%;background:var(--ink-faint);color:var(--marker-ring);font-size:13px;
+  font-weight:700;margin-right:9px;vertical-align:-6px}
+.switch button[aria-pressed="true"] .sig{background:var(--route)}
+.switch .tit{font-family:'EB Garamond',Garamond,serif;font-size:22px;font-weight:600;line-height:1.1}
+.switch .det{margin:9px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.switch .cost{margin:9px 0 0;font-size:12.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.switch .cost b{color:var(--ink);font-weight:600}
 
 .day{list-style:none;margin:0 0 38px;padding:0}
 .stop{display:grid;grid-template-columns:62px 38px minmax(0,1fr);gap:0 14px;
@@ -59,10 +106,12 @@ INDEX_CSS = u"""
 .stop .ora{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;
   color:var(--ink);letter-spacing:.01em;padding-top:3px}
 .stop .bullet{grid-row:1/span 5;display:flex;justify-content:center;position:relative}
-@media (max-width:560px){.stop .bullet{grid-row:1/span 5;grid-column:1}}
+@media (max-width:560px){.stop .bullet{grid-column:1}}
 .stop .bullet span{width:32px;height:32px;border-radius:50%;background:var(--c,var(--route));
   color:var(--marker-ring);display:flex;align-items:center;justify-content:center;
   font-size:14.5px;font-weight:600;font-variant-numeric:tabular-nums;z-index:1;margin-top:1px}
+.stop.ritorno .bullet span{background:var(--surface);color:var(--ink-faint);
+  border:2px dashed var(--rule);font-size:13px}
 .stop .bullet::after{content:"";position:absolute;top:34px;bottom:-22px;width:2px;
   background:var(--rule);left:50%;transform:translateX(-50%)}
 .stop:last-child .bullet::after{display:none}
@@ -79,12 +128,13 @@ INDEX_CSS = u"""
   border-left:2px solid var(--rule);padding-left:11px;max-width:60ch}
 .stop p.nota b{color:var(--ink-soft)}
 
-.conti{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 20px}
+.conti{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 20px}
 @media (max-width:640px){.conti{grid-template-columns:1fr}}
 .conto{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:17px 19px}
-.conto.win{border-color:var(--card);border-width:2px}
+.conto.win{border-color:var(--card);border-width:2px;padding:16px 18px}
 .conto h3{margin:0 0 3px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;
   letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.conto .sub{margin:0;font-size:13px;color:var(--ink-soft)}
 .conto ul{list-style:none;margin:12px 0 0;padding:0}
 .conto li{display:flex;justify-content:space-between;gap:12px;font-size:14px;
   padding:5px 0;border-bottom:1px solid var(--rule-soft);color:var(--ink-soft)}
@@ -96,51 +146,123 @@ INDEX_CSS = u"""
 .conto .tot em{font-style:normal;font-family:'EB Garamond',Garamond,serif;
   font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
 .verdetto{border-left:3px solid var(--card);background:var(--surface-2);padding:14px 17px;
-  border-radius:0 3px 3px 0;margin:0 0 34px;font-size:14.5px;color:var(--ink-soft);line-height:1.55}
+  border-radius:0 3px 3px 0;margin:0 0 38px;font-size:14.5px;color:var(--ink-soft);line-height:1.55}
 .verdetto b{color:var(--ink);font-weight:600}
+
+/* --- trasporto urbano --- */
+.tickets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 22px}
+@media (max-width:640px){.tickets{grid-template-columns:1fr}}
+.tick{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:15px 17px}
+.tick .lab{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;
+  color:var(--ink-faint);margin:0}
+.tick .val{margin:6px 0 0;font-family:'EB Garamond',Garamond,serif;font-size:27px;
+  font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.tick .det{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);line-height:1.4}
+.dove{list-style:none;margin:0 0 20px;padding:0}
+.dove li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;
+  padding:13px 2px;border-bottom:1px solid var(--rule-soft)}
+.dove .n{font-size:15px;font-weight:600;color:var(--ink)}
+.dove .q{font-size:12.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+@media (max-width:560px){.dove li{grid-template-columns:1fr}.dove .q{text-align:left}}
+.dove .d{grid-column:1/-1;margin:5px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+.dove .d b{color:var(--ink)}
 """
 
 
-def build_index():
-    stops = []
-    for s in ITINERARIO:
-        pills = [u'<span class="pill">%s</span>' % s['durata']]
-        if s.get('costo'):
-            c = s['costo']
-            cls = 'free' if c in (u'Gratuito', u'—') else 'price'
-            pills.append(u'<span class="pill %s">%s</span>' % (cls, c))
-        if s['card']:
+def timeline(v):
+    out, visti = [], set()
+    for pid, ora, durata, costo in v['tappe']:
+        pl = PLACES[pid]
+        ritorno = pid in visti
+        visti.add(pid)
+        n = NUM[pid][v['id']]
+        pills = [u'<span class="pill">%s</span>' % durata]
+        if costo:
+            cls = 'free' if costo == u'Gratuito' else 'price'
+            pills.append(u'<span class="pill %s">%s</span>' % (cls, costo))
+        if pl['card'] and not ritorno:
             pills.append(u'<span class="pill incard">Nella card</span>')
-        col = ' style="--c:var(--food)"' if s.get('pasto') else ''
-        stops.append(
-            u'    <li class="stop">\n'
+        col = ' style="--c:var(--food)"' if pl.get('pasto') else ''
+        if ritorno:
+            testo = (u'<p class="testo">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta '
+                     u'al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, '
+                     u'con dieci minuti di margine sul treno. A piedi sono 2,5 km e mezz’ora, '
+                     u'quindi bisognerebbe partire dal Prato alle 17:45.</p>')
+            nota = u''
+            titolo = u'Ritorno in stazione'
+            segno = u'&uarr;'
+        else:
+            testo = u'<p class="testo">%s</p>' % pl['testo']
+            nota = (u'<p class="nota">%s</p>' % pl['nota']) if pl.get('nota') else u''
+            titolo = pl['nome']
+            segno = u'%d' % n
+        out.append(
+            u'    <li class="stop%s">\n'
             u'      <span class="ora">%s</span>\n'
-            u'      <span class="bullet"%s><span>%d</span></span>\n'
+            u'      <span class="bullet"%s><span>%s</span></span>\n'
             u'      <h3>%s</h3>\n'
             u'      <span class="meta">%s</span>\n'
-            u'      <p class="testo">%s</p>\n'
-            u'      %s\n    </li>'
-            % (s['ora'], col, s['n'], s['nome'], u''.join(pills), s['testo'],
-               (u'<p class="nota">%s</p>' % s['nota']) if s.get('nota') else u''))
+            u'      %s\n      %s\n    </li>'
+            % (u' ritorno' if ritorno else u'', ora, col, segno, titolo, u''.join(pills), testo, nota))
+    return u'\n'.join(out)
 
-    def conto(titolo, righe, sub, win=False):
-        tot = sum(v for _, v in righe)
-        li = u''.join(u'<li><span>%s</span><span>%s</span></li>' % (n, eur(v)) for n, v in righe)
-        return (u'    <div class="conto%s"><h3>%s</h3><p class="kicker" style="margin:0;letter-spacing:.02em;'
-                u'text-transform:none;font-size:13px;color:var(--ink-soft);font-weight:400">%s</p>'
-                u'<ul>%s</ul><div class="tot"><b>Totale</b><em>%s</em></div></div>'
+
+def blocco_conti(v):
+    sing, tot_s, card, tot_c = conti(v)
+
+    def box(titolo, sub, righe, tot, win=False):
+        li = u''.join(u'<li><span>%s</span><span>%s</span></li>'
+                      % (n, u'compreso' if c == 0 else eur(c)) for n, c in righe)
+        return (u'      <div class="conto%s"><h3>%s</h3><p class="sub">%s</p><ul>%s</ul>'
+                u'<div class="tot"><b>Totale</b><em>%s</em></div></div>'
                 % (u' win' if win else u'', titolo, sub, li, eur(tot)))
+    return (u'    <div class="conti">\n%s\n%s\n    </div>'
+            % (box(u"Biglietti singoli", u"pagando ogni ingresso, più il tram", sing, tot_s),
+               box(u"Con la Padova Card", u"la card copre Ragione, Battistero, Oratorio e i mezzi",
+                   card, tot_c, win=tot_c < tot_s)),
+            tot_s, tot_c)
 
-    tot_s = sum(v for _, v in CONTI['singoli'])
-    tot_c = sum(v for _, v in CONTI['con_card'])
+
+def build_index():
+    blocchi, switch = [], []
+    for v in VARIANTI:
+        tl = timeline(v)
+        conti_html, tot_s, tot_c = blocco_conti(v)
+        ntappe = len(set(p for p, _, _, _ in v['tappe']))
+        switch.append(
+            u'    <button type="button" class="sw" data-v="%s" aria-pressed="%s" aria-controls="var-%s">'
+            u'<span class="sig">%s</span><span class="tit">%s</span>'
+            u'<span class="det">%s</span>'
+            u'<span class="cost">Biglietti <b>%s</b> &nbsp;·&nbsp; con la card <b>%s</b></span></button>'
+            % (v['id'], 'true' if v is VARIANTE_A else 'false', v['id'], v['sigla'], v['titolo'],
+               v['sommario'], eur(tot_s), eur(tot_c)))
+        blocchi.append(
+            u'  <section class="variante" id="var-%s"%s>\n'
+            u'    <div class="sechead"><h2>Itinerario %s &middot; %s</h2>'
+            u'<span class="cnt">%d tappe &middot; %s &rarr; %s</span></div>\n'
+            u'    <ol class="day">\n%s\n    </ol>\n'
+            u'    <div class="sechead"><h2>Quanto costa</h2><span class="cnt">a testa, ingressi e tram</span></div>\n'
+            u'%s\n  </section>'
+            % (v['id'], u'' if v is VARIANTE_A else u' hidden', v['sigla'], v['titolo'],
+               ntappe, ARRIVO, RIENTRO, tl, conti_html))
+
+    _, tot_sa, tot_ca = blocco_conti(VARIANTE_A)
+    risparmio = eur(tot_sa - tot_ca)
+
+    tick = u''.join(u'      <div class="tick"><p class="lab">%s</p><p class="val">%s</p><p class="det">%s</p></div>\n'
+                    % (n, p, d) for n, p, d in TRASPORTI['biglietti'])
+    dove = u''.join(u'      <li><span class="n">%s</span><span class="q">%s</span><p class="d">%s</p></li>\n'
+                    % (n, q, d) for n, q, d in TRASPORTI['dove'])
+
     body = u"""%(nav)s
 
   <header class="masthead">
-    <p class="eyebrow">Arrivo 9:00 &middot; pranzo 13:00 &middot; senza Scrovegni</p>
+    <p class="eyebrow">%(giorno)s &middot; arrivo %(arrivo)s &middot; rientro %(rientro)s &middot; senza Scrovegni</p>
     <h1>Un giorno a <em>Padova</em></h1>
-    <p class="standfirst">Dieci tappe fra la stazione e il Prato della Valle, costruite attorno ai due orari fissi
-    della giornata: il treno delle nove e il tavolo delle tredici. Senza la Cappella degli Scrovegni &mdash;
-    al suo posto, il <b>Battistero del Duomo</b>, che ha un ciclo di affreschi altrettanto grande e quasi nessuna coda.</p>
+    <p class="standfirst">Nove tappe fra la stazione e il Prato della Valle, incastrate fra i tre orari fissi
+    della giornata: il treno delle 9:30, il tavolo delle 13:00 e il treno di ritorno delle 18:20.
+    Senza la Cappella degli Scrovegni &mdash; al suo posto il <b>Battistero del Duomo</b>, che ha un ciclo di
+    affreschi altrettanto grande e quasi nessuna coda.</p>
     <ul class="legend">
       <li style="--c:var(--route)"><i class="bar"></i>Il percorso a piedi</li>
       <li style="--c:var(--card)"><i class="dia"></i>Nella Padova Card</li>
@@ -153,8 +275,8 @@ def build_index():
     <div>
       <p class="kicker">La mappa</p>
       <h2>Il percorso disegnato sulla citt&agrave;</h2>
-      <p>Le dieci tappe proiettate dalle coordinate reali, il tracciato a piedi che le unisce, i canali che chiudono
-      il centro ad anello e la linea del tram per tornare in stazione.</p>
+      <p>Le tappe proiettate dalle coordinate reali, il tracciato a piedi che le unisce, i canali che chiudono
+      il centro ad anello e la linea del tram per tornare in stazione. Sulla mappa si passa da un itinerario all&rsquo;altro.</p>
       <span class="go">Apri la mappa &rarr;</span>
     </div>
     <div class="thumb">%(mini)s</div>
@@ -164,7 +286,8 @@ def build_index():
     <a class="linkcard" href="padova-card.html">
       <p class="kicker">Padova Card</p>
       <h2>Gli otto siti della card</h2>
-      <p>I cicli affrescati del Trecento, patrimonio UNESCO: cosa sono, quando aprono e quanto costerebbero uno per uno.</p>
+      <p>I cicli affrescati del Trecento, patrimonio UNESCO: cosa sono, quando aprono, quanto costerebbero
+      uno per uno e da dove viene ogni dato.</p>
       <span class="marks" aria-hidden="true"><i class="dia" style="--c:var(--card)"></i><i class="dia" style="--c:var(--card)"></i><i class="dia" style="--c:var(--card)"></i><i class="dia" style="--c:var(--card)"></i></span>
       <span class="go">Apri la tabella &rarr;</span>
     </a>
@@ -177,30 +300,51 @@ def build_index():
     </a>
   </div>
 
-  <div class="sechead"><h2>La giornata</h2><span class="cnt">10 tappe &middot; circa 5 km a piedi</span></div>
-  <ol class="day">
-%(stops)s
-  </ol>
-
-  <div class="sechead"><h2>Conviene la Padova Card?</h2><span class="cnt">solo per questa giornata</span></div>
-  <div class="conti" style="margin-top:18px">
-%(conto_a)s
-%(conto_b)s
+  <div class="sechead"><h2>Due itinerari</h2><span class="cnt">la differenza &egrave; Palazzo del Bo</span></div>
+  <div class="switch">
+%(switch)s
   </div>
-  <p class="verdetto"><b>Quasi in pari: %(diff)s di differenza.</b> La <b>Padova Urbs picta Card</b> costa %(cardp)s per 48 ore
-  e vive di rendita sulla Cappella degli Scrovegni, che voi non fate. Senza quella, il margine si assottiglia.
-  Conviene comprarla se aggiungete anche solo <b>un altro sito della card</b> &mdash; l&rsquo;Oratorio di San Michele,
-  la Chiesa degli Eremitani, i Musei Civici &mdash; oppure se contate di usare il <b>tram</b>, che &egrave; compreso nel prezzo
-  e vi riporta in stazione dal Prato della Valle.</p>
 
-%(foot)s""" % dict(nav=nav("index.html"), mini=build_map(interactive=False, mini=True),
-                   stops=u'\n'.join(stops),
-                   conto_a=conto(u"Biglietti singoli", CONTI['singoli'], u"pagando ogni ingresso dell’itinerario"),
-                   conto_b=conto(u"Con la card", CONTI['con_card'], u"la card copre Ragione, Battistero e Oratorio", win=(tot_c < tot_s)),
-                   diff=eur(abs(tot_s - tot_c)), cardp=CARD_PREZZO, foot=FOOT)
+%(blocchi)s
+
+  <p class="verdetto"><b>In tutti e due i casi la card conviene, di %(risp)s.</b> Non perch&eacute; gli ingressi
+  siano tanti &mdash; senza gli Scrovegni il margine sarebbe sottile &mdash; ma perch&eacute; comprende <b>i mezzi</b>,
+  e la corsa di ritorno dal Prato della Valle vi serve davvero. Diventa nettamente conveniente se ci
+  aggiungete anche un solo altro sito compreso: l&rsquo;Oratorio di San Michele, la Chiesa degli Eremitani,
+  i Musei Civici.</p>
+
+  <div class="sechead"><h2>Biglietti del bus e del tram</h2><span class="cnt">Busitalia Veneto, zona urbana</span></div>
+  <div class="tickets">
+%(tick)s  </div>
+  <div class="sechead" style="border-bottom-width:1px"><h2 style="font-size:11.5px;color:var(--ink-faint)">Dove si comprano</h2></div>
+  <ul class="dove">
+%(dove)s  </ul>
+  <p class="verdetto" style="border-left-color:var(--tram)">%(consiglio)s</p>
+
+%(foot)s
+
+<script>
+(function(){
+  "use strict";
+  var btns=document.querySelectorAll('.switch .sw');
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      btns.forEach(function(o){
+        var on = o===b;
+        o.setAttribute('aria-pressed', String(on));
+        document.getElementById('var-'+o.dataset.v).hidden = !on;
+      });
+      document.querySelector('.switch').scrollIntoView({block:'start',behavior:'smooth'});
+    });
+  });
+})();
+</script>""" % dict(nav=nav("index.html"), giorno=GIORNO.capitalize(), arrivo=ARRIVO, rientro=RIENTRO,
+                    mini=build_map(interactive=False, mini=True),
+                    switch=u'\n'.join(switch), blocchi=u'\n\n'.join(blocchi), risp=risparmio,
+                    tick=tick, dove=dove, consiglio=TRASPORTI['consiglio'], foot=FOOT)
 
     return page(u"Un giorno a Padova",
-                u"Itinerario di un giorno nel centro di Padova senza la Cappella degli Scrovegni, con mappa, orari e prezzi.",
+                u"Due itinerari di un giorno nel centro di Padova, sabato 9:30-18:20, senza la Cappella degli Scrovegni.",
                 INDEX_CSS, u'<div class="wrap">\n' + body + u'\n</div>', maxw="960px")
 
 
@@ -210,11 +354,26 @@ MAPPA_CSS = MAP_CSS + u"""
 @media (max-width:920px){.cols{grid-template-columns:1fr;gap:26px}}
 .mapcol{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px)}
 @media (max-width:920px){.mapcol{position:static}}
+.marker.off{opacity:.2}
+.vswitch{display:flex;gap:8px;margin:0 0 16px}
+.vswitch button{flex:1;font-family:inherit;cursor:pointer;background:var(--surface);
+  border:1px solid var(--rule);border-radius:4px;padding:10px 12px;color:inherit;text-align:left;
+  transition:border-color .15s,background .15s}
+.vswitch button:hover{border-color:var(--ink-faint)}
+.vswitch button:focus-visible{outline:2px solid var(--route);outline-offset:3px}
+.vswitch button[aria-pressed="true"]{border-color:var(--route);border-width:2px;padding:9px 11px;
+  background:var(--surface-2)}
+.vswitch .sig{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+  border-radius:50%;background:var(--ink-faint);color:var(--marker-ring);font-size:12px;
+  font-weight:700;margin-right:8px;vertical-align:-5px}
+.vswitch button[aria-pressed="true"] .sig{background:var(--route)}
+.vswitch .t{font-size:13.5px;font-weight:500}
 .items{list-style:none;margin:0;padding:0}
 .item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 13px;padding:13px 10px 13px 8px;
   border-bottom:1px solid var(--rule-soft);cursor:pointer;transition:background .15s;border-radius:2px}
 .item:hover,.item.on{background:var(--surface-2)}
 .item.on{box-shadow:inset 3px 0 0 var(--c,var(--route))}
+.item[hidden]{display:none}
 .item:focus-visible{outline:2px solid var(--route);outline-offset:-2px}
 .item .n{grid-row:1/span 3;width:30px;height:30px;border-radius:50%;background:var(--c,var(--route));
   color:var(--marker-ring);display:flex;align-items:center;justify-content:center;
@@ -226,20 +385,35 @@ MAPPA_CSS = MAP_CSS + u"""
 
 
 def build_mappa():
-    items = []
-    for s in ITINERARIO:
-        col = ' style="--c:var(--food)"' if s.get('pasto') else ''
-        extra = u' &middot; %s' % s['costo'] if s.get('costo') else u''
-        items.append(u'      <li class="item" data-n="%d" tabindex="0"%s><span class="n">%d</span>'
-                     u'<h3>%s</h3><p class="ora"><b>%s</b> &middot; %s%s</p></li>'
-                     % (s['n'], col, s['n'], s['nome'], s['ora'], s['durata'], extra))
+    lists = []
+    for v in VARIANTI:
+        items, visti = [], set()
+        for pid, ora, durata, costo in v['tappe']:
+            if pid in visti:
+                continue
+            visti.add(pid)
+            pl = PLACES[pid]
+            col = ' style="--c:var(--food)"' if pl.get('pasto') else ''
+            extra = u' &middot; %s' % costo if costo else u''
+            items.append(u'        <li class="item" data-p="%s" tabindex="0"%s><span class="n">%d</span>'
+                         u'<h3>%s</h3><p class="ora"><b>%s</b> &middot; %s%s</p></li>'
+                         % (pid, col, NUM[pid][v['id']], pl['nome'], ora, durata, extra))
+        lists.append(u'      <ul class="items" id="lista-%s"%s>\n%s\n      </ul>'
+                     % (v['id'], u'' if v is VARIANTE_A else u' hidden', u'\n'.join(items)))
+
+    vsw = u''.join(u'        <button type="button" class="vsw" data-v="%s" aria-pressed="%s">'
+                   u'<span class="sig">%s</span><span class="t">%s</span></button>\n'
+                   % (v['id'], 'true' if v is VARIANTE_A else 'false', v['sigla'],
+                      u'Con il Bo' if v is VARIANTE_A else u'Senza il Bo') for v in VARIANTI)
+
     body = u"""%(nav)s
 
   <header class="masthead">
-    <p class="eyebrow">Mappa &middot; 10 tappe &middot; circa 5 km</p>
+    <p class="eyebrow">Mappa &middot; %(giorno)s &middot; %(arrivo)s &rarr; %(rientro)s</p>
     <h1>Il percorso a <em>piedi</em></h1>
-    <p class="standfirst">Tutti i segnaposto sono proiettati dalle coordinate reali, quindi le distanze fra loro sono corrette.
-    Canali, strade e tracciato del tram sono schematici.</p>
+    <p class="standfirst">Tutti i segnaposto sono proiettati dalle coordinate reali, quindi le distanze fra loro
+    sono corrette. Canali, strade e tracciato del tram sono schematici. Il tracciato rosso &egrave; l&rsquo;unione dei due
+    itinerari: cambiando itinerario si accendono e spengono le tappe, e i numeri si rinumerano.</p>
     <ul class="legend">
       <li style="--c:var(--route)"><i class="bar"></i>Percorso a piedi</li>
       <li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li>
@@ -254,16 +428,16 @@ def build_mappa():
       <div class="mapframe"><svg class="map" id="svg" viewBox="0 0 %(vw)d %(vh)d" role="img"
         aria-label="Mappa schematica del centro di Padova con il percorso della giornata">%(svg)s</svg></div>
       <p class="mapnote">Il cerchio azzurro attorno a una tappa vuol dire che &egrave; compresa nella Padova Card.
-      Il tratto viola &egrave; il pranzo. Passa il dito o il mouse sui pallini del tram per leggere il nome della fermata.</p>
+      Il segnaposto viola &egrave; il pranzo. Passa il dito o il mouse sui pallini gialli per il nome della fermata del tram.</p>
     </div>
     <div>
+      <div class="vswitch">
+%(vsw)s      </div>
       <div class="sechead" style="display:flex;align-items:baseline;gap:12px;padding-bottom:9px;border-bottom:2px solid var(--ink);margin:0 0 4px">
         <h2 style="margin:0;font-family:'Jost',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase">La giornata</h2>
-        <span style="margin-left:auto;font-size:12.5px;color:var(--ink-faint)">09:00 &rarr; 18:45</span>
+        <span style="margin-left:auto;font-size:12.5px;color:var(--ink-faint)">%(arrivo)s &rarr; %(rientro)s</span>
       </div>
-      <ul class="items">
-%(items)s
-      </ul>
+%(lists)s
     </div>
   </div>
 
@@ -272,29 +446,47 @@ def build_mappa():
 <script>
 (function(){
   "use strict";
-  var markers=document.querySelectorAll('.marker'), items=document.querySelectorAll('.item'), active=null;
-  function setActive(n,scroll){
-    active = (active===n) ? null : n;
-    markers.forEach(function(m){m.classList.toggle('on', +m.dataset.n===active);});
-    items.forEach(function(i){i.classList.toggle('on', +i.dataset.n===active);});
-    if(active!==null && scroll){
-      var el=document.querySelector('.item[data-n="'+active+'"]');
+  var markers=document.querySelectorAll('.marker'), active=null, vista='a';
+  function items(){ return document.querySelectorAll('.items:not([hidden]) .item'); }
+  function setActive(p,scroll){
+    active = (active===p) ? null : p;
+    markers.forEach(function(m){m.classList.toggle('on', m.dataset.p===active);});
+    document.querySelectorAll('.item').forEach(function(i){i.classList.toggle('on', i.dataset.p===active);});
+    if(active && scroll){
+      var el=document.querySelector('.items:not([hidden]) .item[data-p="'+active+'"]');
       if(el) el.scrollIntoView({block:'nearest',behavior:'smooth'});
     }
   }
+  function applica(v){
+    vista=v;
+    markers.forEach(function(m){
+      var n=m.dataset[v];
+      m.classList.toggle('off', !n);
+      var t=m.querySelector('.num');
+      if(t) t.textContent = n || '';
+    });
+    document.querySelectorAll('.items').forEach(function(u){u.hidden = u.id!=='lista-'+v;});
+    document.querySelectorAll('.vsw').forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.v===v));});
+    setActive(null,false); active=null;
+  }
+  document.querySelectorAll('.vsw').forEach(function(b){
+    b.addEventListener('click',function(){applica(b.dataset.v);});
+  });
   function wire(el,scroll){
-    el.addEventListener('click',function(){setActive(+el.dataset.n,scroll);});
+    el.addEventListener('click',function(){setActive(el.dataset.p,scroll);});
     el.addEventListener('keydown',function(e){
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();setActive(+el.dataset.n,scroll);}
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();setActive(el.dataset.p,scroll);}
     });
   }
   markers.forEach(function(m){wire(m,true);});
-  items.forEach(function(i){wire(i,false);});
+  document.querySelectorAll('.item').forEach(function(i){wire(i,false);});
+  applica('a');
 })();
-</script>""" % dict(nav=nav("mappa.html"), svg=build_map(), vw=VW, vh=VH,
-                    items=u'\n'.join(items), foot=FOOT)
+</script>""" % dict(nav=nav("mappa.html"), svg=build_map(), vw=VW, vh=VH, giorno=GIORNO,
+                    arrivo=ARRIVO, rientro=RIENTRO, vsw=vsw,
+                    lists=u'\n'.join(lists), foot=FOOT)
     return page(u"Mappa di un giorno a Padova",
-                u"Il percorso a piedi di una giornata a Padova, disegnato sulle coordinate reali.",
+                u"Il percorso a piedi di una giornata a Padova, con due itinerari alternativi.",
                 MAPPA_CSS, u'<div class="wrap">\n' + body + u'\n</div>', maxw="1280px")
 
 
@@ -302,7 +494,7 @@ def build_mappa():
 TAB_CSS = u"""
 .tablebox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;
   background:var(--surface);box-shadow:var(--shadow)}
-table{width:100%;border-collapse:collapse;min-width:900px}
+table{width:100%;border-collapse:collapse;min-width:1020px}
 thead th{background:var(--surface-2);text-align:left;font-size:11px;font-weight:700;
   letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
   padding:13px 16px;border-bottom:2px solid var(--ink)}
@@ -310,7 +502,7 @@ td{padding:17px 16px;border-bottom:1px solid var(--rule-soft);vertical-align:top
 tbody tr:last-child td{border-bottom:0}
 tbody tr:hover{background:var(--surface-2)}
 tbody tr.off{opacity:.55}
-.c-nome{width:20%;min-width:175px;font-family:'EB Garamond',Garamond,serif;
+.c-nome{width:18%;min-width:165px;font-family:'EB Garamond',Garamond,serif;
   font-weight:600;font-size:20px;line-height:1.16}
 .c-nome .tappa{display:inline-flex;align-items:center;justify-content:center;
   width:23px;height:23px;border-radius:50%;background:var(--c,var(--route));color:var(--marker-ring);
@@ -318,14 +510,21 @@ tbody tr.off{opacity:.55}
 .c-nome .skip{display:inline-block;margin-top:6px;font-family:'Jost',sans-serif;font-size:10px;
   font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);
   border:1px solid var(--rule);border-radius:3px;padding:2px 7px}
-.c-perche{width:34%;min-width:270px;font-size:14px;color:var(--ink-soft);line-height:1.5}
+.c-perche{width:30%;min-width:250px;font-size:14px;color:var(--ink-soft);line-height:1.5}
 .c-perche b{color:var(--ink);font-weight:600}
-.c-orari{width:26%;min-width:215px;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
-.c-prezzo{width:20%;min-width:165px;font-size:16px;font-weight:600;
+.c-orari{width:24%;min-width:205px;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.c-prezzo{width:16%;min-width:150px;font-size:16px;font-weight:600;
   font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.c-fonte{width:12%;min-width:135px;font-size:13px}
+.c-fonte a{color:var(--card);text-underline-offset:3px}
+.c-fonte a:hover{color:var(--ink)}
+.c-fonte .none{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);
+  border-radius:3px;padding:2px 7px;line-height:1.5}
+.c-fonte .why{display:block;margin-top:6px;font-size:12px;color:var(--ink-faint);line-height:1.4}
 .c-orari em,.c-prezzo em{display:block;font-style:normal;font-weight:400;font-size:12.5px;
   letter-spacing:0;color:var(--ink-faint);margin-top:5px;line-height:1.45}
-@media (max-width:880px){
+@media (max-width:980px){
   .tablebox{overflow-x:visible;border:0;border-radius:0;background:transparent;box-shadow:none}
   table{min-width:0}
   thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -333,27 +532,37 @@ tbody tr.off{opacity:.55}
     padding:16px 17px;margin-bottom:12px;box-shadow:var(--shadow)}
   tbody tr:hover{background:var(--surface)}
   td{display:block;width:auto!important;min-width:0!important;padding:0;border:0}
-  .c-perche,.c-orari,.c-prezzo{margin-top:12px}
-  .c-perche::before,.c-orari::before,.c-prezzo::before{content:attr(data-l);display:block;
+  .c-perche,.c-orari,.c-prezzo,.c-fonte{margin-top:12px}
+  .c-perche::before,.c-orari::before,.c-prezzo::before,.c-fonte::before{content:attr(data-l);display:block;
     font-family:'Jost',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;
     text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
 }
-.secnote{margin:16px 0 0;font-size:13px;line-height:1.55;color:var(--ink-faint);max-width:76ch}
+.secnote{margin:16px 0 0;font-size:13px;line-height:1.55;color:var(--ink-faint);max-width:78ch}
 .secnote b{color:var(--ink-soft);font-weight:600}
 """
 
-TAPPA = {}
-for _s in ITINERARIO:
-    TAPPA[_s['nome']] = _s['n']
-from _build import ALIAS
+
+def cella_fonte(s):
+    f = s.get('fonte')
+    if f:
+        return u'<a href="%s" target="_blank" rel="noopener">%s &nearr;</a>' % (f[1], f[0])
+    return (u'<span class="none">non verificata</span>'
+            u'<span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte '
+            u'ufficiale da citare, prendeteli come indicativi.</span>')
 
 
 def rows(data, colore):
     out = []
     for s in data:
-        n = TAPPA.get(ALIAS.get(s['nome'], s['nome']))
+        pid = s.get('tappa')
         col = 'var(--food)' if s.get('tipo') == 'pasto' else colore
-        badge = (u'<span class="tappa" style="--c:%s">%d</span>' % (col, n)) if n else u''
+        badge = u''
+        if pid:
+            na, nb = NUM[pid]['a'], NUM[pid]['b']
+            et = (u'%d' % na) if na else (u'%d' % nb)
+            if na and nb and na != nb:
+                et = u'%d/%d' % (na, nb)
+            badge = u'<span class="tappa" style="--c:%s">%s</span>' % (col, et)
         skip = u'<br><span class="skip">Fuori programma</span>' if s.get('escluso') else u''
         out.append(
             u'        <tr%s>\n'
@@ -361,8 +570,10 @@ def rows(data, colore):
             u'          <td class="c-perche" data-l="Perch&eacute; conta">%s</td>\n'
             u'          <td class="c-orari" data-l="Orari e chiusura">%s</td>\n'
             u'          <td class="c-prezzo" data-l="Prezzo senza card">%s</td>\n'
+            u'          <td class="c-fonte" data-l="Fonte">%s</td>\n'
             u'        </tr>' % (u' class="off"' if s.get('escluso') else u'',
-                                badge, s['nome'], skip, s['perche'], s['orari'], s['prezzo']))
+                                badge, s['nome'], skip, s['perche'], s['orari'], s['prezzo'],
+                                cella_fonte(s)))
     return u'\n'.join(out)
 
 
@@ -379,7 +590,8 @@ def tabella(titolo, occhiello, h1, standfirst, legenda, data, colore, nota, cur,
   <div class="tablebox">
     <table>
       <thead>
-        <tr><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th><th>Prezzo senza card</th></tr>
+        <tr><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th>
+        <th>Prezzo senza card</th><th>Fonte</th></tr>
       </thead>
       <tbody>
 %(rows)s
@@ -390,7 +602,7 @@ def tabella(titolo, occhiello, h1, standfirst, legenda, data, colore, nota, cur,
 
 %(foot)s""" % dict(nav=nav(cur), occ=occhiello, h1=h1, sf=standfirst, leg=legenda,
                    rows=rows(data, colore), nota=nota, foot=FOOT)
-    return page(titolo, desc, TAB_CSS, u'<div class="wrap">\n' + body + u'\n</div>', maxw="1280px")
+    return page(titolo, desc, TAB_CSS, u'<div class="wrap">\n' + body + u'\n</div>', maxw="1380px")
 
 
 def build_card():
@@ -399,16 +611,17 @@ def build_card():
         u"La <em>card</em>",
         u"La <b>Padova Urbs picta Card</b> costa %s per 48 ore (35,00 &euro; per 72) e comprende gli otto cicli "
         u"affrescati del Trecento iscritti all&rsquo;UNESCO nel 2021, pi&ugrave; i mezzi pubblici Busitalia. "
-        u"Il numero rosso indica le tappe del <a href=\"./\">vostro itinerario</a>." % CARD_PREZZO,
+        u"Il numero rosso indica le tappe del <a href=\"./\">vostro itinerario</a>: dove ne trovate due, "
+        u"sono le posizioni nell&rsquo;itinerario A e nel B." % CARD_PREZZO,
         u'<li style="--c:var(--card)"><i class="dia"></i>Compreso nella card</li>'
         u'<li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li>',
         CARD_SITI, 'var(--route)',
-        u"<b>Attenzione al luned&igrave;:</b> Palazzo della Ragione, l&rsquo;Oratorio di San Giorgio e l&rsquo;Oratorio di San Michele "
-        u"chiudono. <b>E al biglietto del Santo:</b> i 10,00 &euro; sono un biglietto unico per Oratorio, Scoletta e Museo "
-        u"Antoniano, e non &egrave; del tutto chiaro quanto di quel cumulativo la card sostituisca &mdash; conviene chiederlo alla "
-        u"biglietteria. La Cappella della Reggia Carrarese ha aperture irregolari: verificatela prima di contarci.",
+        u"<b>Di sabato aprono tutti</b> tranne la Cappella della Reggia Carrarese, che ha aperture irregolari: "
+        u"verificatela prima di contarci. Il luned&igrave; invece chiuderebbero Palazzo della Ragione e i due oratori. "
+        u"<b>Sul biglietto del Santo:</b> i 10,00 &euro; sono un cumulativo per Oratorio, Scoletta e Museo Antoniano, "
+        u"e non &egrave; del tutto chiaro quanto di quel cumulativo la card sostituisca &mdash; conviene chiederlo alla biglietteria.",
         "padova-card.html",
-        u"Gli otto siti compresi nella Padova Urbs picta Card, con orari, giorni di chiusura e prezzo dei biglietti singoli.")
+        u"Gli otto siti compresi nella Padova Urbs picta Card, con orari, prezzi e la fonte di ogni dato.")
 
 
 def build_altri():
@@ -422,17 +635,18 @@ def build_altri():
         u'<li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li>'
         u'<li style="--c:var(--food)"><i></i>Il pranzo</li>',
         ALTRI_LUOGHI, 'var(--route)',
-        u"<b>Il vincolo pi&ugrave; stretto della giornata &egrave; il ristorante:</b> il Bacaro Padovano serve a pranzo "
-        u"<b>solo venerd&igrave;, sabato e domenica</b>. E il <b>Giro storico</b> di Palazzo del Bo, quello con il Teatro Anatomico, "
-        u"si fa solo dal luned&igrave; al venerd&igrave;: nel fine settimana il tour &egrave; un altro. Le due condizioni si "
-        u"incrociano in un giorno solo, il <b>venerd&igrave;</b>.",
+        u"<b>Palazzo del Bo di sabato costa di pi&ugrave; e dura di pi&ugrave;:</b> 12,00 &euro; e 75 minuti invece di "
+        u"7,00 &euro; e 45, perch&eacute; nel fine settimana il giro &egrave; quello lungo che aggiunge l&rsquo;ala di Gio Ponti. "
+        u"Il Teatro Anatomico e la cattedra di Galileo ci sono in entrambi. "
+        u"<b>Il Bacaro Padovano</b> a pranzo apre solo venerd&igrave;, sabato e domenica: il vostro sabato va bene.",
         "altri-luoghi.html",
-        u"Palazzo del Bo, Orto Botanico, Prato della Valle, Caff&egrave; Pedrocchi e altri luoghi di Padova fuori dalla card.")
+        u"Palazzo del Bo, Orto Botanico, Prato della Valle e altri luoghi di Padova fuori dalla card.")
 
 
 if __name__ == '__main__':
     for name, fn in [("index.html", build_index), ("mappa.html", build_mappa),
                      ("padova-card.html", build_card), ("altri-luoghi.html", build_altri)]:
-        kb = write(name, fn())
-        print("%-20s %5.1f KB" % (name, kb))
-    print("\nviewBox %d x %d" % (VW, VH))
+        print("%-20s %5.1f KB" % (name, write(name, fn())))
+    for v in VARIANTI:
+        s, ts, c, tc = conti(v)
+        print("\nItinerario %s: singoli %.2f  |  con card %.2f" % (v['sigla'], ts, tc))

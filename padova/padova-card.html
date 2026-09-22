@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Gli otto siti della Padova Card</title>
-<meta name="description" content="Gli otto siti compresi nella Padova Urbs picta Card, con orari, giorni di chiusura e prezzo dei biglietti singoli.">
+<meta name="description" content="Gli otto siti compresi nella Padova Urbs picta Card, con orari, prezzi e la fonte di ogni dato.">
 <meta property="og:title" content="Gli otto siti della Padova Card">
-<meta property="og:description" content="Gli otto siti compresi nella Padova Urbs picta Card, con orari, giorni di chiusura e prezzo dei biglietti singoli.">
+<meta property="og:description" content="Gli otto siti compresi nella Padova Urbs picta Card, con orari, prezzi e la fonte di ogni dato.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +53,7 @@ body{margin:0;background:var(--ground);color:var(--ink);
 img{max-width:100%}
 [hidden]{display:none!important}
 a{color:inherit}
-.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:24px 60px}
+.wrap{max-width:1380px;margin:0 auto;padding-inline:20px;padding-block:24px 60px}
 
 .sitenav{display:flex;flex-wrap:wrap;align-items:center;gap:9px;font-size:13px;letter-spacing:.03em;margin-bottom:20px}
 .sitenav a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
@@ -89,7 +89,7 @@ footer b{color:var(--ink-soft)}
 
 .tablebox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;
   background:var(--surface);box-shadow:var(--shadow)}
-table{width:100%;border-collapse:collapse;min-width:900px}
+table{width:100%;border-collapse:collapse;min-width:1020px}
 thead th{background:var(--surface-2);text-align:left;font-size:11px;font-weight:700;
   letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
   padding:13px 16px;border-bottom:2px solid var(--ink)}
@@ -97,7 +97,7 @@ td{padding:17px 16px;border-bottom:1px solid var(--rule-soft);vertical-align:top
 tbody tr:last-child td{border-bottom:0}
 tbody tr:hover{background:var(--surface-2)}
 tbody tr.off{opacity:.55}
-.c-nome{width:20%;min-width:175px;font-family:'EB Garamond',Garamond,serif;
+.c-nome{width:18%;min-width:165px;font-family:'EB Garamond',Garamond,serif;
   font-weight:600;font-size:20px;line-height:1.16}
 .c-nome .tappa{display:inline-flex;align-items:center;justify-content:center;
   width:23px;height:23px;border-radius:50%;background:var(--c,var(--route));color:var(--marker-ring);
@@ -105,14 +105,21 @@ tbody tr.off{opacity:.55}
 .c-nome .skip{display:inline-block;margin-top:6px;font-family:'Jost',sans-serif;font-size:10px;
   font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);
   border:1px solid var(--rule);border-radius:3px;padding:2px 7px}
-.c-perche{width:34%;min-width:270px;font-size:14px;color:var(--ink-soft);line-height:1.5}
+.c-perche{width:30%;min-width:250px;font-size:14px;color:var(--ink-soft);line-height:1.5}
 .c-perche b{color:var(--ink);font-weight:600}
-.c-orari{width:26%;min-width:215px;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
-.c-prezzo{width:20%;min-width:165px;font-size:16px;font-weight:600;
+.c-orari{width:24%;min-width:205px;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.c-prezzo{width:16%;min-width:150px;font-size:16px;font-weight:600;
   font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.c-fonte{width:12%;min-width:135px;font-size:13px}
+.c-fonte a{color:var(--card);text-underline-offset:3px}
+.c-fonte a:hover{color:var(--ink)}
+.c-fonte .none{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);
+  border-radius:3px;padding:2px 7px;line-height:1.5}
+.c-fonte .why{display:block;margin-top:6px;font-size:12px;color:var(--ink-faint);line-height:1.4}
 .c-orari em,.c-prezzo em{display:block;font-style:normal;font-weight:400;font-size:12.5px;
   letter-spacing:0;color:var(--ink-faint);margin-top:5px;line-height:1.45}
-@media (max-width:880px){
+@media (max-width:980px){
   .tablebox{overflow-x:visible;border:0;border-radius:0;background:transparent;box-shadow:none}
   table{min-width:0}
   thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -120,12 +127,12 @@ tbody tr.off{opacity:.55}
     padding:16px 17px;margin-bottom:12px;box-shadow:var(--shadow)}
   tbody tr:hover{background:var(--surface)}
   td{display:block;width:auto!important;min-width:0!important;padding:0;border:0}
-  .c-perche,.c-orari,.c-prezzo{margin-top:12px}
-  .c-perche::before,.c-orari::before,.c-prezzo::before{content:attr(data-l);display:block;
+  .c-perche,.c-orari,.c-prezzo,.c-fonte{margin-top:12px}
+  .c-perche::before,.c-orari::before,.c-prezzo::before,.c-fonte::before{content:attr(data-l);display:block;
     font-family:'Jost',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;
     text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
 }
-.secnote{margin:16px 0 0;font-size:13px;line-height:1.55;color:var(--ink-faint);max-width:76ch}
+.secnote{margin:16px 0 0;font-size:13px;line-height:1.55;color:var(--ink-faint);max-width:78ch}
 .secnote b{color:var(--ink-soft);font-weight:600}
 
 </style>
@@ -145,76 +152,85 @@ tbody tr.off{opacity:.55}
   <header class="masthead">
     <p class="eyebrow">Padova Urbs picta Card &middot; 8 siti &middot; 28,00 €</p>
     <h1>La <em>card</em></h1>
-    <p class="standfirst">La <b>Padova Urbs picta Card</b> costa 28,00 € per 48 ore (35,00 &euro; per 72) e comprende gli otto cicli affrescati del Trecento iscritti all&rsquo;UNESCO nel 2021, pi&ugrave; i mezzi pubblici Busitalia. Il numero rosso indica le tappe del <a href="./">vostro itinerario</a>.</p>
+    <p class="standfirst">La <b>Padova Urbs picta Card</b> costa 28,00 € per 48 ore (35,00 &euro; per 72) e comprende gli otto cicli affrescati del Trecento iscritti all&rsquo;UNESCO nel 2021, pi&ugrave; i mezzi pubblici Busitalia. Il numero rosso indica le tappe del <a href="./">vostro itinerario</a>: dove ne trovate due, sono le posizioni nell&rsquo;itinerario A e nel B.</p>
     <ul class="legend"><li style="--c:var(--card)"><i class="dia"></i>Compreso nella card</li><li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li></ul>
   </header>
 
   <div class="tablebox">
     <table>
       <thead>
-        <tr><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th><th>Prezzo senza card</th></tr>
+        <tr><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th>
+        <th>Prezzo senza card</th><th>Fonte</th></tr>
       </thead>
       <tbody>
         <tr class="off">
           <td class="c-nome">Cappella degli Scrovegni<br><span class="skip">Fuori programma</span></td>
-          <td class="c-perche" data-l="Perch&eacute; conta">Il ciclo di Giotto del 1305, il motivo per cui Padova è patrimonio UNESCO. <b>Escluso dal vostro programma</b> — resta qui perché è il cuore economico della card.</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il ciclo di Giotto del 1305, il motivo per cui Padova è patrimonio UNESCO. <b>Escluso dal vostro programma</b> — resta qui perché è la voce che determina il prezzo della card.</td>
           <td class="c-orari" data-l="Orari e chiusura">09:00–19:00, tutti i giorni<em>ingresso ogni 15 minuti su prenotazione</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">15,00 €<em>ridotto 11,00 €; comprende Musei Civici e Palazzo Zuckermann</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovamusei.it/it/biglietti-orari-musei" target="_blank" rel="noopener">Musei Civici di Padova &nearr;</a></td>
         </tr>
         <tr>
-          <td class="c-nome"><span class="tappa" style="--c:var(--route)">7</span>Battistero della Cattedrale</td>
-          <td class="c-perche" data-l="Perch&eacute; conta">Il <b>ciclo di Giusto de’ Menabuoi</b>, 1375-78: la vera alternativa a Giotto, e senza folla. Tappa n. 7 dell’itinerario.</td>
-          <td class="c-orari" data-l="Orari e chiusura">Mar–dom 10:00–17:30, lunedì 14:00–17:30<em>turni ogni mezz’ora, con audioguida</em></td>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">7/5</span>Battistero della Cattedrale</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il <b>ciclo di Giusto de’ Menabuoi</b>, 1375-78: la vera alternativa a Giotto, e senza folla.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Sab e dom 10:00–17:30 · mar–gio 10:00–17:30 · lun 14:00–17:30<em>turni ogni mezz’ora con audioguida; sabato visita guidata in italiano alle 10:45 e 14:45</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">15,00 €<em>ridotto 12,00 €; comprende Museo Diocesano e Salone dei Vescovi</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://kalata.it/esperienza/battistero-padova/" target="_blank" rel="noopener">Kalatà / Museo Diocesano &nearr;</a></td>
         </tr>
         <tr>
-          <td class="c-nome"><span class="tappa" style="--c:var(--route)">4</span>Palazzo della Ragione</td>
-          <td class="c-perche" data-l="Perch&eacute; conta">Il Salone e il calendario astrologico affrescato. Tappa n. 4 dell’itinerario.</td>
-          <td class="c-orari" data-l="Orari e chiusura">09:00–19:00<em>chiuso il lunedì non festivo</em></td>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">4/3</span>Palazzo della Ragione</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il Salone e il calendario astrologico affrescato, sopra le due piazze del mercato.</td>
+          <td class="c-orari" data-l="Orari e chiusura">09:00–19:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">8,00 €<em>ridotto 6,00 €</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovamusei.it/it/biglietti-orari-musei" target="_blank" rel="noopener">Musei Civici di Padova &nearr;</a></td>
         </tr>
         <tr>
-          <td class="c-nome">Oratorio di San Giorgio</td>
-          <td class="c-perche" data-l="Perch&eacute; conta">Altichiero e Jacopo Avanzi, 1379-84: una cappella dipinta da cima a fondo, accanto alla Basilica. Parte della tappa n. 8.</td>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">8/7</span>Oratorio di San Giorgio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Altichiero e Jacopo Avanzi, 1379-84: una cappella dipinta da cima a fondo, accanto alla Basilica.</td>
           <td class="c-orari" data-l="Orari e chiusura">Mar–dom 09:00–13:00 e 14:00–18:00<em>chiuso il lunedì</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">10,00 €<em>ridotto 7,00 €; biglietto unico con Scoletta e Museo Antoniano</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/content/orario-e-biglietto-unico-i-siti-museali-del-complesso-antoniano" target="_blank" rel="noopener">Basilica del Santo &nearr;</a></td>
         </tr>
         <tr>
-          <td class="c-nome"><span class="tappa" style="--c:var(--route)">8</span>Basilica del Santo</td>
-          <td class="c-perche" data-l="Perch&eacute; conta">Le cappelle affrescate da Giusto de’ Menabuoi e Altichiero dentro la basilica. L’ingresso in chiesa è comunque libero. Tappa n. 8.</td>
+          <td class="c-nome"><span class="tappa" style="--c:var(--route)">8/7</span>Basilica del Santo</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le cappelle affrescate da Giusto de’ Menabuoi e Altichiero dentro la basilica. L’ingresso in chiesa è comunque libero.</td>
           <td class="c-orari" data-l="Orari e chiusura">06:20–19:00 (estate fino alle 19:45)<em>aperta tutti i giorni</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>la card non serve per entrare in basilica</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/basilica/orari" target="_blank" rel="noopener">Basilica del Santo &nearr;</a></td>
         </tr>
         <tr>
           <td class="c-nome">Chiesa degli Eremitani</td>
           <td class="c-perche" data-l="Perch&eacute; conta">Quel che resta del <b>Mantegna</b> della Cappella Ovetari, distrutta dalle bombe nel 1944 e ricomposta.</td>
           <td class="c-orari" data-l="Orari e chiusura">Lun–ven 08:15–12:15 e 16:00–18:00, festivi ridotto<em>orari legati alle funzioni</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span></td>
         </tr>
         <tr>
           <td class="c-nome">Oratorio di San Michele</td>
-          <td class="c-perche" data-l="Perch&eacute; conta">Gli affreschi di Jacopo da Verona, 1397. Piccolo, defilato, quasi sempre vuoto.</td>
-          <td class="c-orari" data-l="Orari e chiusura">Mar–ven 10:00–13:00, sab–dom anche pomeriggio<em>chiuso il lunedì</em></td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Gli affreschi di Jacopo da Verona, 1397. Piccolo, defilato, quasi sempre vuoto. Se avanza mezz’ora, è a due passi dal Duomo.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Sab e dom mattina e pomeriggio · mar–ven 10:00–13:00<em>chiuso il lunedì</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">4,00 €<em>ridotto 3,50 €</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovamusei.it/it/biglietti-orari-musei" target="_blank" rel="noopener">Musei Civici di Padova &nearr;</a></td>
         </tr>
         <tr>
           <td class="c-nome">Cappella della Reggia Carrarese</td>
           <td class="c-perche" data-l="Perch&eacute; conta">La cappella privata dei signori di Padova, affrescata da Guariento: il ciclo meno noto degli otto.</td>
           <td class="c-orari" data-l="Orari e chiusura">Apertura limitata<em>verificare: spesso solo su prenotazione o in giorni stabiliti</em></td>
           <td class="c-prezzo" data-l="Prezzo senza card">Ingresso su prenotazione</td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.turismopadova.it/accoglienza-in-citta/urbspictacard/" target="_blank" rel="noopener">turismopadova.it &nearr;</a></td>
         </tr>
       </tbody>
     </table>
   </div>
-  <p class="secnote"><b>Attenzione al luned&igrave;:</b> Palazzo della Ragione, l&rsquo;Oratorio di San Giorgio e l&rsquo;Oratorio di San Michele chiudono. <b>E al biglietto del Santo:</b> i 10,00 &euro; sono un biglietto unico per Oratorio, Scoletta e Museo Antoniano, e non &egrave; del tutto chiaro quanto di quel cumulativo la card sostituisca &mdash; conviene chiederlo alla biglietteria. La Cappella della Reggia Carrarese ha aperture irregolari: verificatela prima di contarci.</p>
+  <p class="secnote"><b>Di sabato aprono tutti</b> tranne la Cappella della Reggia Carrarese, che ha aperture irregolari: verificatela prima di contarci. Il luned&igrave; invece chiuderebbero Palazzo della Ragione e i due oratori. <b>Sul biglietto del Santo:</b> i 10,00 &euro; sono un cumulativo per Oratorio, Scoletta e Museo Antoniano, e non &egrave; del tutto chiaro quanto di quel cumulativo la card sostituisca &mdash; conviene chiederlo alla biglietteria.</p>
 
   <footer>
-    <p><b>Orari e prezzi raccolti il 22 settembre 2026</b> dai siti ufficiali di Musei Civici di Padova,
-    Universit&agrave; di Padova, Kalat&agrave;/Museo Diocesano, Basilica del Santo, Orto Botanico e Bacaro Padovano.
-    Cambiano spesso: vanno riverificati prima di partire, e due visite di questo itinerario
-    (Palazzo del Bo e il Battistero) <b>richiedono prenotazione</b>.</p>
-    <p>La Cappella degli Scrovegni non fa parte del programma per vostra scelta. Resta nella tabella
-    della card perch&eacute; &egrave; la voce che ne determina il prezzo.</p>
+    <p><b>Orari e prezzi raccolti il 22 settembre 2026</b> dai siti ufficiali. Ogni riga delle due tabelle
+    porta il link alla fonte da cui viene il dato, cos&igrave; potete controllare voi;
+    dove la fonte manca l&rsquo;ho scritto invece di inventarla.</p>
+    <p>Due visite di questa giornata &mdash; <b>Palazzo del Bo</b> e il <b>Battistero</b> &mdash; vogliono la prenotazione.
+    La Cappella degli Scrovegni non fa parte del programma per vostra scelta: resta nella tabella della card
+    perch&eacute; &egrave; la voce che ne determina il prezzo.</p>
   </footer>
 </div>
 </body>

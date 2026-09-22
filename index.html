@@ -48,6 +48,13 @@ a.card h2{margin:0;font-family:'EB Garamond',Garamond,serif;font-weight:600;
   font-size:27px;line-height:1.12}
 a.card p{margin:9px 0 0;font-size:14.5px;color:var(--ink-soft);line-height:1.45}
 a.card .go{display:inline-block;margin-top:13px;font-size:13.5px;font-weight:600;color:var(--route)}
+.foto{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 34px}
+@media (max-width:560px){.foto{grid-template-columns:1fr}}
+.foto figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:4px;
+  overflow:hidden;box-shadow:var(--shadow)}
+.foto img{display:block;width:100%;height:230px;object-fit:cover;object-position:center 40%}
+@media (max-width:560px){.foto img{height:210px}}
+.foto figcaption{padding:11px 14px;font-size:12.5px;color:var(--ink-faint);line-height:1.45}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--rule);
   font-size:13px;color:var(--ink-faint)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
@@ -57,13 +64,27 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--rule);
 <div class="wrap">
   <p class="eyebrow">Itinerari</p>
   <h1>EPPHURE</h1>
-  <p class="sub">Giornate messe in fila e disegnate su una mappa, una citt&agrave; alla volta.</p>
+  <p class="sub">Giornate messe in fila e disegnate su una mappa, una citt&agrave; alla volta. Si comincia da l&igrave;, però.</p>
+
+  <div class="foto">
+    <figure>
+      <img src="img/panchina.jpg" alt="Quattro ragazzi seduti sulla spalliera di una panchina in un parco"
+           width="640" height="640" loading="lazy">
+      <figcaption>Al parco, primi anni Ottanta.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/mare.jpg" alt="Sei ragazzi in posa sulla riva di una spiaggia, con scogliera alle spalle"
+           width="1600" height="1200" loading="lazy">
+      <figcaption>In spiaggia, stessa estate o gi&ugrave; di l&igrave;.</figcaption>
+    </figure>
+  </div>
 
   <a class="card" href="padova/">
     <p class="k">Padova</p>
     <h2>Un giorno a Padova</h2>
-    <p>Dieci tappe fra la stazione e il Prato della Valle, senza la Cappella degli Scrovegni.
-    Con la mappa del percorso, le tabelle degli orari e dei prezzi e il conto della Padova Card.</p>
+    <p>Due itinerari alternativi per un sabato dalle 9:30 alle 18:20, senza la Cappella degli Scrovegni.
+    Con la mappa del percorso, le tabelle di orari e prezzi &mdash; ciascuna riga con la sua fonte &mdash;
+    il conto della Padova Card e i biglietti del tram.</p>
     <span class="go">Apri &rarr;</span>
   </a>
 

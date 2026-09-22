@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Genera le quattro pagine del sito "Un giorno a Padova"."""
 import io, os, math, re
-from _data import ITINERARIO, CARD_SITI, ALTRI_LUOGHI, CONTI, CARD_PREZZO
+from _data import PLACES, ORDINE_MAPPA, VARIANTI, CARD_SITI, ALTRI_LUOGHI, CARD_PREZZO
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -198,25 +198,36 @@ def eur(n):
 
 
 # =================================================================== la mappa (SVG)
-DUP = set()
-for s in ITINERARIO:
-    DUP.add(s['nome'])
-ALIAS = {"Battistero della Cattedrale": "Duomo e Battistero", "Palazzo della Ragione": "Palazzo della Ragione",
-         "Basilica del Santo": "Basilica del Santo", "Duomo di Padova": "Duomo e Battistero",
-         "Piazza dei Signori e Torre dell’Orologio": "Piazza dei Signori",
-         "Caffè Pedrocchi — Piano Nobile": "Caffè Pedrocchi"}
+def numeri():
+    """id del luogo -> {'a': n|None, 'b': n|None}. La stazione conta una volta sola."""
+    out = dict((k, {}) for k in PLACES)
+    for v in VARIANTI:
+        n = 0
+        visti = set()
+        for pid, _ora, _dur, _cost in v['tappe']:
+            if pid in visti:
+                continue
+            visti.add(pid)
+            n += 1
+            out[pid][v['id']] = n
+    for k in out:
+        out[k].setdefault('a', None)
+        out[k].setdefault('b', None)
+    return out
+
+
+NUM = numeri()
 
 
 def extra_markers():
+    """I luoghi delle due tabelle che non sono gia' tappe dell'itinerario."""
     out = []
     for s in CARD_SITI:
-        if ALIAS.get(s['nome'], s['nome']) in DUP:
-            continue
-        out.append((s, 'card'))
+        if not s.get('tappa'):
+            out.append((s, 'card'))
     for s in ALTRI_LUOGHI:
-        if ALIAS.get(s['nome'], s['nome']) in DUP:
-            continue
-        out.append((s, 'other'))
+        if not s.get('tappa'):
+            out.append((s, 'other'))
     return out
 
 
@@ -225,8 +236,7 @@ def build_map(interactive=True, mini=False):
     g.append('<rect width="%d" height="%d" fill="var(--land)"/>' % (VW, VH))
     # l'anello dei canali chiude il centro storico: dentro e' un'isola
     g.append('<path d="%s" fill="var(--land-hi)"/>' % smooth(CANALE, True))
-    for d, w in ((smooth(CANALE, True), 15), ):
-        g.append('<path d="%s" fill="none" stroke="var(--water)" stroke-width="%d" stroke-linejoin="round"/>' % (d, w))
+    g.append('<path d="%s" fill="none" stroke="var(--water)" stroke-width="15" stroke-linejoin="round"/>' % smooth(CANALE, True))
     for r in RAMI:
         g.append('<path d="%s" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/>' % smooth(r))
     if not mini:
@@ -234,7 +244,6 @@ def build_map(interactive=True, mini=False):
             g.append('<path d="%s" fill="none" stroke="var(--road-case)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>' % (smooth(st['p']), st['w'] + 3))
         for st in STRADE:
             g.append('<path d="%s" fill="none" stroke="var(--road)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round"/>' % (smooth(st['p']), st['w']))
-        # tram
         g.append('<g id="tram"><path d="%s" fill="none" stroke="var(--marker-ring)" stroke-width="11" stroke-linecap="round" opacity=".6"/>' % poly(TRAM_TRACCIA))
         g.append('<path d="%s" fill="none" stroke="var(--tram)" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 11" stroke-linejoin="round"/>' % poly(TRAM_TRACCIA))
         for nm, la, lo in TRAM:
@@ -242,10 +251,10 @@ def build_map(interactive=True, mini=False):
         g.append('</g>')
         for e in ETICHETTE:
             g.append('<text class="maplabel" x="%.0f" y="%.0f" font-size="%d">%s</text>' % (px(e['lon']), py(e['lat']), e['s'], e['t']))
-    # il percorso
+    # il percorso: unione delle due varianti
     g.append('<path d="%s" fill="none" stroke="var(--marker-ring)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>' % (smooth(PERCORSO), 16 if not mini else 20))
     g.append('<path class="routeline" d="%s" fill="none" stroke="var(--route)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round"/>' % (smooth(PERCORSO), 8 if not mini else 12))
-    # altri luoghi
+    # gli altri luoghi
     if not mini:
         for s, kind in extra_markers():
             x, y = px(s['lon']) + s.get('dx', 0), py(s['lat']) + s.get('dy', 0)
@@ -256,19 +265,24 @@ def build_map(interactive=True, mini=False):
             else:
                 shape = '<circle cx="%.0f" cy="%.0f" r="12" fill="%s" stroke="var(--marker-ring)" stroke-width="3"%s/>' % (x, y, col, op)
             g.append('<g class="small">%s<title>%s</title></g>' % (shape, s['nome']))
-    # tappe
-    for s in ITINERARIO:
-        x, y = px(s['lon']), py(s['lat'])
-        fill = 'var(--food)' if s.get('pasto') else 'var(--route)'
+    # le tappe
+    for pid in ORDINE_MAPPA:
+        pl = PLACES[pid]
+        na, nb = NUM[pid]['a'], NUM[pid]['b']
+        x, y = px(pl['lon']), py(pl['lat'])
+        fill = 'var(--food)' if pl.get('pasto') else 'var(--route)'
         r = 21 if not mini else 26
-        ring = ('<circle cx="%.0f" cy="%.0f" r="%.0f" fill="none" stroke="var(--card)" stroke-width="3"/>' % (x, y, r + 5)) if s['card'] else ''
-        num = '' if mini else '<text class="num" x="%.0f" y="%.0f">%d</text>' % (x, y, s['n'])
-        tag = 'g class="marker" data-n="%d" tabindex="0" role="button" aria-label="%s"' % (s['n'], s['nome']) if interactive else 'g'
+        ring = ('<circle cx="%.0f" cy="%.0f" r="%.0f" fill="none" stroke="var(--card)" stroke-width="3"/>' % (x, y, r + 5)) if pl['card'] else ''
+        num = '' if mini else '<text class="num" x="%.0f" y="%.0f">%s</text>' % (x, y, na if na else (nb or ''))
+        if interactive:
+            tag = ('g class="marker" data-p="%s" data-a="%s" data-b="%s" tabindex="0" role="button" aria-label="%s"'
+                   % (pid, na or '', nb or '', pl['nome']))
+        else:
+            tag = 'g'
         g.append('<%s>%s<circle class="halo" cx="%.0f" cy="%.0f" r="%.0f"/>'
                  '<circle class="pin" cx="%.0f" cy="%.0f" r="%.0f" fill="%s"/>%s</g>'
                  % (tag, ring, x, y, r + 14, x, y, r, fill, num))
     if not mini:
-        # scala 250 m + nord
         sbw = (250.0 / (111320 * math.cos(math.radians(45.407)))) * SX
         sx, sy = 36, VH - 40
         g.append('<g opacity=".85"><line x1="%d" y1="%d" x2="%.0f" y2="%d" stroke="var(--ink-soft)" stroke-width="3"/>'
