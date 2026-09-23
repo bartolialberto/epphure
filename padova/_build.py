@@ -2,7 +2,7 @@
 """Genera le quattro pagine del sito "Un giorno a Padova"."""
 import io, os, math, re
 from _data import (PLACES, ORDINE_MAPPA, VARIANTI, CARD_SITI, ALTRI_LUOGHI,
-                   CARD_PREZZO, TRAM_FERMATE)
+                   CARD_PREZZO, TRAM_FERMATE, PRIMA)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -268,9 +268,11 @@ def build_map(interactive=True, mini=False):
         for e in ETICHETTE:
             g.append('<text class="maplabel" x="%.0f" y="%.0f" font-size="%d">%s</text>' % (px(e['lon']), py(e['lat']), e['s'], e['t']))
     # un tracciato per itinerario: la pagina ne mostra uno per volta
-    for vid, pts in PERCORSI.items():
-        vis = '' if (vid == 'a' or mini) else ' hidden="hidden"'
-        op = ' opacity=".5"' if (mini and vid != 'a') else ''
+    ordine = [PRIMA] + [k for k in PERCORSI if k != PRIMA]
+    for vid in ordine:
+        pts = PERCORSI[vid]
+        vis = '' if (vid == PRIMA or mini) else ' hidden="hidden"'
+        op = ''
         g.append('<g class="rt" data-v="%s"%s%s>' % (vid, vis, op))
         g.append('<path d="%s" fill="none" stroke="var(--marker-ring)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>'
                  % (smooth(pts), 16 if not mini else 20))

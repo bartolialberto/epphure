@@ -122,7 +122,9 @@ VARIANTE_ADA = dict(
         ("prato",       "17:05",  "30 min",                  "Gratuito"),
         ("stazione",    "17:45",  "tram, 12 min",            None),
     ])
-VARIANTI = [VARIANTE_A, VARIANTE_B, VARIANTE_ADA]
+# Ada per prima: e' l'itinerario proposto per primo in tutta la pagina
+VARIANTI = [VARIANTE_ADA, VARIANTE_A, VARIANTE_B]
+PRIMA = VARIANTI[0]['id']
 
 # ordine di disegno del percorso sulla mappa (unione delle due varianti)
 ORDINE_MAPPA = ["stazione", "pedrocchi", "risorgimento", "bo", "ragione", "signori", "pranzo",

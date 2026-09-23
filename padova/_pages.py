@@ -3,6 +3,7 @@
 import io, os, re
 from _build import page, nav, write, build_map, MAP_CSS, VW, VH, eur, extra_markers, NUM
 from _data import (PLACES, VARIANTI, VARIANTE_A, VARIANTE_B, VARIANTE_ADA, ORDINE_MAPPA, RIGHE_TAPPA,
+                   PRIMA,
                    CARD_SITI, ALTRI_LUOGHI, CARD_PREZZO, TRASPORTI, GIORNO, ARRIVO, RIENTRO,
                    TRAM_FERMATE)
 
@@ -338,7 +339,7 @@ def build_index():
             u'<span class="sig">%s</span><span class="tit">%s</span>'
             u'<span class="det">%s</span>'
             u'<span class="cost">Biglietti <b>%s</b> &nbsp;·&nbsp; con la card <b>%s</b></span></button>'
-            % (v['id'], 'true' if v['id'] == 'a' else 'false', v['id'], v['sigla'], v['titolo'],
+            % (v['id'], 'true' if v['id'] == PRIMA else 'false', v['id'], v['sigla'], v['titolo'],
                v['sommario'], eur(tot_s), eur(tot_c)))
         blocchi.append(
             u'  <section class="variante" id="var-%s"%s>\n'
@@ -349,7 +350,7 @@ def build_index():
             u'%s\n'
             u'    <div class="sechead"><h2>Quanto costa</h2><span class="cnt">a testa, ingressi e tram</span></div>\n'
             u'%s\n%s\n  </section>'
-            % (v['id'], u'' if v['id'] == 'a' else u' hidden', v['sigla'], v['titolo'],
+            % (v['id'], u'' if v['id'] == PRIMA else u' hidden', v['sigla'], v['titolo'],
                ntappe, ARRIVO, RIENTRO, tl, conti_html, verdetto(v)))
 
     _, tot_sa, tot_ca = blocco_conti(VARIANTE_A)
@@ -467,8 +468,6 @@ HOME_BODY = u"""%(nav)s
   <header class="masthead">
     <p class="eyebrow">Itinerari</p>
     <h1>EPPHURE</h1>
-    <p class="standfirst">Giornate messe in fila e disegnate su una mappa, una citt&agrave; alla volta.
-    Si comincia da l&igrave;, per&ograve;.</p>
   </header>
 
   <div class="foto">
@@ -483,9 +482,6 @@ HOME_BODY = u"""%(nav)s
   </div>
 
   <div class="sechead"><h2>Padova &middot; %(giorno)s</h2><span class="cnt">%(arrivo)s &rarr; %(rientro)s</span></div>
-  <p class="standfirst" style="margin:16px 0 0">Tre itinerari possibili per la stessa giornata. Il tracciato rosso
-  cambia quando cambiate itinerario, e i segnaposto si rinumerano. Le posizioni sono proiettate dalle coordinate
-  reali, quindi le distanze fra loro sono corrette; canali, strade e tracciato del tram sono schematici.</p>
   <ul class="legend">
     <li style="--c:var(--route)"><i class="bar"></i>Percorso a piedi</li>
     <li style="--c:var(--route)"><i></i>Tappa</li>
@@ -559,7 +555,7 @@ HOME_BODY = u"""%(nav)s
   }
   markers.forEach(function(m){wire(m,true);});
   document.querySelectorAll('.item').forEach(function(i){wire(i,false);});
-  applica('a');
+  applica('%(prima)s');
 })();
 </script>"""
 
@@ -634,14 +630,14 @@ def build_home():
                          u'<h3>%s</h3><p class="ora"><b>%s</b> &middot; %s%s</p></li>'
                          % (pid, col, NUM[pid][v['id']], pl['nome'], ora, durata, extra))
         lists.append(u'      <ul class="items" id="lista-%s"%s>\n%s\n      </ul>'
-                     % (v['id'], u'' if v['id'] == 'a' else u' hidden', u'\n'.join(items)))
+                     % (v['id'], u'' if v['id'] == PRIMA else u' hidden', u'\n'.join(items)))
         vsw.append(u'        <button type="button" class="vsw" data-v="%s" aria-pressed="%s">'
                    u'<span class="sig">%s</span><span class="t">%s</span></button>'
-                   % (v['id'], 'true' if v['id'] == 'a' else 'false', v['sigla'], v['titolo']))
+                   % (v['id'], 'true' if v['id'] == PRIMA else 'false', v['sigla'], v['titolo']))
 
     body = HOME_BODY % dict(nav=nav("home", "root"), svg=build_map(), vw=VW, vh=VH, giorno=GIORNO,
                             arrivo=ARRIVO, rientro=RIENTRO,
-                            vsw=u'\n'.join(vsw), lists=u'\n'.join(lists))
+                            vsw=u'\n'.join(vsw), lists=u'\n'.join(lists), prima=PRIMA)
     return page(u"EPPHURE",
                 u"Tre itinerari per un giorno a Padova, disegnati su una mappa del centro.",
                 HOME_CSS, u'<div class="wrap">\n' + body + u'\n</div>', maxw="1280px")
