@@ -142,7 +142,28 @@ footer b{color:var(--ink-soft)}
 .switch .cost{margin:9px 0 0;font-size:12.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
 .switch .cost b{color:var(--ink);font-weight:600}
 
-.day{list-style:none;margin:0 0 38px;padding:0}
+.introtab{margin:12px 0 14px;font-size:13.5px;color:var(--ink-faint)}
+.tablebox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--surface);
+  box-shadow:var(--shadow);margin:0 0 34px}
+.tablebox table{width:100%;border-collapse:collapse;min-width:1080px}
+.tablebox thead th{background:var(--surface-2);text-align:left;font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  padding:12px 14px;border-bottom:2px solid var(--ink)}
+.tablebox td{padding:16px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.tablebox tbody tr:last-child td{border-bottom:0}
+.tablebox tbody tr:hover{background:var(--surface-2)}
+.tablebox tr.seguito td{border-top:0;padding-top:0}
+.tablebox tr.seguito .c-ora{border-left:2px solid var(--rule-soft)}
+.tablebox tr.partenza,.tablebox tr.chiusura{background:var(--surface-2)}
+.c-ora{width:86px;min-width:80px}
+.c-ora .ora{display:block;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.c-ora .tappa{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;
+  border-radius:50%;background:var(--c,var(--route));color:var(--marker-ring);
+  font-size:11.5px;font-weight:700;margin-top:7px}
+.c-ora .dur{display:block;margin-top:6px;font-size:11.5px;color:var(--ink-faint)}
+.quando{display:block;margin-top:9px;padding-left:11px;border-left:2px solid var(--rule);
+  font-size:12.5px;color:var(--ink-faint);line-height:1.5}
+.quando b{color:var(--ink-soft)}
 .stop{display:grid;grid-template-columns:62px 38px minmax(0,1fr);gap:0 14px;
   padding:18px 0 20px;border-bottom:1px solid var(--rule-soft)}
 .stop > *{grid-column:3}
@@ -177,6 +198,39 @@ footer b{color:var(--ink-soft)}
 .stop p.nota + p.nota{margin-top:8px}
 .stop p.nota b{color:var(--ink-soft)}
 
+.c-nome{width:16%;min-width:150px;font-family:'EB Garamond',Garamond,serif;
+  font-weight:600;font-size:19px;line-height:1.16}
+.c-perche{width:28%;min-width:240px;font-size:14px;color:var(--ink-soft);line-height:1.5}
+.c-perche b{color:var(--ink);font-weight:600}
+.c-orari{width:22%;min-width:195px;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.c-prezzo{width:14%;min-width:140px;font-size:15.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.c-fonte{width:12%;min-width:130px;font-size:13px}
+.c-fonte a{display:block;color:var(--card);text-underline-offset:3px}
+.c-fonte a.wiki{margin-top:6px;color:var(--ink-faint);font-size:12.5px}
+.c-fonte a:hover{color:var(--ink)}
+.c-fonte .none{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);
+  border-radius:3px;padding:2px 7px;line-height:1.5}
+.c-fonte .why{display:block;margin-top:6px;font-size:12px;color:var(--ink-faint);line-height:1.4}
+.c-orari em,.c-prezzo em{display:block;font-style:normal;font-weight:400;font-size:12.5px;
+  color:var(--ink-faint);margin-top:5px;line-height:1.45}
+@media (max-width:1040px){
+  .tablebox{overflow-x:visible;border:0;border-radius:0;background:transparent;box-shadow:none}
+  .tablebox table{min-width:0}
+  .tablebox thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tablebox tbody tr{display:block;background:var(--surface);border:1px solid var(--rule);
+    border-radius:4px;padding:16px 17px;margin-bottom:12px;box-shadow:var(--shadow)}
+  .tablebox tbody tr.seguito{margin-top:-8px;border-top-left-radius:0;border-top-right-radius:0}
+  .tablebox tbody tr:hover{background:var(--surface)}
+  .tablebox td{display:block;width:auto!important;min-width:0!important;padding:0;border:0!important}
+  .tablebox .c-ora{margin-bottom:9px}
+  .tablebox .c-ora .ora,.tablebox .c-ora .tappa,.tablebox .c-ora .dur{display:inline-flex;
+    vertical-align:middle;margin:0 9px 0 0}
+  .c-perche,.c-orari,.c-prezzo,.c-fonte{margin-top:12px}
+  .c-perche::before,.c-orari::before,.c-prezzo::before,.c-fonte::before{content:attr(data-l);
+    display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-faint);margin-bottom:4px}
+}
 .conti{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 20px}
 @media (max-width:640px){.conti{grid-template-columns:1fr}}
 .conto{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:17px 19px}
@@ -253,7 +307,7 @@ footer b{color:var(--ink-soft)}
       chiudono il centro ad anello, i due bar e la linea del tram SIR1 dalla stazione alla fermata Santo.</p>
       <span class="go">Vai alla mappa &rarr;</span>
     </div>
-    <div class="thumb"><rect width="1000" height="1287" fill="var(--land)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="var(--land-hi)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="none" stroke="var(--water)" stroke-width="15" stroke-linejoin="round"/><path d="M-85 -27C-76 -6,-55 62,-31 99C-6 135,38 172,62 192C85 212,100 215,108 219" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M831 383C853 376,921 351,962 340C1003 329,1058 321,1077 318" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M431 1249C405 1262,329 1304,277 1326C224 1348,142 1371,115 1381" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><g class="rt" data-v="a"><path d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--marker-ring)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/><path class="routeline" d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--route)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g><g><circle class="halo" cx="604" cy="126" r="40"/><circle class="pin" cx="604" cy="126" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="485" cy="619" r="40"/><circle class="pin" cx="485" cy="619" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="508" cy="663" r="40"/><circle class="pin" cx="508" cy="663" r="26" fill="var(--route)"/></g><g><circle cx="412" cy="635" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="412" cy="635" r="40"/><circle class="pin" cx="412" cy="635" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="308" cy="608" r="40"/><circle class="pin" cx="308" cy="608" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="324" cy="742" r="40"/><circle class="pin" cx="324" cy="742" r="26" fill="var(--food)"/></g><g><circle cx="265" cy="685" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="265" cy="685" r="40"/><circle class="pin" cx="265" cy="685" r="26" fill="var(--route)"/></g><g><circle cx="650" cy="964" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="650" cy="964" r="40"/><circle class="pin" cx="650" cy="964" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="623" cy="1074" r="40"/><circle class="pin" cx="623" cy="1074" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="500" cy="1118" r="40"/><circle class="pin" cx="500" cy="1118" r="26" fill="var(--route)"/></g></div>
+    <div class="thumb"><rect width="1000" height="1287" fill="var(--land)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="var(--land-hi)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="none" stroke="var(--water)" stroke-width="15" stroke-linejoin="round"/><path d="M-85 -27C-76 -6,-55 62,-31 99C-6 135,38 172,62 192C85 212,100 215,108 219" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M831 383C853 376,921 351,962 340C1003 329,1058 321,1077 318" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M431 1249C405 1262,329 1304,277 1326C224 1348,142 1371,115 1381" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><g class="rt" data-v="a"><path d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--marker-ring)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/><path class="routeline" d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--route)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g><g><circle class="halo" cx="604" cy="126" r="40"/><circle class="pin" cx="604" cy="126" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="485" cy="619" r="40"/><circle class="pin" cx="485" cy="619" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="496" cy="614" r="40"/><circle class="pin" cx="496" cy="614" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="508" cy="663" r="40"/><circle class="pin" cx="508" cy="663" r="26" fill="var(--route)"/></g><g><circle cx="412" cy="635" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="412" cy="635" r="40"/><circle class="pin" cx="412" cy="635" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="308" cy="608" r="40"/><circle class="pin" cx="308" cy="608" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="324" cy="742" r="40"/><circle class="pin" cx="324" cy="742" r="26" fill="var(--food)"/></g><g><circle cx="265" cy="685" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="265" cy="685" r="40"/><circle class="pin" cx="265" cy="685" r="26" fill="var(--route)"/></g><g><circle cx="650" cy="964" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="650" cy="964" r="40"/><circle class="pin" cx="650" cy="964" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="623" cy="1074" r="40"/><circle class="pin" cx="623" cy="1074" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="500" cy="1118" r="40"/><circle class="pin" cx="500" cy="1118" r="26" fill="var(--route)"/></g></div>
   </a>
 
   <div class="cardrow">
@@ -282,89 +336,111 @@ footer b{color:var(--ink-soft)}
   </div>
 
   <section class="variante" id="var-a">
-    <div class="sechead"><h2>Itinerario A &middot; Con Palazzo del Bo</h2><span class="cnt">9 tappe &middot; 09:30 &rarr; 18:20</span></div>
-    <ol class="day">
-    <li class="stop">
-      <span class="ora">09:30</span>
-      <span class="bullet"><span>1</span></span>
-      <h3>Stazione FS</h3>
-      <span class="meta"><span class="pill">20 min per il centro</span></span>
-      <p class="testo">Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">09:50</span>
-      <span class="bullet"><span>2</span></span>
-      <h3>Caffè Pedrocchi</h3>
-      <span class="meta"><span class="pill">35 min</span><span class="pill price">4,00 €</span></span>
-      <p class="testo">Il <b>caffè senza porte</b>, aperto giorno e notte per un secolo. Un caffè alla menta al banco, poi di sopra: il <b>Piano Nobile</b> di Jappelli è una sfilata di sale egizia, greca, etrusca, rinascimentale.</p>
-      <p class="nota">Il Piano Nobile chiude alle 12:30 e riapre alle 15:30: di mattina non si può rimandare.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">10:30</span>
-      <span class="bullet"><span>3</span></span>
-      <h3>Palazzo del Bo</h3>
-      <span class="meta"><span class="pill">75 min</span><span class="pill price">12,00 €</span></span>
-      <p class="testo">La sede storica dell’Università. Il <b>Teatro Anatomico del 1594</b>, il più antico al mondo ancora in piedi, la cattedra di Galileo, l’Aula Magna, la statua di Elena Lucrezia Cornaro Piscopia — prima laureata della storia — e, nel fine settimana, anche l’ala razionalista di Gio Ponti.</p>
-      <p class="nota">Di sabato il tour dura <b>75 minuti</b> e costa 12,00 € invece di 7,00: è il giro lungo, che aggiunge il Novecento. <b>Prenotazione obbligatoria.</b> Turni: 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">11:50</span>
-      <span class="bullet"><span>4</span></span>
-      <h3>Palazzo della Ragione</h3>
-      <span class="meta"><span class="pill">45 min</span><span class="pill price">8,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">Il <b>Salone</b>: 80 metri di sala pensile senza colonne, sotto una carena di nave rovesciata, e attorno 333 riquadri affrescati con il calendario astrologico di Pietro d’Abano. Sotto, le due piazze del mercato, che di sabato mattina sono nel pieno.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">12:35</span>
-      <span class="bullet"><span>5</span></span>
-      <h3>Piazza dei Signori</h3>
-      <span class="meta"><span class="pill">20 min</span><span class="pill free">Gratuito</span></span>
-      <p class="testo">La <b>Torre dell’Orologio</b> del 1344, con il quadrante astronomico che segna ore, fasi lunari e segni zodiacali — e che, per un errore diventato leggenda, la Bilancia non ce l’ha. Accanto, la Loggia del Consiglio.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">13:00</span>
-      <span class="bullet" style="--c:var(--food)"><span>6</span></span>
-      <h3>Bacaro Padovano</h3>
-      <span class="meta"><span class="pill">90 min</span></span>
-      <p class="testo">Pranzo prenotato. Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.</p>
-      <p class="nota">Di sabato serve a pranzo dalle 12:00 alle 15:30: l’orario delle 13 sta comodo.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">14:30</span>
-      <span class="bullet"><span>7</span></span>
-      <h3>Duomo e Battistero</h3>
-      <span class="meta"><span class="pill">60 min</span><span class="pill price">15,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">Il pezzo forte della giornata. Il <b>Battistero</b> è interamente affrescato da <b>Giusto de’ Menabuoi</b> (1375-78): un Paradiso di centinaia di figure sotto la cupola. È il grande sostituto della Cappella degli Scrovegni, e quasi sempre lo si ha per sé. Il biglietto comprende il Museo Diocesano e il Salone dei Vescovi.</p>
-      <p class="nota">Turni ogni mezz’ora dalle 10:00 alle 17:30, con audioguida. Di sabato c’è anche la visita guidata in italiano alle 10:45 e alle 14:45.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">15:50</span>
-      <span class="bullet"><span>8</span></span>
-      <h3>Basilica del Santo</h3>
-      <span class="meta"><span class="pill">80 min</span><span class="pill price">10,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">La basilica è gratuita: cupole orientali, il Donatello dell’altare maggiore, la Cappella del Santo. Fuori, il <b>Gattamelata</b>, primo monumento equestre in bronzo del Rinascimento. Accanto, l’<b>Oratorio di San Giorgio</b> con gli affreschi di Altichiero e la Scoletta del Santo.</p>
-      <p class="nota">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che <b>chiudono alle 18</b>: è la scadenza più stretta del pomeriggio.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">17:25</span>
-      <span class="bullet"><span>9</span></span>
-      <h3>Prato della Valle</h3>
-      <span class="meta"><span class="pill">25 min</span><span class="pill free">Gratuito</span></span>
-      <p class="testo">La <b>piazza più grande d’Italia</b>: un’isola ellittica in un canale, 78 statue in doppio anello. Di sabato c’è il mercato, che smonta nel pomeriggio e lascia la piazza libera proprio all’ora giusta.</p>
-      <p class="nota">Dalla fermata <b>Prato della Valle</b> il tram riporta in stazione in una dozzina di minuti. A piedi sono 2,5 km, circa mezz’ora.</p>
-    </li>
-    <li class="stop ritorno">
-      <span class="ora">17:55</span>
-      <span class="bullet"><span>&uarr;</span></span>
-      <h3>Ritorno in stazione</h3>
-      <span class="meta"><span class="pill">tram, 12 min</span></span>
-      <p class="testo">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, con dieci minuti di margine sul treno. A piedi sono 2,5 km e mezz’ora, quindi bisognerebbe partire dal Prato alle 17:45.</p>
-      
-    </li>
-    </ol>
+    <div class="sechead"><h2>Itinerario A &middot; Con Palazzo del Bo</h2><span class="cnt">10 tappe &middot; 09:30 &rarr; 18:20</span></div>
+    <p class="introtab">Le stesse righe delle due tabelle di riferimento, nell’ordine di questo itinerario.</p>
+    <div class="tablebox"><table>
+      <thead><tr><th>Ora</th><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th><th>Prezzo senza card</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr class="partenza">
+          <td class="c-ora"><span class="ora">09:30</span><span class="tappa" style="--c:var(--route)">1</span></td>
+          <td class="c-nome">Stazione FS</td>
+          <td class="c-perche" colspan="4">Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra.</td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">09:50</span><span class="tappa" style="--c:var(--route)">2</span><span class="dur">25 min</span></td>
+          <td class="c-nome">Caffè Pedrocchi — Piano Nobile</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le sale di Jappelli sopra il caffè, con il Museo del Risorgimento. Il modo giusto di cominciare la giornata.<span class="quando">Il Piano Nobile chiude alle 12:30 e riapre alle 15:30: di mattina non si può rimandare.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">09:30–12:30 e 15:30–18:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">4,00 €<em>ridotto 2,50 €; comprende il Museo del Risorgimento</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovaper.comune.padova.it/servizi/cultura-e-turismo/piano-nobile-dello-stabilimento-pedrocchi" target="_blank" rel="noopener">Comune di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Caff%C3%A8_Pedrocchi" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">10:15</span><span class="tappa" style="--c:var(--route)">3</span><span class="dur">15 min, stesso biglietto</span></td>
+          <td class="c-nome">Museo del Risorgimento e dell’età contemporanea</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Un secolo e mezzo di storia padovana e nazionale, dalla caduta della Repubblica Veneta alla Costituzione del 1948. Sta <b>accanto al Piano Nobile</b>, nello stesso Stabilimento Pedrocchi e sullo <b>stesso biglietto</b>: si passa da una sala all’altra.<span class="quando">Non costa nulla in più, ma costa <b>venti minuti</b>: sono già conteggiati qui sopra.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">09:30–12:30 e 15:30–18:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Compreso<em>nei 4,00 € del biglietto del Piano Nobile</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovacultura.padovanet.it/it/musei/museo-del-risorgimento" target="_blank" rel="noopener">Comune di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Museo_del_Risorgimento_e_dell%27et%C3%A0_contemporanea" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">10:30</span><span class="tappa" style="--c:var(--route)">4</span><span class="dur">75 min</span></td>
+          <td class="c-nome">Palazzo del Bo</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il <b>Teatro Anatomico del 1594</b>, il più antico conservato al mondo, la cattedra di Galileo e l’Aula Magna. Di sabato il giro è quello lungo e aggiunge l’ala novecentesca di Gio Ponti.<span class="quando">Di sabato il tour dura <b>75 minuti</b> e costa 12,00 € invece di 7,00: è il giro lungo, che aggiunge il Novecento. <b>Prenotazione obbligatoria.</b> Turni: 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura"><b>Sab, dom e festivi:</b> 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30 — 75 min<br><b>Lun–ven:</b> 10:30, 11:30 (EN), 12:30, 15:30, 16:30 (EN), 17:30 — 45 min<em>prenotazione obbligatoria; chiuso 24, 25 e 31 dicembre e 1º gennaio</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">12,00 € il sabato<em>7,00 € nei giorni feriali; ridotti da 8,00 a 3,00 €</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.unipd.it/palazzo-bo-900-gio-ponti-informazioni-tariffe" target="_blank" rel="noopener">Università di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Palazzo_del_Bo" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">11:50</span><span class="tappa" style="--c:var(--route)">5</span><span class="dur">45 min</span></td>
+          <td class="c-nome">Palazzo della Ragione</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il Salone e il calendario astrologico affrescato, sopra le due piazze del mercato.</td>
+          <td class="c-orari" data-l="Orari e chiusura">09:00–19:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">8,00 €<em>ridotto 6,00 €</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovamusei.it/it/biglietti-orari-musei" target="_blank" rel="noopener">Musei Civici di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Palazzo_della_Ragione_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">12:35</span><span class="tappa" style="--c:var(--route)">6</span><span class="dur">20 min</span></td>
+          <td class="c-nome">Piazza dei Signori e Torre dell’Orologio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il quadrante astronomico del 1344 e la Loggia del Consiglio.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Piazza sempre accessibile<em>la torre si visita solo su prenotazione</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>salita alla torre a pagamento, su prenotazione</em></td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Piazza_dei_Signori_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">13:00</span><span class="tappa" style="--c:var(--food)">7</span><span class="dur">90 min</span></td>
+          <td class="c-nome">Bacaro Padovano</td>
+          <td class="c-perche" data-l="Perch&eacute; conta"><b>Il pranzo prenotato.</b> Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.<span class="quando">Di sabato serve a pranzo dalle 12:00 alle 15:30: l’orario delle 13 sta comodo.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Ven e sab 12:00–15:30 e 19:00–24:00 · dom 12:00–15:30 · lun, mer, gio solo cena<em>chiuso il martedì; a pranzo apre solo ven, sab e dom</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">—<em>Via San Gregorio Barbarigo 3, tel. 049 8762777</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.bacaropadovano.com/contatti/" target="_blank" rel="noopener">bacaropadovano.com &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">14:30</span><span class="tappa" style="--c:var(--route)">8</span><span class="dur">60 min</span></td>
+          <td class="c-nome">Battistero della Cattedrale</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il <b>ciclo di Giusto de’ Menabuoi</b>, 1375-78: la vera alternativa a Giotto, e senza folla.<span class="quando">Turni ogni mezz’ora dalle 10:00 alle 17:30, con audioguida. Di sabato c’è anche la visita guidata in italiano alle 10:45 e alle 14:45.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Sab e dom 10:00–17:30 · mar–gio 10:00–17:30 · lun 14:00–17:30<em>turni ogni mezz’ora con audioguida; sabato visita guidata in italiano alle 10:45 e 14:45</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">15,00 €<em>ridotto 12,00 €; comprende Museo Diocesano e Salone dei Vescovi</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://kalata.it/esperienza/battistero-padova/" target="_blank" rel="noopener">Kalatà / Museo Diocesano &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Battistero_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="seguito">
+          <td class="c-ora"></td>
+          <td class="c-nome">Duomo di Padova</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">La cattedrale su progetto rimaneggiato di Michelangelo, austera e mai finita in facciata. È il portone accanto al Battistero.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Lun–sab 07:30–12:00 e 15:45–19:30 · dom 07:45–13:00 e 15:45–20:30</td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Duomo_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">15:50</span><span class="tappa" style="--c:var(--route)">9</span><span class="dur">80 min</span></td>
+          <td class="c-nome">Basilica del Santo</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le cappelle affrescate da Giusto de’ Menabuoi e Altichiero dentro la basilica. L’ingresso in chiesa è comunque libero.<span class="quando">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che <b>chiudono alle 18</b>: è la scadenza più stretta del pomeriggio.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">06:20–19:00 (estate fino alle 19:45)<em>aperta tutti i giorni</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>la card non serve per entrare in basilica</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/basilica/orari" target="_blank" rel="noopener">Basilica del Santo &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Basilica_di_Sant%27Antonio_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="seguito">
+          <td class="c-ora"></td>
+          <td class="c-nome">Oratorio di San Giorgio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Altichiero e Jacopo Avanzi, 1379-84: una cappella dipinta da cima a fondo, accanto alla Basilica.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Mar–dom 09:00–13:00 e 14:00–18:00<em>chiuso il lunedì</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">10,00 €<em>ridotto 7,00 €; biglietto unico con Scoletta e Museo Antoniano</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/content/orario-e-biglietto-unico-i-siti-museali-del-complesso-antoniano" target="_blank" rel="noopener">Basilica del Santo &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Oratorio_di_San_Giorgio_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">17:25</span><span class="tappa" style="--c:var(--route)">10</span><span class="dur">25 min</span></td>
+          <td class="c-nome">Prato della Valle</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">La piazza più grande d’Italia: isola ellittica, canale anulare, 78 statue. Di sabato c’è il mercato.<span class="quando">Dalla fermata <b>Prato della Valle</b> il tram riporta in stazione in una dozzina di minuti. A piedi sono 2,5 km, circa mezz’ora.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Sempre accessibile<em>mercato il sabato, smonta nel pomeriggio</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Prato_della_Valle" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="chiusura">
+          <td class="c-ora"><span class="ora">17:55</span></td>
+          <td class="c-nome">Ritorno in stazione</td>
+          <td class="c-perche" colspan="4">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, con dieci minuti di margine. A piedi sono 2,5 km e mezz’ora.</td>
+        </tr>
+      </tbody>
+    </table></div>
     <div class="sechead"><h2>Quanto costa</h2><span class="cnt">a testa, ingressi e tram</span></div>
     <div class="conti">
       <div class="conto"><h3>Biglietti singoli</h3><p class="sub">pagando ogni ingresso, più il tram</p><ul><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo del Bo</span><span>12,00 €</span></li><li><span>Palazzo della Ragione</span><span>8,00 €</span></li><li><span>Duomo e Battistero</span><span>15,00 €</span></li><li><span>Basilica del Santo</span><span>10,00 €</span></li><li><span>Trasporto urbano, due corse</span><span>3,40 €</span></li></ul><div class="tot"><b>Totale</b><em>52,40 €</em></div></div>
@@ -374,89 +450,111 @@ footer b{color:var(--ink-soft)}
   </section>
 
   <section class="variante" id="var-b" hidden>
-    <div class="sechead"><h2>Itinerario B &middot; Senza Palazzo del Bo</h2><span class="cnt">9 tappe &middot; 09:30 &rarr; 18:20</span></div>
-    <ol class="day">
-    <li class="stop">
-      <span class="ora">09:30</span>
-      <span class="bullet"><span>1</span></span>
-      <h3>Stazione FS</h3>
-      <span class="meta"><span class="pill">20 min per il centro</span></span>
-      <p class="testo">Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">09:55</span>
-      <span class="bullet"><span>2</span></span>
-      <h3>Caffè Pedrocchi</h3>
-      <span class="meta"><span class="pill">30 min</span><span class="pill price">4,00 €</span></span>
-      <p class="testo">Il <b>caffè senza porte</b>, aperto giorno e notte per un secolo. Un caffè alla menta al banco, poi di sopra: il <b>Piano Nobile</b> di Jappelli è una sfilata di sale egizia, greca, etrusca, rinascimentale.</p>
-      <p class="nota">Il Piano Nobile chiude alle 12:30 e riapre alle 15:30: di mattina non si può rimandare.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">10:30</span>
-      <span class="bullet"><span>3</span></span>
-      <h3>Palazzo della Ragione</h3>
-      <span class="meta"><span class="pill">50 min</span><span class="pill price">8,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">Il <b>Salone</b>: 80 metri di sala pensile senza colonne, sotto una carena di nave rovesciata, e attorno 333 riquadri affrescati con il calendario astrologico di Pietro d’Abano. Sotto, le due piazze del mercato, che di sabato mattina sono nel pieno.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">11:25</span>
-      <span class="bullet"><span>4</span></span>
-      <h3>Piazza dei Signori</h3>
-      <span class="meta"><span class="pill">20 min</span><span class="pill free">Gratuito</span></span>
-      <p class="testo">La <b>Torre dell’Orologio</b> del 1344, con il quadrante astronomico che segna ore, fasi lunari e segni zodiacali — e che, per un errore diventato leggenda, la Bilancia non ce l’ha. Accanto, la Loggia del Consiglio.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">11:50</span>
-      <span class="bullet"><span>5</span></span>
-      <h3>Duomo e Battistero</h3>
-      <span class="meta"><span class="pill">55 min</span><span class="pill price">15,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">Il pezzo forte della giornata. Il <b>Battistero</b> è interamente affrescato da <b>Giusto de’ Menabuoi</b> (1375-78): un Paradiso di centinaia di figure sotto la cupola. È il grande sostituto della Cappella degli Scrovegni, e quasi sempre lo si ha per sé. Il biglietto comprende il Museo Diocesano e il Salone dei Vescovi.</p>
-      <p class="nota">Turni ogni mezz’ora dalle 10:00 alle 17:30, con audioguida. Di sabato c’è anche la visita guidata in italiano alle 10:45 e alle 14:45.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">13:00</span>
-      <span class="bullet" style="--c:var(--food)"><span>6</span></span>
-      <h3>Bacaro Padovano</h3>
-      <span class="meta"><span class="pill">90 min</span></span>
-      <p class="testo">Pranzo prenotato. Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.</p>
-      <p class="nota">Di sabato serve a pranzo dalle 12:00 alle 15:30: l’orario delle 13 sta comodo.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">14:45</span>
-      <span class="bullet"><span>7</span></span>
-      <h3>Basilica del Santo</h3>
-      <span class="meta"><span class="pill">90 min</span><span class="pill price">10,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">La basilica è gratuita: cupole orientali, il Donatello dell’altare maggiore, la Cappella del Santo. Fuori, il <b>Gattamelata</b>, primo monumento equestre in bronzo del Rinascimento. Accanto, l’<b>Oratorio di San Giorgio</b> con gli affreschi di Altichiero e la Scoletta del Santo.</p>
-      <p class="nota">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che <b>chiudono alle 18</b>: è la scadenza più stretta del pomeriggio.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">16:15</span>
-      <span class="bullet"><span>8</span></span>
-      <h3>Orto Botanico</h3>
-      <span class="meta"><span class="pill">60 min</span><span class="pill price">10,00 €</span></span>
-      <p class="testo">Il <b>più antico orto botanico universitario del mondo</b> ancora nella sua posizione originale, 1545, patrimonio UNESCO. La palma di Goethe è lì dal 1585.</p>
-      <p class="nota">Da aprile a settembre chiude alle 19, ultimo ingresso 18:15.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">17:20</span>
-      <span class="bullet"><span>9</span></span>
-      <h3>Prato della Valle</h3>
-      <span class="meta"><span class="pill">30 min</span><span class="pill free">Gratuito</span></span>
-      <p class="testo">La <b>piazza più grande d’Italia</b>: un’isola ellittica in un canale, 78 statue in doppio anello. Di sabato c’è il mercato, che smonta nel pomeriggio e lascia la piazza libera proprio all’ora giusta.</p>
-      <p class="nota">Dalla fermata <b>Prato della Valle</b> il tram riporta in stazione in una dozzina di minuti. A piedi sono 2,5 km, circa mezz’ora.</p>
-    </li>
-    <li class="stop ritorno">
-      <span class="ora">17:55</span>
-      <span class="bullet"><span>&uarr;</span></span>
-      <h3>Ritorno in stazione</h3>
-      <span class="meta"><span class="pill">tram, 12 min</span></span>
-      <p class="testo">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, con dieci minuti di margine sul treno. A piedi sono 2,5 km e mezz’ora, quindi bisognerebbe partire dal Prato alle 17:45.</p>
-      
-    </li>
-    </ol>
+    <div class="sechead"><h2>Itinerario B &middot; Senza Palazzo del Bo</h2><span class="cnt">10 tappe &middot; 09:30 &rarr; 18:20</span></div>
+    <p class="introtab">Le stesse righe delle due tabelle di riferimento, nell’ordine di questo itinerario.</p>
+    <div class="tablebox"><table>
+      <thead><tr><th>Ora</th><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th><th>Prezzo senza card</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr class="partenza">
+          <td class="c-ora"><span class="ora">09:30</span><span class="tappa" style="--c:var(--route)">1</span></td>
+          <td class="c-nome">Stazione FS</td>
+          <td class="c-perche" colspan="4">Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra.</td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">09:55</span><span class="tappa" style="--c:var(--route)">2</span><span class="dur">25 min</span></td>
+          <td class="c-nome">Caffè Pedrocchi — Piano Nobile</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le sale di Jappelli sopra il caffè, con il Museo del Risorgimento. Il modo giusto di cominciare la giornata.<span class="quando">Il Piano Nobile chiude alle 12:30 e riapre alle 15:30: di mattina non si può rimandare.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">09:30–12:30 e 15:30–18:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">4,00 €<em>ridotto 2,50 €; comprende il Museo del Risorgimento</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovaper.comune.padova.it/servizi/cultura-e-turismo/piano-nobile-dello-stabilimento-pedrocchi" target="_blank" rel="noopener">Comune di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Caff%C3%A8_Pedrocchi" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">10:22</span><span class="tappa" style="--c:var(--route)">3</span><span class="dur">18 min, stesso biglietto</span></td>
+          <td class="c-nome">Museo del Risorgimento e dell’età contemporanea</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Un secolo e mezzo di storia padovana e nazionale, dalla caduta della Repubblica Veneta alla Costituzione del 1948. Sta <b>accanto al Piano Nobile</b>, nello stesso Stabilimento Pedrocchi e sullo <b>stesso biglietto</b>: si passa da una sala all’altra.<span class="quando">Non costa nulla in più, ma costa <b>venti minuti</b>: sono già conteggiati qui sopra.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">09:30–12:30 e 15:30–18:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Compreso<em>nei 4,00 € del biglietto del Piano Nobile</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovacultura.padovanet.it/it/musei/museo-del-risorgimento" target="_blank" rel="noopener">Comune di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Museo_del_Risorgimento_e_dell%27et%C3%A0_contemporanea" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">10:45</span><span class="tappa" style="--c:var(--route)">4</span><span class="dur">45 min</span></td>
+          <td class="c-nome">Palazzo della Ragione</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il Salone e il calendario astrologico affrescato, sopra le due piazze del mercato.</td>
+          <td class="c-orari" data-l="Orari e chiusura">09:00–19:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">8,00 €<em>ridotto 6,00 €</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovamusei.it/it/biglietti-orari-musei" target="_blank" rel="noopener">Musei Civici di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Palazzo_della_Ragione_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">11:35</span><span class="tappa" style="--c:var(--route)">5</span><span class="dur">15 min</span></td>
+          <td class="c-nome">Piazza dei Signori e Torre dell’Orologio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il quadrante astronomico del 1344 e la Loggia del Consiglio.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Piazza sempre accessibile<em>la torre si visita solo su prenotazione</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>salita alla torre a pagamento, su prenotazione</em></td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Piazza_dei_Signori_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">11:55</span><span class="tappa" style="--c:var(--route)">6</span><span class="dur">55 min</span></td>
+          <td class="c-nome">Battistero della Cattedrale</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il <b>ciclo di Giusto de’ Menabuoi</b>, 1375-78: la vera alternativa a Giotto, e senza folla.<span class="quando">Turni ogni mezz’ora dalle 10:00 alle 17:30, con audioguida. Di sabato c’è anche la visita guidata in italiano alle 10:45 e alle 14:45.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Sab e dom 10:00–17:30 · mar–gio 10:00–17:30 · lun 14:00–17:30<em>turni ogni mezz’ora con audioguida; sabato visita guidata in italiano alle 10:45 e 14:45</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">15,00 €<em>ridotto 12,00 €; comprende Museo Diocesano e Salone dei Vescovi</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://kalata.it/esperienza/battistero-padova/" target="_blank" rel="noopener">Kalatà / Museo Diocesano &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Battistero_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="seguito">
+          <td class="c-ora"></td>
+          <td class="c-nome">Duomo di Padova</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">La cattedrale su progetto rimaneggiato di Michelangelo, austera e mai finita in facciata. È il portone accanto al Battistero.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Lun–sab 07:30–12:00 e 15:45–19:30 · dom 07:45–13:00 e 15:45–20:30</td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Duomo_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">13:00</span><span class="tappa" style="--c:var(--food)">7</span><span class="dur">90 min</span></td>
+          <td class="c-nome">Bacaro Padovano</td>
+          <td class="c-perche" data-l="Perch&eacute; conta"><b>Il pranzo prenotato.</b> Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.<span class="quando">Di sabato serve a pranzo dalle 12:00 alle 15:30: l’orario delle 13 sta comodo.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Ven e sab 12:00–15:30 e 19:00–24:00 · dom 12:00–15:30 · lun, mer, gio solo cena<em>chiuso il martedì; a pranzo apre solo ven, sab e dom</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">—<em>Via San Gregorio Barbarigo 3, tel. 049 8762777</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.bacaropadovano.com/contatti/" target="_blank" rel="noopener">bacaropadovano.com &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">14:45</span><span class="tappa" style="--c:var(--route)">8</span><span class="dur">90 min</span></td>
+          <td class="c-nome">Basilica del Santo</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le cappelle affrescate da Giusto de’ Menabuoi e Altichiero dentro la basilica. L’ingresso in chiesa è comunque libero.<span class="quando">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che <b>chiudono alle 18</b>: è la scadenza più stretta del pomeriggio.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">06:20–19:00 (estate fino alle 19:45)<em>aperta tutti i giorni</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>la card non serve per entrare in basilica</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/basilica/orari" target="_blank" rel="noopener">Basilica del Santo &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Basilica_di_Sant%27Antonio_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="seguito">
+          <td class="c-ora"></td>
+          <td class="c-nome">Oratorio di San Giorgio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Altichiero e Jacopo Avanzi, 1379-84: una cappella dipinta da cima a fondo, accanto alla Basilica.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Mar–dom 09:00–13:00 e 14:00–18:00<em>chiuso il lunedì</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">10,00 €<em>ridotto 7,00 €; biglietto unico con Scoletta e Museo Antoniano</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/content/orario-e-biglietto-unico-i-siti-museali-del-complesso-antoniano" target="_blank" rel="noopener">Basilica del Santo &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Oratorio_di_San_Giorgio_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">16:15</span><span class="tappa" style="--c:var(--route)">9</span><span class="dur">60 min</span></td>
+          <td class="c-nome">Orto Botanico</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il più antico orto botanico universitario del mondo ancora al suo posto, 1545, patrimonio UNESCO dal 1997. Nell’itinerario <b>B</b>, quello senza il Bo.<span class="quando">Da aprile a settembre chiude alle 19, ultimo ingresso 18:15.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Apr–set 10:00–19:00 · ott 10:00–18:00 · nov–mar 10:00–17:00<em>chiuso il lunedì; ultimo ingresso 45 minuti prima</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">10,00 €<em>8,00 € over 65; 6,00 € ridotto giovani</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://ortobotanico1545.it/visita/orari/" target="_blank" rel="noopener">ortobotanico1545.it &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Orto_botanico_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">17:20</span><span class="tappa" style="--c:var(--route)">10</span><span class="dur">30 min</span></td>
+          <td class="c-nome">Prato della Valle</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">La piazza più grande d’Italia: isola ellittica, canale anulare, 78 statue. Di sabato c’è il mercato.<span class="quando">Dalla fermata <b>Prato della Valle</b> il tram riporta in stazione in una dozzina di minuti. A piedi sono 2,5 km, circa mezz’ora.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Sempre accessibile<em>mercato il sabato, smonta nel pomeriggio</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Prato_della_Valle" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="chiusura">
+          <td class="c-ora"><span class="ora">17:55</span></td>
+          <td class="c-nome">Ritorno in stazione</td>
+          <td class="c-perche" colspan="4">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, con dieci minuti di margine. A piedi sono 2,5 km e mezz’ora.</td>
+        </tr>
+      </tbody>
+    </table></div>
     <div class="sechead"><h2>Quanto costa</h2><span class="cnt">a testa, ingressi e tram</span></div>
     <div class="conti">
       <div class="conto"><h3>Biglietti singoli</h3><p class="sub">pagando ogni ingresso, più il tram</p><ul><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo della Ragione</span><span>8,00 €</span></li><li><span>Duomo e Battistero</span><span>15,00 €</span></li><li><span>Basilica del Santo</span><span>10,00 €</span></li><li><span>Orto Botanico</span><span>10,00 €</span></li><li><span>Trasporto urbano, due corse</span><span>3,40 €</span></li></ul><div class="tot"><b>Totale</b><em>50,40 €</em></div></div>
@@ -466,81 +564,95 @@ footer b{color:var(--ink-soft)}
   </section>
 
   <section class="variante" id="var-ada" hidden>
-    <div class="sechead"><h2>Itinerario ★ &middot; Ada</h2><span class="cnt">8 tappe &middot; 09:30 &rarr; 18:20</span></div>
-    <ol class="day">
-    <li class="stop">
-      <span class="ora">09:30</span>
-      <span class="bullet"><span>1</span></span>
-      <h3>Stazione FS</h3>
-      <span class="meta"><span class="pill">tram, 20 min</span></span>
-      <p class="testo">Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">09:50</span>
-      <span class="bullet"><span>2</span></span>
-      <h3>Basilica del Santo</h3>
-      <span class="meta"><span class="pill">90 min</span><span class="pill price">10,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">La basilica è gratuita: cupole orientali, il Donatello dell’altare maggiore, la Cappella del Santo. Fuori, il <b>Gattamelata</b>, primo monumento equestre in bronzo del Rinascimento. Accanto, l’<b>Oratorio di San Giorgio</b> con gli affreschi di Altichiero e la Scoletta del Santo.</p>
-      <p class="nota">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che <b>chiudono alle 18</b>: è la scadenza più stretta del pomeriggio.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">11:45</span>
-      <span class="bullet"><span>3</span></span>
-      <h3>Caffè Pedrocchi</h3>
-      <span class="meta"><span class="pill">40 min</span><span class="pill price">4,00 €</span></span>
-      <p class="testo">Il <b>caffè senza porte</b>, aperto giorno e notte per un secolo. Un caffè alla menta al banco, poi di sopra: il <b>Piano Nobile</b> di Jappelli è una sfilata di sale egizia, greca, etrusca, rinascimentale.</p>
-      <p class="nota">Il Piano Nobile chiude alle 12:30 e riapre alle 15:30: di mattina non si può rimandare.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">12:35</span>
-      <span class="bullet"><span>4</span></span>
-      <h3>Piazza dei Signori</h3>
-      <span class="meta"><span class="pill">20 min</span><span class="pill free">Gratuito</span></span>
-      <p class="testo">La <b>Torre dell’Orologio</b> del 1344, con il quadrante astronomico che segna ore, fasi lunari e segni zodiacali — e che, per un errore diventato leggenda, la Bilancia non ce l’ha. Accanto, la Loggia del Consiglio.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">13:00</span>
-      <span class="bullet" style="--c:var(--food)"><span>5</span></span>
-      <h3>Bacaro Padovano</h3>
-      <span class="meta"><span class="pill">90 min</span></span>
-      <p class="testo">Pranzo prenotato. Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.</p>
-      <p class="nota">Di sabato serve a pranzo dalle 12:00 alle 15:30: l’orario delle 13 sta comodo.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">14:35</span>
-      <span class="bullet"><span>6</span></span>
-      <h3>Palazzo della Ragione</h3>
-      <span class="meta"><span class="pill">45 min</span><span class="pill price">8,00 €</span><span class="pill incard">Nella card</span></span>
-      <p class="testo">Il <b>Salone</b>: 80 metri di sala pensile senza colonne, sotto una carena di nave rovesciata, e attorno 333 riquadri affrescati con il calendario astrologico di Pietro d’Abano. Sotto, le due piazze del mercato, che di sabato mattina sono nel pieno.</p>
-      
-    </li>
-    <li class="stop">
-      <span class="ora">15:30</span>
-      <span class="bullet"><span>7</span></span>
-      <h3>Palazzo del Bo</h3>
-      <span class="meta"><span class="pill">75 min</span><span class="pill price">12,00 €</span></span>
-      <p class="testo">La sede storica dell’Università. Il <b>Teatro Anatomico del 1594</b>, il più antico al mondo ancora in piedi, la cattedra di Galileo, l’Aula Magna, la statua di Elena Lucrezia Cornaro Piscopia — prima laureata della storia — e, nel fine settimana, anche l’ala razionalista di Gio Ponti.</p>
-      <p class="nota">Di sabato il tour dura <b>75 minuti</b> e costa 12,00 € invece di 7,00: è il giro lungo, che aggiunge il Novecento. <b>Prenotazione obbligatoria.</b> Turni: 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30.</p><p class="nota"><b>Perché dopo pranzo:</b> nell’itinerario Ada si rientra dal Santo verso le 11:30, e i 75 minuti del giro non ci stanno prima delle 13. Il turno delle 11:30 è in inglese; quello delle 12:30 finirebbe alle 13:45, cioè tre quarti d’ora dopo il tavolo prenotato. Resta il turno delle <b>15:30</b>, che chiude la giornata con tutto il tempo per arrivare al Prato.</p>
-    </li>
-    <li class="stop">
-      <span class="ora">17:05</span>
-      <span class="bullet"><span>8</span></span>
-      <h3>Prato della Valle</h3>
-      <span class="meta"><span class="pill">30 min</span><span class="pill free">Gratuito</span></span>
-      <p class="testo">La <b>piazza più grande d’Italia</b>: un’isola ellittica in un canale, 78 statue in doppio anello. Di sabato c’è il mercato, che smonta nel pomeriggio e lascia la piazza libera proprio all’ora giusta.</p>
-      <p class="nota">Dalla fermata <b>Prato della Valle</b> il tram riporta in stazione in una dozzina di minuti. A piedi sono 2,5 km, circa mezz’ora.</p>
-    </li>
-    <li class="stop ritorno">
-      <span class="ora">17:45</span>
-      <span class="bullet"><span>&uarr;</span></span>
-      <h3>Ritorno in stazione</h3>
-      <span class="meta"><span class="pill">tram, 12 min</span></span>
-      <p class="testo">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, con dieci minuti di margine sul treno. A piedi sono 2,5 km e mezz’ora, quindi bisognerebbe partire dal Prato alle 17:45.</p>
-      
-    </li>
-    </ol>
+    <div class="sechead"><h2>Itinerario ★ &middot; Ada</h2><span class="cnt">9 tappe &middot; 09:30 &rarr; 18:20</span></div>
+    <p class="introtab">Le stesse righe delle due tabelle di riferimento, nell’ordine di questo itinerario.</p>
+    <div class="tablebox"><table>
+      <thead><tr><th>Ora</th><th>Nome</th><th>Perch&eacute; conta</th><th>Orari e giorno di chiusura</th><th>Prezzo senza card</th><th>Fonte</th></tr></thead>
+      <tbody>
+        <tr class="partenza">
+          <td class="c-ora"><span class="ora">09:30</span><span class="tappa" style="--c:var(--route)">1</span></td>
+          <td class="c-nome">Stazione FS</td>
+          <td class="c-perche" colspan="4">Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra.</td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">09:50</span><span class="tappa" style="--c:var(--route)">2</span><span class="dur">90 min</span></td>
+          <td class="c-nome">Basilica del Santo</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le cappelle affrescate da Giusto de’ Menabuoi e Altichiero dentro la basilica. L’ingresso in chiesa è comunque libero.<span class="quando">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che <b>chiudono alle 18</b>: è la scadenza più stretta del pomeriggio.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">06:20–19:00 (estate fino alle 19:45)<em>aperta tutti i giorni</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>la card non serve per entrare in basilica</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/basilica/orari" target="_blank" rel="noopener">Basilica del Santo &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Basilica_di_Sant%27Antonio_di_Padova" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="seguito">
+          <td class="c-ora"></td>
+          <td class="c-nome">Oratorio di San Giorgio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Altichiero e Jacopo Avanzi, 1379-84: una cappella dipinta da cima a fondo, accanto alla Basilica.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Mar–dom 09:00–13:00 e 14:00–18:00<em>chiuso il lunedì</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">10,00 €<em>ridotto 7,00 €; biglietto unico con Scoletta e Museo Antoniano</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.santantonio.org/it/content/orario-e-biglietto-unico-i-siti-museali-del-complesso-antoniano" target="_blank" rel="noopener">Basilica del Santo &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Oratorio_di_San_Giorgio_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">11:45</span><span class="tappa" style="--c:var(--route)">3</span><span class="dur">25 min</span></td>
+          <td class="c-nome">Caffè Pedrocchi — Piano Nobile</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Le sale di Jappelli sopra il caffè, con il Museo del Risorgimento. Il modo giusto di cominciare la giornata.<span class="quando">Il Piano Nobile chiude alle 12:30 e riapre alle 15:30: di mattina non si può rimandare.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">09:30–12:30 e 15:30–18:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">4,00 €<em>ridotto 2,50 €; comprende il Museo del Risorgimento</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovaper.comune.padova.it/servizi/cultura-e-turismo/piano-nobile-dello-stabilimento-pedrocchi" target="_blank" rel="noopener">Comune di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Caff%C3%A8_Pedrocchi" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">12:12</span><span class="tappa" style="--c:var(--route)">4</span><span class="dur">18 min, stesso biglietto</span></td>
+          <td class="c-nome">Museo del Risorgimento e dell’età contemporanea</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Un secolo e mezzo di storia padovana e nazionale, dalla caduta della Repubblica Veneta alla Costituzione del 1948. Sta <b>accanto al Piano Nobile</b>, nello stesso Stabilimento Pedrocchi e sullo <b>stesso biglietto</b>: si passa da una sala all’altra.<span class="quando">Non costa nulla in più, ma costa <b>venti minuti</b>: sono già conteggiati qui sopra.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">09:30–12:30 e 15:30–18:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Compreso<em>nei 4,00 € del biglietto del Piano Nobile</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovacultura.padovanet.it/it/musei/museo-del-risorgimento" target="_blank" rel="noopener">Comune di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Museo_del_Risorgimento_e_dell%27et%C3%A0_contemporanea" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">12:35</span><span class="tappa" style="--c:var(--route)">5</span><span class="dur">20 min</span></td>
+          <td class="c-nome">Piazza dei Signori e Torre dell’Orologio</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il quadrante astronomico del 1344 e la Loggia del Consiglio.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Piazza sempre accessibile<em>la torre si visita solo su prenotazione</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito<em>salita alla torre a pagamento, su prenotazione</em></td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Piazza_dei_Signori_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">13:00</span><span class="tappa" style="--c:var(--food)">6</span><span class="dur">90 min</span></td>
+          <td class="c-nome">Bacaro Padovano</td>
+          <td class="c-perche" data-l="Perch&eacute; conta"><b>Il pranzo prenotato.</b> Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.<span class="quando">Di sabato serve a pranzo dalle 12:00 alle 15:30: l’orario delle 13 sta comodo.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Ven e sab 12:00–15:30 e 19:00–24:00 · dom 12:00–15:30 · lun, mer, gio solo cena<em>chiuso il martedì; a pranzo apre solo ven, sab e dom</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">—<em>Via San Gregorio Barbarigo 3, tel. 049 8762777</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.bacaropadovano.com/contatti/" target="_blank" rel="noopener">bacaropadovano.com &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">14:35</span><span class="tappa" style="--c:var(--route)">7</span><span class="dur">45 min</span></td>
+          <td class="c-nome">Palazzo della Ragione</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il Salone e il calendario astrologico affrescato, sopra le due piazze del mercato.</td>
+          <td class="c-orari" data-l="Orari e chiusura">09:00–19:00<em>chiuso il lunedì non festivo — il sabato è aperto</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">8,00 €<em>ridotto 6,00 €</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://padovamusei.it/it/biglietti-orari-musei" target="_blank" rel="noopener">Musei Civici di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Palazzo_della_Ragione_(Padova)" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">15:30</span><span class="tappa" style="--c:var(--route)">8</span><span class="dur">75 min</span></td>
+          <td class="c-nome">Palazzo del Bo</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Il <b>Teatro Anatomico del 1594</b>, il più antico conservato al mondo, la cattedra di Galileo e l’Aula Magna. Di sabato il giro è quello lungo e aggiunge l’ala novecentesca di Gio Ponti.<span class="quando">Di sabato il tour dura <b>75 minuti</b> e costa 12,00 € invece di 7,00: è il giro lungo, che aggiunge il Novecento. <b>Prenotazione obbligatoria.</b> Turni: 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30.</span><span class="quando"><b>Perché dopo pranzo:</b> nell’itinerario Ada si rientra dal Santo verso le 11:30, e i 75 minuti del giro non ci stanno prima delle 13. Il turno delle 11:30 è in inglese; quello delle 12:30 finirebbe alle 13:45, cioè tre quarti d’ora dopo il tavolo prenotato. Resta il turno delle <b>15:30</b>, che chiude la giornata con tutto il tempo per arrivare al Prato.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura"><b>Sab, dom e festivi:</b> 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30 — 75 min<br><b>Lun–ven:</b> 10:30, 11:30 (EN), 12:30, 15:30, 16:30 (EN), 17:30 — 45 min<em>prenotazione obbligatoria; chiuso 24, 25 e 31 dicembre e 1º gennaio</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">12,00 € il sabato<em>7,00 € nei giorni feriali; ridotti da 8,00 a 3,00 €</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.unipd.it/palazzo-bo-900-gio-ponti-informazioni-tariffe" target="_blank" rel="noopener">Università di Padova &nearr;</a><a class="wiki" href="https://it.wikipedia.org/wiki/Palazzo_del_Bo" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-ora"><span class="ora">17:05</span><span class="tappa" style="--c:var(--route)">9</span><span class="dur">30 min</span></td>
+          <td class="c-nome">Prato della Valle</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">La piazza più grande d’Italia: isola ellittica, canale anulare, 78 statue. Di sabato c’è il mercato.<span class="quando">Dalla fermata <b>Prato della Valle</b> il tram riporta in stazione in una dozzina di minuti. A piedi sono 2,5 km, circa mezz’ora.</span></td>
+          <td class="c-orari" data-l="Orari e chiusura">Sempre accessibile<em>mercato il sabato, smonta nel pomeriggio</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">Gratuito</td>
+          <td class="c-fonte" data-l="Fonte"><span class="none">non verificata</span><span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte ufficiale da citare, prendeteli come indicativi.</span><a class="wiki" href="https://it.wikipedia.org/wiki/Prato_della_Valle" target="_blank" rel="noopener">Wikipedia &nearr;</a></td>
+        </tr>
+        <tr class="chiusura">
+          <td class="c-ora"><span class="ora">17:45</span></td>
+          <td class="c-nome">Ritorno in stazione</td>
+          <td class="c-perche" colspan="4">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, con dieci minuti di margine. A piedi sono 2,5 km e mezz’ora.</td>
+        </tr>
+      </tbody>
+    </table></div>
     <div class="sechead"><h2>Quanto costa</h2><span class="cnt">a testa, ingressi e tram</span></div>
     <div class="conti">
       <div class="conto"><h3>Biglietti singoli</h3><p class="sub">pagando ogni ingresso, più il tram</p><ul><li><span>Basilica del Santo</span><span>10,00 €</span></li><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo della Ragione</span><span>8,00 €</span></li><li><span>Palazzo del Bo</span><span>12,00 €</span></li><li><span>Trasporto urbano, due corse</span><span>3,40 €</span></li></ul><div class="tot"><b>Totale</b><em>37,40 €</em></div></div>

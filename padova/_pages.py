@@ -2,7 +2,7 @@
 """Le quattro pagine del sito."""
 import io, os, re
 from _build import page, nav, write, build_map, MAP_CSS, VW, VH, eur, extra_markers, NUM
-from _data import (PLACES, VARIANTI, VARIANTE_A, VARIANTE_B, VARIANTE_ADA, ORDINE_MAPPA,
+from _data import (PLACES, VARIANTI, VARIANTE_A, VARIANTE_B, VARIANTE_ADA, ORDINE_MAPPA, RIGHE_TAPPA,
                    CARD_SITI, ALTRI_LUOGHI, CARD_PREZZO, TRASPORTI, GIORNO, ARRIVO, RIENTRO,
                    TRAM_FERMATE)
 
@@ -99,7 +99,28 @@ INDEX_CSS = u"""
 .switch .cost{margin:9px 0 0;font-size:12.5px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
 .switch .cost b{color:var(--ink);font-weight:600}
 
-.day{list-style:none;margin:0 0 38px;padding:0}
+.introtab{margin:12px 0 14px;font-size:13.5px;color:var(--ink-faint)}
+.tablebox{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--surface);
+  box-shadow:var(--shadow);margin:0 0 34px}
+.tablebox table{width:100%;border-collapse:collapse;min-width:1080px}
+.tablebox thead th{background:var(--surface-2);text-align:left;font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  padding:12px 14px;border-bottom:2px solid var(--ink)}
+.tablebox td{padding:16px 14px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.tablebox tbody tr:last-child td{border-bottom:0}
+.tablebox tbody tr:hover{background:var(--surface-2)}
+.tablebox tr.seguito td{border-top:0;padding-top:0}
+.tablebox tr.seguito .c-ora{border-left:2px solid var(--rule-soft)}
+.tablebox tr.partenza,.tablebox tr.chiusura{background:var(--surface-2)}
+.c-ora{width:86px;min-width:80px}
+.c-ora .ora{display:block;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.c-ora .tappa{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;
+  border-radius:50%;background:var(--c,var(--route));color:var(--marker-ring);
+  font-size:11.5px;font-weight:700;margin-top:7px}
+.c-ora .dur{display:block;margin-top:6px;font-size:11.5px;color:var(--ink-faint)}
+.quando{display:block;margin-top:9px;padding-left:11px;border-left:2px solid var(--rule);
+  font-size:12.5px;color:var(--ink-faint);line-height:1.5}
+.quando b{color:var(--ink-soft)}
 .stop{display:grid;grid-template-columns:62px 38px minmax(0,1fr);gap:0 14px;
   padding:18px 0 20px;border-bottom:1px solid var(--rule-soft)}
 .stop > *{grid-column:3}
@@ -134,6 +155,39 @@ INDEX_CSS = u"""
 .stop p.nota + p.nota{margin-top:8px}
 .stop p.nota b{color:var(--ink-soft)}
 
+.c-nome{width:16%;min-width:150px;font-family:'EB Garamond',Garamond,serif;
+  font-weight:600;font-size:19px;line-height:1.16}
+.c-perche{width:28%;min-width:240px;font-size:14px;color:var(--ink-soft);line-height:1.5}
+.c-perche b{color:var(--ink);font-weight:600}
+.c-orari{width:22%;min-width:195px;font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.c-prezzo{width:14%;min-width:140px;font-size:15.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.c-fonte{width:12%;min-width:130px;font-size:13px}
+.c-fonte a{display:block;color:var(--card);text-underline-offset:3px}
+.c-fonte a.wiki{margin-top:6px;color:var(--ink-faint);font-size:12.5px}
+.c-fonte a:hover{color:var(--ink)}
+.c-fonte .none{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);
+  border-radius:3px;padding:2px 7px;line-height:1.5}
+.c-fonte .why{display:block;margin-top:6px;font-size:12px;color:var(--ink-faint);line-height:1.4}
+.c-orari em,.c-prezzo em{display:block;font-style:normal;font-weight:400;font-size:12.5px;
+  color:var(--ink-faint);margin-top:5px;line-height:1.45}
+@media (max-width:1040px){
+  .tablebox{overflow-x:visible;border:0;border-radius:0;background:transparent;box-shadow:none}
+  .tablebox table{min-width:0}
+  .tablebox thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .tablebox tbody tr{display:block;background:var(--surface);border:1px solid var(--rule);
+    border-radius:4px;padding:16px 17px;margin-bottom:12px;box-shadow:var(--shadow)}
+  .tablebox tbody tr.seguito{margin-top:-8px;border-top-left-radius:0;border-top-right-radius:0}
+  .tablebox tbody tr:hover{background:var(--surface)}
+  .tablebox td{display:block;width:auto!important;min-width:0!important;padding:0;border:0!important}
+  .tablebox .c-ora{margin-bottom:9px}
+  .tablebox .c-ora .ora,.tablebox .c-ora .tappa,.tablebox .c-ora .dur{display:inline-flex;
+    vertical-align:middle;margin:0 9px 0 0}
+  .c-perche,.c-orari,.c-prezzo,.c-fonte{margin-top:12px}
+  .c-perche::before,.c-orari::before,.c-prezzo::before,.c-fonte::before{content:attr(data-l);
+    display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-faint);margin-bottom:4px}
+}
 .conti{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 20px}
 @media (max-width:640px){.conti{grid-template-columns:1fr}}
 .conto{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:17px 19px}
@@ -175,44 +229,70 @@ INDEX_CSS = u"""
 """
 
 
-def timeline(v):   # v serve anche per le note specifiche di un itinerario
+RIGA_PER_NOME = {}
+for _lista in (CARD_SITI, ALTRI_LUOGHI):
+    for _r in _lista:
+        RIGA_PER_NOME[_r['nome']] = _r
+
+
+def tabella_itinerario(v):
+    """Le stesse righe delle due tabelle di riferimento, nell'ordine dell'itinerario."""
     out, visti = [], set()
     for pid, ora, durata, costo in v['tappe']:
         pl = PLACES[pid]
         ritorno = pid in visti
         visti.add(pid)
         n = NUM[pid][v['id']]
-        pills = [u'<span class="pill">%s</span>' % durata]
-        if costo:
-            cls = 'free' if costo == u'Gratuito' else 'price'
-            pills.append(u'<span class="pill %s">%s</span>' % (cls, costo))
-        if pl['card'] and not ritorno:
-            pills.append(u'<span class="pill incard">Nella card</span>')
-        col = ' style="--c:var(--food)"' if pl.get('pasto') else ''
+        col = 'var(--food)' if pl.get('pasto') else 'var(--route)'
+
         if ritorno:
-            testo = (u'<p class="testo">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta '
-                     u'al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, '
-                     u'con dieci minuti di margine sul treno. A piedi sono 2,5 km e mezz’ora, '
-                     u'quindi bisognerebbe partire dal Prato alle 17:45.</p>')
-            nota = u''
-            titolo = u'Ritorno in stazione'
-            segno = u'&uarr;'
-        else:
-            testo = u'<p class="testo">%s</p>' % pl['testo']
-            nota = (u'<p class="nota">%s</p>' % pl['nota']) if pl.get('nota') else u''
-            if v['id'] == 'ada' and pl.get('nota_ada'):
-                nota += u'<p class="nota">%s</p>' % pl['nota_ada']
-            titolo = pl['nome']
-            segno = u'%d' % n
-        out.append(
-            u'    <li class="stop%s">\n'
-            u'      <span class="ora">%s</span>\n'
-            u'      <span class="bullet"%s><span>%s</span></span>\n'
-            u'      <h3>%s</h3>\n'
-            u'      <span class="meta">%s</span>\n'
-            u'      %s\n      %s\n    </li>'
-            % (u' ritorno' if ritorno else u'', ora, col, segno, titolo, u''.join(pills), testo, nota))
-    return u'\n'.join(out)
+            out.append(
+                u'        <tr class="chiusura">\n'
+                u'          <td class="c-ora"><span class="ora">%s</span></td>\n'
+                u'          <td class="c-nome">Ritorno in stazione</td>\n'
+                u'          <td class="c-perche" colspan="4">Dalla fermata <b>Prato della Valle</b> il tram SIR1 '
+                u'riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, '
+                u'con dieci minuti di margine. A piedi sono 2,5 km e mezz\u2019ora.</td>\n'
+                u'        </tr>' % ora)
+            continue
+
+        righe = [RIGA_PER_NOME[nm] for nm in RIGHE_TAPPA.get(pid, []) if nm in RIGA_PER_NOME]
+        if not righe:      # la stazione non ha una riga di tabella
+            out.append(
+                u'        <tr class="partenza">\n'
+                u'          <td class="c-ora"><span class="ora">%s</span>'
+                u'<span class="tappa" style="--c:%s">%d</span></td>\n'
+                u'          <td class="c-nome">%s</td>\n'
+                u'          <td class="c-perche" colspan="4">%s</td>\n'
+                u'        </tr>' % (ora, col, n, pl['nome'], pl['testo']))
+            continue
+
+        for k, r in enumerate(righe):
+            perche = r['perche']
+            if k == 0:
+                extra = []
+                if pl.get('nota'):
+                    extra.append(pl['nota'])
+                if v['id'] == 'ada' and pl.get('nota_ada'):
+                    extra.append(pl['nota_ada'])
+                for e in extra:
+                    perche += u'<span class="quando">%s</span>' % e
+            prima = (u'<span class="ora">%s</span><span class="tappa" style="--c:%s">%d</span>'
+                     u'<span class="dur">%s</span>' % (ora, col, n, durata)) if k == 0 else u''
+            out.append(
+                u'        <tr%s>\n'
+                u'          <td class="c-ora">%s</td>\n'
+                u'          <td class="c-nome">%s</td>\n'
+                u'          <td class="c-perche" data-l="Perch&eacute; conta">%s</td>\n'
+                u'          <td class="c-orari" data-l="Orari e chiusura">%s</td>\n'
+                u'          <td class="c-prezzo" data-l="Prezzo senza card">%s</td>\n'
+                u'          <td class="c-fonte" data-l="Fonte">%s</td>\n'
+                u'        </tr>' % (u' class="seguito"' if k else u'', prima, r['nome'],
+                                    perche, r['orari'], r['prezzo'], cella_fonte(r)))
+    return (u'    <div class="tablebox"><table>\n'
+            u'      <thead><tr><th>Ora</th><th>Nome</th><th>Perch&eacute; conta</th>'
+            u'<th>Orari e giorno di chiusura</th><th>Prezzo senza card</th><th>Fonte</th></tr></thead>\n'
+            u'      <tbody>\n%s\n      </tbody>\n    </table></div>' % u'\n'.join(out))
 
 
 def blocco_conti(v):
@@ -250,7 +330,7 @@ def verdetto(v):
 def build_index():
     blocchi, switch = [], []
     for v in VARIANTI:
-        tl = timeline(v)
+        tl = tabella_itinerario(v)
         conti_html, tot_s, tot_c = blocco_conti(v)
         ntappe = len(set(p for p, _, _, _ in v['tappe']))
         switch.append(
@@ -264,7 +344,9 @@ def build_index():
             u'  <section class="variante" id="var-%s"%s>\n'
             u'    <div class="sechead"><h2>Itinerario %s &middot; %s</h2>'
             u'<span class="cnt">%d tappe &middot; %s &rarr; %s</span></div>\n'
-            u'    <ol class="day">\n%s\n    </ol>\n'
+            u'    <p class="introtab">Le stesse righe delle due tabelle di riferimento, '
+            u'nell\u2019ordine di questo itinerario.</p>\n'
+            u'%s\n'
             u'    <div class="sechead"><h2>Quanto costa</h2><span class="cnt">a testa, ingressi e tram</span></div>\n'
             u'%s\n%s\n  </section>'
             % (v['id'], u'' if v['id'] == 'a' else u' hidden', v['sigla'], v['titolo'],
@@ -489,7 +571,8 @@ HOME_CSS = MAP_CSS + u"""
 @media (max-width:520px){.foto{grid-template-columns:1fr;max-width:300px}}
 .foto figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:4px;
   overflow:hidden;box-shadow:var(--shadow);line-height:0}
-.foto img{display:block;width:100%;height:auto}
+.foto figure{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+.foto img{display:block;width:100%;height:100%;object-fit:contain}
 .cols{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:34px;align-items:start}
 @media (max-width:920px){.cols{grid-template-columns:1fr;gap:26px}}
 .mapcol{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px)}
@@ -617,12 +700,18 @@ tbody tr.off{opacity:.55}
 
 
 def cella_fonte(s):
+    out = []
     f = s.get('fonte')
     if f:
-        return u'<a href="%s" target="_blank" rel="noopener">%s &nearr;</a>' % (f[1], f[0])
-    return (u'<span class="none">non verificata</span>'
-            u'<span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte '
-            u'ufficiale da citare, prendeteli come indicativi.</span>')
+        out.append(u'<a href="%s" target="_blank" rel="noopener">%s &nearr;</a>' % (f[1], f[0]))
+    else:
+        out.append(u'<span class="none">non verificata</span>'
+                   u'<span class="why">Orari legati alle funzioni o al mercato: non ho trovato una fonte '
+                   u'ufficiale da citare, prendeteli come indicativi.</span>')
+    w = s.get('wiki')
+    if w:
+        out.append(u'<a class="wiki" href="%s" target="_blank" rel="noopener">Wikipedia &nearr;</a>' % w)
+    return u''.join(out)
 
 
 def rows(data, colore):
