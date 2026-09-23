@@ -102,12 +102,16 @@ INDEX_CSS = u"""
 .day{list-style:none;margin:0 0 38px;padding:0}
 .stop{display:grid;grid-template-columns:62px 38px minmax(0,1fr);gap:0 14px;
   padding:18px 0 20px;border-bottom:1px solid var(--rule-soft)}
-@media (max-width:560px){.stop{grid-template-columns:38px minmax(0,1fr)}
-  .stop .ora{grid-column:2;margin-bottom:4px}}
-.stop .ora{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;
-  color:var(--ink);letter-spacing:.01em;padding-top:3px}
-.stop .bullet{grid-row:1/span 5;display:flex;justify-content:center;position:relative}
-@media (max-width:560px){.stop .bullet{grid-column:1}}
+.stop > *{grid-column:3}
+.stop .ora{grid-column:1;grid-row:1;font-size:15px;font-weight:600;
+  font-variant-numeric:tabular-nums;color:var(--ink);letter-spacing:.01em;padding-top:3px}
+.stop .bullet{grid-column:2;grid-row:1/span 8;display:flex;justify-content:center;position:relative}
+@media (max-width:620px){
+  .stop{grid-template-columns:38px minmax(0,1fr)}
+  .stop > *{grid-column:2}
+  .stop .ora{grid-column:2;grid-row:1;padding-top:0;margin-bottom:5px}
+  .stop .bullet{grid-column:1;grid-row:1/span 8}
+}
 .stop .bullet span{width:32px;height:32px;border-radius:50%;background:var(--c,var(--route));
   color:var(--marker-ring);display:flex;align-items:center;justify-content:center;
   font-size:14.5px;font-weight:600;font-variant-numeric:tabular-nums;z-index:1;margin-top:1px}
@@ -125,8 +129,9 @@ INDEX_CSS = u"""
 .pill.free{border-color:var(--other);color:var(--other)}
 .pill.incard{border-color:var(--card);color:var(--card)}
 .stop p.testo{margin:10px 0 0;font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:62ch}
-.stop p.nota{margin:9px 0 0;font-size:13.5px;color:var(--ink-faint);line-height:1.5;
-  border-left:2px solid var(--rule);padding-left:11px;max-width:60ch}
+.stop p.nota{margin:11px 0 0;font-size:13.5px;color:var(--ink-faint);line-height:1.5;
+  border-left:2px solid var(--rule);padding-left:12px;max-width:62ch}
+.stop p.nota + p.nota{margin-top:8px}
 .stop p.nota b{color:var(--ink-soft)}
 
 .conti{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 20px}
@@ -388,12 +393,10 @@ HOME_BODY = u"""%(nav)s
     <figure>
       <img src="img/panchina.jpg" alt="Quattro ragazzi seduti sulla spalliera di una panchina in un parco"
            width="640" height="640">
-      <figcaption>Al parco, primi anni Ottanta.</figcaption>
     </figure>
     <figure>
       <img src="img/mare.jpg" alt="Sei ragazzi in posa sulla riva di una spiaggia, con scogliera alle spalle"
            width="1600" height="1200">
-      <figcaption>In spiaggia, stessa estate o gi&ugrave; di l&igrave;.</figcaption>
     </figure>
   </div>
 
@@ -481,13 +484,12 @@ HOME_BODY = u"""%(nav)s
 
 # =========================================================== 2. la home: foto + mappa
 HOME_CSS = MAP_CSS + u"""
-.foto{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 34px}
-@media (max-width:560px){.foto{grid-template-columns:1fr}}
+.foto{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 34px;
+  max-width:600px;align-items:start}
+@media (max-width:520px){.foto{grid-template-columns:1fr;max-width:300px}}
 .foto figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:4px;
-  overflow:hidden;box-shadow:var(--shadow)}
-.foto img{display:block;width:100%;height:250px;object-fit:cover;object-position:center 40%}
-@media (max-width:560px){.foto img{height:215px}}
-.foto figcaption{padding:11px 14px;font-size:12.5px;color:var(--ink-faint);line-height:1.45}
+  overflow:hidden;box-shadow:var(--shadow);line-height:0}
+.foto img{display:block;width:100%;height:auto}
 .cols{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:34px;align-items:start}
 @media (max-width:920px){.cols{grid-template-columns:1fr;gap:26px}}
 .mapcol{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px)}

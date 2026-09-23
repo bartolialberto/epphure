@@ -145,12 +145,16 @@ footer b{color:var(--ink-soft)}
 .day{list-style:none;margin:0 0 38px;padding:0}
 .stop{display:grid;grid-template-columns:62px 38px minmax(0,1fr);gap:0 14px;
   padding:18px 0 20px;border-bottom:1px solid var(--rule-soft)}
-@media (max-width:560px){.stop{grid-template-columns:38px minmax(0,1fr)}
-  .stop .ora{grid-column:2;margin-bottom:4px}}
-.stop .ora{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;
-  color:var(--ink);letter-spacing:.01em;padding-top:3px}
-.stop .bullet{grid-row:1/span 5;display:flex;justify-content:center;position:relative}
-@media (max-width:560px){.stop .bullet{grid-column:1}}
+.stop > *{grid-column:3}
+.stop .ora{grid-column:1;grid-row:1;font-size:15px;font-weight:600;
+  font-variant-numeric:tabular-nums;color:var(--ink);letter-spacing:.01em;padding-top:3px}
+.stop .bullet{grid-column:2;grid-row:1/span 8;display:flex;justify-content:center;position:relative}
+@media (max-width:620px){
+  .stop{grid-template-columns:38px minmax(0,1fr)}
+  .stop > *{grid-column:2}
+  .stop .ora{grid-column:2;grid-row:1;padding-top:0;margin-bottom:5px}
+  .stop .bullet{grid-column:1;grid-row:1/span 8}
+}
 .stop .bullet span{width:32px;height:32px;border-radius:50%;background:var(--c,var(--route));
   color:var(--marker-ring);display:flex;align-items:center;justify-content:center;
   font-size:14.5px;font-weight:600;font-variant-numeric:tabular-nums;z-index:1;margin-top:1px}
@@ -168,8 +172,9 @@ footer b{color:var(--ink-soft)}
 .pill.free{border-color:var(--other);color:var(--other)}
 .pill.incard{border-color:var(--card);color:var(--card)}
 .stop p.testo{margin:10px 0 0;font-size:15px;color:var(--ink-soft);line-height:1.55;max-width:62ch}
-.stop p.nota{margin:9px 0 0;font-size:13.5px;color:var(--ink-faint);line-height:1.5;
-  border-left:2px solid var(--rule);padding-left:11px;max-width:60ch}
+.stop p.nota{margin:11px 0 0;font-size:13.5px;color:var(--ink-faint);line-height:1.5;
+  border-left:2px solid var(--rule);padding-left:12px;max-width:62ch}
+.stop p.nota + p.nota{margin-top:8px}
 .stop p.nota b{color:var(--ink-soft)}
 
 .conti{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 20px}

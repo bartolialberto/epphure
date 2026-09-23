@@ -103,13 +103,12 @@ svg.map{display:block;width:100%;height:auto;max-width:100%;touch-action:manipul
 .scaletxt{fill:var(--ink-soft);font-family:'Jost',sans-serif;font-size:17px;font-weight:500;opacity:.8}
 .mapnote{margin:11px 2px 0;font-size:12.5px;line-height:1.5;color:var(--ink-faint);max-width:58ch}
 
-.foto{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 34px}
-@media (max-width:560px){.foto{grid-template-columns:1fr}}
+.foto{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 34px;
+  max-width:600px;align-items:start}
+@media (max-width:520px){.foto{grid-template-columns:1fr;max-width:300px}}
 .foto figure{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:4px;
-  overflow:hidden;box-shadow:var(--shadow)}
-.foto img{display:block;width:100%;height:250px;object-fit:cover;object-position:center 40%}
-@media (max-width:560px){.foto img{height:215px}}
-.foto figcaption{padding:11px 14px;font-size:12.5px;color:var(--ink-faint);line-height:1.45}
+  overflow:hidden;box-shadow:var(--shadow);line-height:0}
+.foto img{display:block;width:100%;height:auto}
 .cols{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:34px;align-items:start}
 @media (max-width:920px){.cols{grid-template-columns:1fr;gap:26px}}
 .mapcol{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px)}
@@ -179,12 +178,10 @@ svg.map{display:block;width:100%;height:auto;max-width:100%;touch-action:manipul
     <figure>
       <img src="img/panchina.jpg" alt="Quattro ragazzi seduti sulla spalliera di una panchina in un parco"
            width="640" height="640">
-      <figcaption>Al parco, primi anni Ottanta.</figcaption>
     </figure>
     <figure>
       <img src="img/mare.jpg" alt="Sei ragazzi in posa sulla riva di una spiaggia, con scogliera alle spalle"
            width="1600" height="1200">
-      <figcaption>In spiaggia, stessa estate o gi&ugrave; di l&igrave;.</figcaption>
     </figure>
   </div>
 
