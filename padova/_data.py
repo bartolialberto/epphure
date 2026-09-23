@@ -14,6 +14,9 @@ RIENTRO = u"18:20"
 # id -> scheda del posto. Le due varianti li mettono in fila in ordini diversi.
 PLACES = {
     "stazione": dict(nome="Stazione FS", lat=45.4167, lon=11.8797, card=False,
+        distanze=[(u"Centro, Caffè Pedrocchi", u"1,3 km", u"20 min a piedi", u"tram SIR1, 3 fermate"),
+                  (u"Basilica del Santo", u"2,3 km", u"30 min a piedi", u"tram SIR1 fino a <b>Santo</b>, 6 fermate, ~20 min in tutto"),
+                  (u"Prato della Valle", u"2,5 km", u"32 min a piedi", u"tram SIR1, 7 fermate")],
         testo="Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore "
               "del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a "
               "Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra."),
@@ -26,7 +29,8 @@ PLACES = {
               "la cattedra di Galileo, l’Aula Magna, la statua di Elena Lucrezia Cornaro Piscopia — prima laureata della storia — "
               "e, nel fine settimana, anche l’ala razionalista di Gio Ponti.",
         nota="Di sabato il tour dura <b>75 minuti</b> e costa 12,00 € invece di 7,00: è il giro lungo, che aggiunge il Novecento. "
-             "<b>Prenotazione obbligatoria.</b> Turni: 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30."),
+             "<b>Prenotazione obbligatoria.</b> Turni: 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30.",
+        nota_ada="<b>Perché dopo pranzo:</b> nell’itinerario Ada si rientra dal Santo verso le 11:30, e i 75 minuti del giro non ci stanno prima delle 13. Il turno delle 11:30 è in inglese; quello delle 12:30 finirebbe alle 13:45, cioè tre quarti d’ora dopo il tavolo prenotato. Resta il turno delle <b>15:30</b>, che chiude la giornata con tutto il tempo per arrivare al Prato."),
     "ragione": dict(nome="Palazzo della Ragione", fonte=(u"Musei Civici di Padova", u"https://padovamusei.it/it/biglietti-orari-musei"), lat=45.4074, lon=11.8747, card=True,
         testo="Il <b>Salone</b>: 80 metri di sala pensile senza colonne, sotto una carena di nave rovesciata, "
               "e attorno 333 riquadri affrescati con il calendario astrologico di Pietro d’Abano. Sotto, le due piazze del mercato, "
@@ -95,7 +99,23 @@ VARIANTE_B = dict(
         ("prato",      "17:20", "30 min",               "Gratuito"),
         ("stazione",   "17:55", "tram, 12 min",         None),
     ])
-VARIANTI = [VARIANTE_A, VARIANTE_B]
+VARIANTE_ADA = dict(
+    id="ada", titolo=u"Ada", sigla=u"★",
+    sommario=u"Il Santo per primo, appena aprono i musei: è il momento in cui c’è meno gente. "
+             u"Si va in tram direttamente lì, poi si risale in centro. Palazzo del Bo finisce <b>dopo pranzo</b>, "
+             u"perché prima non ci sta (vedi la nota alla tappa).",
+    tappe=[
+        ("stazione",   "09:30", "tram, 20 min",         None),
+        ("santo",      "09:50", "90 min",               "10,00 €"),
+        ("pedrocchi",  "11:45", "40 min",               "4,00 €"),
+        ("signori",    "12:35", "20 min",               "Gratuito"),
+        ("pranzo",     "13:00", "90 min",               None),
+        ("ragione",    "14:35", "45 min",               "8,00 €"),
+        ("bo",         "15:30", "75 min",               "12,00 €"),
+        ("prato",      "17:05", "30 min",               "Gratuito"),
+        ("stazione",   "17:45", "tram, 12 min",         None),
+    ])
+VARIANTI = [VARIANTE_A, VARIANTE_B, VARIANTE_ADA]
 
 # ordine di disegno del percorso sulla mappa (unione delle due varianti)
 ORDINE_MAPPA = ["stazione", "pedrocchi", "bo", "ragione", "signori", "pranzo",
@@ -122,11 +142,32 @@ TRASPORTI = dict(
         (u"App Busitalia Veneto, Trenitalia, DropTicket", u"sempre",
          u"Comodo se avete già una delle tre installate."),
     ],
+    come=[
+        (u"Contactless, il modo più rapido",
+         u"Si appoggia la carta di credito o il telefono al <b>validatore giallo</b> appena saliti, "
+         u"e si pagano 1,70 €. Non serve comprare nulla prima né installare niente. "
+         u"Ogni persona deve appoggiare la propria carta: una carta sola non vale per due."),
+        (u"Biglietto di carta",
+         u"Va <b>obliterato a bordo</b> nella macchinetta appena saliti. Un biglietto non timbrato vale come "
+         u"non averlo, ed è la multa più comune che prendono i turisti."),
+        (u"App",
+         u"Si compra e si <b>attiva prima di salire</b>: l’attivazione fa partire i 90 minuti."),
+        (u"Quanto dura",
+         u"<b>90 minuti dalla validazione</b>, con cambi liberi fra bus e tram. Per la vostra giornata "
+         u"la corsa del mattino sarà scaduta da un pezzo quando tornate: servono due validazioni distinte."),
+    ],
     consiglio=u"Per questa giornata servono <b>due corse</b>: stazione &rarr; centro la mattina, "
               u"Prato della Valle &rarr; stazione la sera. Sono <b>3,40 € a testa</b>, quindi il giornaliero da 4,70 € "
               u"non conviene. Se prendete la Padova Card, i mezzi sono già dentro e non comprate nulla. "
               u"La mattina si può anche andare a piedi in venti minuti: la corsa che serve davvero è quella del ritorno.",
 )
+
+# ----------------------------------------------------------------- tram SIR1
+# fermate in centro, nell'ordine della linea (posizioni schematiche)
+TRAM_FERMATE = [("Stazione FS", 45.4167, 11.8797), ("Trieste", 45.4133, 11.8791),
+                ("Eremitani", 45.4110, 11.8781), ("Ponti Romani", 45.4085, 11.8772),
+                ("Tito Livio", 45.4048, 11.8740), ("Santo", 45.4028, 11.8762),
+                ("Prato della Valle", 45.3990, 11.8772), ("Santa Croce", 45.3960, 11.8778)]
 
 # ----------------------------------------------------------------- tabella A: Padova Urbs picta Card
 CARD_PREZZO = u"28,00 €"
@@ -172,6 +213,18 @@ CARD_SITI = [
 
 # ----------------------------------------------------------------- tabella B: fuori card
 ALTRI_LUOGHI = [
+    dict(nome="Brutal", fonte=(u"OpenStreetMap", u"https://www.openstreetmap.org/?mlat=45.40742&mlon=11.87398#map=19/45.40742/11.87398"),
+         lat=45.4074182, lon=11.8739796, dx=-14, dy=28, tipo="bar",
+         perche="Cocktail bar in <b>Piazza dei Signori</b>, sotto la Torre dell’Orologio: è esattamente dove passa "
+                "l’itinerario a metà mattina, e il posto giusto per la sosta prima di pranzo.",
+         orari="Verificare sul posto o sui social del locale<em>orario non reperito da fonte ufficiale</em>",
+         prezzo="—<em>Piazza dei Signori 2</em>"),
+    dict(nome="All’Ombra della Piazza", fonte=(u"OpenStreetMap", u"https://www.openstreetmap.org/?mlat=45.40816&mlon=11.87504#map=19/45.40816/11.87504"),
+         lat=45.4081590, lon=11.8750373, dx=18, dy=-14, tipo="bar",
+         perche="In <b>Via Pietro d’Abano</b>, il vicolo fra Piazza della Frutta e Piazza dei Signori: due passi "
+                "da Palazzo della Ragione, utile per lo spritz appena usciti dal Salone.",
+         orari="Verificare sul posto o sui social del locale<em>orario non reperito da fonte ufficiale</em>",
+         prezzo="—<em>Via Pietro d’Abano 16</em>"),
     dict(nome="Bacaro Padovano", fonte=(u"bacaropadovano.com", u"https://www.bacaropadovano.com/contatti/"), lat=45.40545, lon=11.87242, tipo="pasto", tappa="pranzo",
          perche="<b>Il pranzo prenotato.</b> Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, "
                 "tre minuti dal Duomo e cinque da Piazza dei Signori.",

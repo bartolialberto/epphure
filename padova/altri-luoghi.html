@@ -21,7 +21,7 @@
   --road:#FCFBF6; --road-case:#CDC7B8;
   --ink:#22231E; --ink-soft:#66675D; --ink-faint:#93948A;
   --rule:#D5D3C6; --rule-soft:#E3E1D6;
-  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16;
+  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16; --bar:#1F7A7A;
   --marker-ring:#F9F9F4;
   --shadow:0 1px 2px rgba(34,35,30,.07), 0 6px 18px rgba(34,35,30,.06);
 }
@@ -31,7 +31,7 @@
   --road:#494C44; --road-case:#212420;
   --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
   --rule:#343836; --rule-soft:#282B2A;
-  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B; --bar:#5FC3BE;
   --marker-ring:#16181A;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
 }}
@@ -41,7 +41,7 @@
   --road:#494C44; --road-case:#212420;
   --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
   --rule:#343836; --rule-soft:#282B2A;
-  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B; --bar:#5FC3BE;
   --marker-ring:#16181A;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
 }
@@ -140,9 +140,9 @@ tbody tr.off{opacity:.55}
 <body>
 <div class="wrap">
   <nav class="sitenav">
-    <a href="./">Un giorno a Padova</a>
+    <a href="../">EPPHURE · la mappa</a>
     <span class="sep">/</span>
-    <a href="mappa.html">Mappa</a>
+    <a href="./">La giornata</a>
     <span class="sep">/</span>
     <a href="padova-card.html">Padova Card</a>
     <span class="sep">/</span>
@@ -150,10 +150,10 @@ tbody tr.off{opacity:.55}
   </nav>
 
   <header class="masthead">
-    <p class="eyebrow">Fuori dalla card &middot; 12 luoghi</p>
+    <p class="eyebrow">Fuori dalla card &middot; 14 luoghi</p>
     <h1>Fuori dalla <em>card</em></h1>
     <p class="standfirst">Quello che la Padova Urbs picta Card non copre e che vale comunque la giornata: l&rsquo;universit&agrave;, l&rsquo;orto botanico, la piazza pi&ugrave; grande d&rsquo;Italia &mdash; e il tavolo prenotato per l&rsquo;una. Il numero indica le tappe del <a href="./">vostro itinerario</a>.</p>
-    <ul class="legend"><li style="--c:var(--other)"><i></i>Fuori dalla card</li><li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li><li style="--c:var(--food)"><i></i>Il pranzo</li></ul>
+    <ul class="legend"><li style="--c:var(--other)"><i></i>Fuori dalla card</li><li style="--c:var(--route)"><i></i>Tappa dell&rsquo;itinerario</li><li style="--c:var(--food)"><i></i>Il pranzo</li><li style="--c:var(--bar)"><i style="border-radius:3px"></i>I due bar</li></ul>
   </header>
 
   <div class="tablebox">
@@ -163,6 +163,20 @@ tbody tr.off{opacity:.55}
         <th>Prezzo senza card</th><th>Fonte</th></tr>
       </thead>
       <tbody>
+        <tr>
+          <td class="c-nome">Brutal</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">Cocktail bar in <b>Piazza dei Signori</b>, sotto la Torre dell’Orologio: è esattamente dove passa l’itinerario a metà mattina, e il posto giusto per la sosta prima di pranzo.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Verificare sul posto o sui social del locale<em>orario non reperito da fonte ufficiale</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">—<em>Piazza dei Signori 2</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.openstreetmap.org/?mlat=45.40742&mlon=11.87398#map=19/45.40742/11.87398" target="_blank" rel="noopener">OpenStreetMap &nearr;</a></td>
+        </tr>
+        <tr>
+          <td class="c-nome">All’Ombra della Piazza</td>
+          <td class="c-perche" data-l="Perch&eacute; conta">In <b>Via Pietro d’Abano</b>, il vicolo fra Piazza della Frutta e Piazza dei Signori: due passi da Palazzo della Ragione, utile per lo spritz appena usciti dal Salone.</td>
+          <td class="c-orari" data-l="Orari e chiusura">Verificare sul posto o sui social del locale<em>orario non reperito da fonte ufficiale</em></td>
+          <td class="c-prezzo" data-l="Prezzo senza card">—<em>Via Pietro d’Abano 16</em></td>
+          <td class="c-fonte" data-l="Fonte"><a href="https://www.openstreetmap.org/?mlat=45.40816&mlon=11.87504#map=19/45.40816/11.87504" target="_blank" rel="noopener">OpenStreetMap &nearr;</a></td>
+        </tr>
         <tr>
           <td class="c-nome"><span class="tappa" style="--c:var(--food)">6</span>Bacaro Padovano</td>
           <td class="c-perche" data-l="Perch&eacute; conta"><b>Il pranzo prenotato.</b> Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.</td>

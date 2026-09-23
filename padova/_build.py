@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Genera le quattro pagine del sito "Un giorno a Padova"."""
 import io, os, math, re
-from _data import PLACES, ORDINE_MAPPA, VARIANTI, CARD_SITI, ALTRI_LUOGHI, CARD_PREZZO
+from _data import (PLACES, ORDINE_MAPPA, VARIANTI, CARD_SITI, ALTRI_LUOGHI,
+                   CARD_PREZZO, TRAM_FERMATE)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -57,24 +58,35 @@ STRADE = [
     dict(w=5, p=[[45.4074, 11.8747], [45.4077, 11.8735], [45.4079, 11.8720]]),          # le due piazze
     dict(w=5, p=[[45.3988, 11.8771], [45.3981, 11.8794], [45.3980, 11.8814]]),          # sotto il Prato
 ]
-TRAM = [["Stazione FS", 45.4167, 11.8797], ["Ponti Romani", 45.4085, 11.8772],
-        ["Tito Livio", 45.4045, 11.8736], ["Prato della Valle", 45.3990, 11.8772],
-        ["Santa Croce", 45.3960, 11.8778]]
-TRAM_TRACCIA = [[45.4180, 11.8800], [45.4167, 11.8797], [45.4130, 11.8790], [45.4085, 11.8772],
-                [45.4062, 11.8750], [45.4045, 11.8736], [45.4018, 11.8756], [45.3990, 11.8772],
-                [45.3960, 11.8778]]
+TRAM_TRACCIA = ([[45.4180, 11.8800]] + [[la, lo] for _n, la, lo in TRAM_FERMATE]
+                + [[45.3946, 11.8780]])
 ETICHETTE = [dict(t="EREMITANI", lat=45.4136, lon=11.8830, s=19),
              dict(t="CENTRO STORICO", lat=45.4100, lon=11.8688, s=19),
              dict(t="IL SANTO", lat=45.4000, lon=11.8840, s=18),
              dict(t="PORTELLO", lat=45.4082, lon=11.8862, s=16)]
 
-# percorso a piedi della giornata, seguendo le strade
-PERCORSO = [[45.4167, 11.8797], [45.4140, 11.8792], [45.4112, 11.8786], [45.4092, 11.8776],
-            [45.4077, 11.8766], [45.4069, 11.8772], [45.4073, 11.8760], [45.4074, 11.8747],
-            [45.4077, 11.8735], [45.4079, 11.8720], [45.4070, 11.8716], [45.4062, 11.8719],
-            [45.40545, 11.87242], [45.4060, 11.8715], [45.4065, 11.8709], [45.4058, 11.8722],
-            [45.4050, 11.8740], [45.4040, 11.8760], [45.4030, 11.8785], [45.4014, 11.8809],
-            [45.4005, 11.8806], [45.3994, 11.8802], [45.3988, 11.8786], [45.3986, 11.8770]]
+# un tracciato per ciascun itinerario: cambiando itinerario cambia la linea rossa
+_CENTRO   = [[45.4092, 11.8776], [45.4077, 11.8766]]                       # Corso Garibaldi -> Pedrocchi
+_DA_STAZ  = [[45.4167, 11.8797], [45.4140, 11.8792], [45.4112, 11.8786]] + _CENTRO
+_PIAZZE   = [[45.4073, 11.8760], [45.4074, 11.8747], [45.4077, 11.8735], [45.4079, 11.8720]]
+_AL_DUOMO = [[45.4070, 11.8716], [45.4062, 11.8719], [45.40545, 11.87242], [45.4060, 11.8715], [45.4065, 11.8709]]
+_AL_SANTO = [[45.4058, 11.8722], [45.4050, 11.8740], [45.4040, 11.8760], [45.4030, 11.8785], [45.4014, 11.8809]]
+_AL_PRATO = [[45.4005, 11.8806], [45.3994, 11.8802], [45.3988, 11.8786], [45.3986, 11.8770]]
+
+PERCORSI = {
+    "a":   _DA_STAZ + [[45.4069, 11.8772]] + _PIAZZE + _AL_DUOMO + _AL_SANTO + [[45.4005, 11.8806]] + _AL_PRATO[1:],
+    "b":   _DA_STAZ + _PIAZZE + _AL_DUOMO + _AL_SANTO + _AL_PRATO,
+    # Ada: in tram fino al Santo, poi si risale in centro nell'ordine delle tappe
+    # Santo -> Pedrocchi -> Signori -> pranzo -> Ragione -> Bo -> Prato
+    "ada": [[45.4014, 11.8809], [45.4030, 11.8785], [45.4045, 11.8764], [45.4058, 11.8768],
+            [45.4077, 11.8766],
+            [45.4077, 11.8752], [45.4079, 11.8735], [45.4079, 11.8720],
+            [45.4070, 11.8716], [45.4062, 11.8719], [45.40545, 11.87242],
+            [45.4063, 11.8733], [45.4071, 11.8743], [45.4074, 11.8747],
+            [45.4073, 11.8760], [45.4069, 11.8772],
+            [45.4058, 11.8766], [45.4042, 11.8752], [45.4020, 11.8760],
+            [45.4000, 11.8766], [45.3986, 11.8770]],
+}
 
 # =================================================================== stile
 TOK = """  --ground:#EDEEE9; --surface:#F9F9F4; --surface-2:#F2F2EB;
@@ -82,7 +94,7 @@ TOK = """  --ground:#EDEEE9; --surface:#F9F9F4; --surface-2:#F2F2EB;
   --road:#FCFBF6; --road-case:#CDC7B8;
   --ink:#22231E; --ink-soft:#66675D; --ink-faint:#93948A;
   --rule:#D5D3C6; --rule-soft:#E3E1D6;
-  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16;
+  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16; --bar:#1F7A7A;
   --marker-ring:#F9F9F4;
   --shadow:0 1px 2px rgba(34,35,30,.07), 0 6px 18px rgba(34,35,30,.06);"""
 TOK_DARK = """  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
@@ -90,7 +102,7 @@ TOK_DARK = """  --ground:#16181A; --surface:#1D2022; --surface-2:#232729;
   --road:#494C44; --road-case:#212420;
   --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
   --rule:#343836; --rule-soft:#282B2A;
-  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B; --bar:#5FC3BE;
   --marker-ring:#16181A;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);"""
 
@@ -136,17 +148,21 @@ footer b{color:var(--ink-soft)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 """
 
-NAV_PAGES = [("index.html", "Un giorno a Padova"), ("mappa.html", "Mappa"),
-             ("padova-card.html", "Padova Card"), ("altri-luoghi.html", "Altri luoghi")]
+NAV_PAGES = [("home", u"EPPHURE · la mappa"), ("giornata", u"La giornata"),
+             ("card", u"Padova Card"), ("altri", u"Altri luoghi")]
+HREF = {
+    "root":   {"home": "./", "giornata": "padova/", "card": "padova/padova-card.html", "altri": "padova/altri-luoghi.html"},
+    "padova": {"home": "../", "giornata": "./", "card": "padova-card.html", "altri": "altri-luoghi.html"},
+}
 
 
-def nav(cur):
+def nav(cur, dove="padova"):
     out = []
-    for href, label in NAV_PAGES:
-        h = "./" if href == "index.html" else href
-        cu = ' aria-current="page"' if href == cur else ''
-        out.append(u'    <a href="%s"%s>%s</a>' % (h, cu, label))
-    return u'  <nav class="sitenav">\n' + u'\n    <span class="sep">/</span>\n'.join(out) + u'\n  </nav>'
+    for key, label in NAV_PAGES:
+        cu = ' aria-current="page"' if key == cur else ''
+        out.append(u'    <a href="%s"%s>%s</a>' % (HREF[dove][key], cu, label))
+    sep = u'\n    <span class="sep">/</span>\n'
+    return u'  <nav class="sitenav">\n' + sep.join(out) + u'\n  </nav>'
 
 
 def page(title, desc, css, body, maxw="900px"):
@@ -189,7 +205,7 @@ def page(title, desc, css, body, maxw="900px"):
 
 
 def write(name, text):
-    io.open(os.path.join(HERE, name), 'w', encoding='utf-8', newline='\n').write(text)
+    io.open(os.path.join(HERE, name) if not name.startswith('..') else os.path.abspath(os.path.join(HERE, name)), 'w', encoding='utf-8', newline='\n').write(text)
     return len(text.encode('utf-8')) / 1024.0
 
 
@@ -246,21 +262,33 @@ def build_map(interactive=True, mini=False):
             g.append('<path d="%s" fill="none" stroke="var(--road)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round"/>' % (smooth(st['p']), st['w']))
         g.append('<g id="tram"><path d="%s" fill="none" stroke="var(--marker-ring)" stroke-width="11" stroke-linecap="round" opacity=".6"/>' % poly(TRAM_TRACCIA))
         g.append('<path d="%s" fill="none" stroke="var(--tram)" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 11" stroke-linejoin="round"/>' % poly(TRAM_TRACCIA))
-        for nm, la, lo in TRAM:
+        for nm, la, lo in TRAM_FERMATE:
             g.append('<circle cx="%.0f" cy="%.0f" r="5.5" fill="var(--marker-ring)" stroke="var(--tram)" stroke-width="2.6"><title>%s — tram SIR1</title></circle>' % (px(lo), py(la), nm))
         g.append('</g>')
         for e in ETICHETTE:
             g.append('<text class="maplabel" x="%.0f" y="%.0f" font-size="%d">%s</text>' % (px(e['lon']), py(e['lat']), e['s'], e['t']))
-    # il percorso: unione delle due varianti
-    g.append('<path d="%s" fill="none" stroke="var(--marker-ring)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>' % (smooth(PERCORSO), 16 if not mini else 20))
-    g.append('<path class="routeline" d="%s" fill="none" stroke="var(--route)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round"/>' % (smooth(PERCORSO), 8 if not mini else 12))
+    # un tracciato per itinerario: la pagina ne mostra uno per volta
+    for vid, pts in PERCORSI.items():
+        vis = '' if (vid == 'a' or mini) else ' hidden="hidden"'
+        op = ' opacity=".5"' if (mini and vid != 'a') else ''
+        g.append('<g class="rt" data-v="%s"%s%s>' % (vid, vis, op))
+        g.append('<path d="%s" fill="none" stroke="var(--marker-ring)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>'
+                 % (smooth(pts), 16 if not mini else 20))
+        g.append('<path class="routeline" d="%s" fill="none" stroke="var(--route)" stroke-width="%d" stroke-linecap="round" stroke-linejoin="round"/>'
+                 % (smooth(pts), 8 if not mini else 12))
+        g.append('</g>')
+        if mini:
+            break
     # gli altri luoghi
     if not mini:
         for s, kind in extra_markers():
             x, y = px(s['lon']) + s.get('dx', 0), py(s['lat']) + s.get('dy', 0)
             col = 'var(--card)' if kind == 'card' else 'var(--other)'
             op = ' opacity=".45"' if s.get('escluso') else ''
-            if kind == 'card':
+            if s.get('tipo') == 'bar':
+                col = 'var(--bar)'
+                shape = '<rect x="%.0f" y="%.0f" width="23" height="23" rx="5" fill="%s" stroke="var(--marker-ring)" stroke-width="3"%s/>' % (x - 11.5, y - 11.5, col, op)
+            elif kind == 'card':
                 shape = '<path d="M0 -14 L14 0 L0 14 L-14 0 Z" transform="translate(%.0f,%.0f)" fill="%s" stroke="var(--marker-ring)" stroke-width="3"%s/>' % (x, y, col, op)
             else:
                 shape = '<circle cx="%.0f" cy="%.0f" r="12" fill="%s" stroke="var(--marker-ring)" stroke-width="3"%s/>' % (x, y, col, op)
@@ -273,10 +301,12 @@ def build_map(interactive=True, mini=False):
         fill = 'var(--food)' if pl.get('pasto') else 'var(--route)'
         r = 21 if not mini else 26
         ring = ('<circle cx="%.0f" cy="%.0f" r="%.0f" fill="none" stroke="var(--card)" stroke-width="3"/>' % (x, y, r + 5)) if pl['card'] else ''
-        num = '' if mini else '<text class="num" x="%.0f" y="%.0f">%s</text>' % (x, y, na if na else (nb or ''))
+        prima = na or nb or NUM[pid].get('ada')
+        num = '' if mini else '<text class="num" x="%.0f" y="%.0f">%s</text>' % (x, y, prima or '')
         if interactive:
-            tag = ('g class="marker" data-p="%s" data-a="%s" data-b="%s" tabindex="0" role="button" aria-label="%s"'
-                   % (pid, na or '', nb or '', pl['nome']))
+            tag = ('g class="marker" data-p="%s" data-a="%s" data-b="%s" data-ada="%s" '
+                   'tabindex="0" role="button" aria-label="%s"'
+                   % (pid, na or '', nb or '', NUM[pid].get('ada') or '', pl['nome']))
         else:
             tag = 'g'
         g.append('<%s>%s<circle class="halo" cx="%.0f" cy="%.0f" r="%.0f"/>'

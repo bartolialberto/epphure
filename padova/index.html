@@ -21,7 +21,7 @@
   --road:#FCFBF6; --road-case:#CDC7B8;
   --ink:#22231E; --ink-soft:#66675D; --ink-faint:#93948A;
   --rule:#D5D3C6; --rule-soft:#E3E1D6;
-  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16;
+  --route:#AF3A2D; --card:#2F5C93; --other:#6B8A3C; --food:#7B4B8A; --tram:#CE8F16; --bar:#1F7A7A;
   --marker-ring:#F9F9F4;
   --shadow:0 1px 2px rgba(34,35,30,.07), 0 6px 18px rgba(34,35,30,.06);
 }
@@ -31,7 +31,7 @@
   --road:#494C44; --road-case:#212420;
   --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
   --rule:#343836; --rule-soft:#282B2A;
-  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B; --bar:#5FC3BE;
   --marker-ring:#16181A;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
 }}
@@ -41,7 +41,7 @@
   --road:#494C44; --road-case:#212420;
   --ink:#E9E7DE; --ink-soft:#A2A398; --ink-faint:#787A70;
   --rule:#343836; --rule-soft:#282B2A;
-  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B;
+  --route:#E2725E; --card:#7BABDA; --other:#A3C06C; --food:#C691D6; --tram:#E6B64B; --bar:#5FC3BE;
   --marker-ring:#16181A;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
 }
@@ -124,8 +124,8 @@ footer b{color:var(--ink-soft)}
 .sechead .cnt{margin-left:auto;font-size:12.5px;color:var(--ink-faint);text-align:right}
 
 /* --- lo scambio fra i due itinerari --- */
-.switch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0 26px}
-@media (max-width:620px){.switch{grid-template-columns:1fr}}
+.switch{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 26px}
+@media (max-width:860px){.switch{grid-template-columns:1fr}}
 .switch button{display:block;text-align:left;font-family:inherit;cursor:pointer;
   background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:15px 17px;
   color:inherit;transition:border-color .15s,background .15s}
@@ -216,9 +216,9 @@ footer b{color:var(--ink-soft)}
 <body>
 <div class="wrap">
   <nav class="sitenav">
-    <a href="./" aria-current="page">Un giorno a Padova</a>
+    <a href="../">EPPHURE · la mappa</a>
     <span class="sep">/</span>
-    <a href="mappa.html">Mappa</a>
+    <a href="./" aria-current="page">La giornata</a>
     <span class="sep">/</span>
     <a href="padova-card.html">Padova Card</a>
     <span class="sep">/</span>
@@ -228,7 +228,7 @@ footer b{color:var(--ink-soft)}
   <header class="masthead">
     <p class="eyebrow">Sabato &middot; arrivo 09:30 &middot; rientro 18:20 &middot; senza Scrovegni</p>
     <h1>Un giorno a <em>Padova</em></h1>
-    <p class="standfirst">Nove tappe fra la stazione e il Prato della Valle, incastrate fra i tre orari fissi
+    <p class="standfirst">Tre giornate possibili fra la stazione e il Prato della Valle, incastrate fra i tre orari fissi
     della giornata: il treno delle 9:30, il tavolo delle 13:00 e il treno di ritorno delle 18:20.
     Senza la Cappella degli Scrovegni &mdash; al suo posto il <b>Battistero del Duomo</b>, che ha un ciclo di
     affreschi altrettanto grande e quasi nessuna coda.</p>
@@ -240,15 +240,15 @@ footer b{color:var(--ink-soft)}
     </ul>
   </header>
 
-  <a class="mapcard" href="mappa.html">
+  <a class="mapcard" href="../">
     <div>
       <p class="kicker">La mappa</p>
-      <h2>Il percorso disegnato sulla citt&agrave;</h2>
-      <p>Le tappe proiettate dalle coordinate reali, il tracciato a piedi che le unisce, i canali che chiudono
-      il centro ad anello e la linea del tram per tornare in stazione. Sulla mappa si passa da un itinerario all&rsquo;altro.</p>
-      <span class="go">Apri la mappa &rarr;</span>
+      <h2>La mappa dei tre percorsi</h2>
+      <p>Sta nella home del sito, sotto le foto: i tracciati proiettati dalle coordinate reali, i canali che
+      chiudono il centro ad anello, i due bar e la linea del tram SIR1 dalla stazione alla fermata Santo.</p>
+      <span class="go">Vai alla mappa &rarr;</span>
     </div>
-    <div class="thumb"><rect width="1000" height="1287" fill="var(--land)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="var(--land-hi)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="none" stroke="var(--water)" stroke-width="15" stroke-linejoin="round"/><path d="M-85 -27C-76 -6,-55 62,-31 99C-6 135,38 172,62 192C85 212,100 215,108 219" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M831 383C853 376,921 351,962 340C1003 329,1058 321,1077 318" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M431 1249C405 1262,329 1304,277 1326C224 1348,142 1371,115 1381" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--marker-ring)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/><path class="routeline" d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--route)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><g><circle class="halo" cx="604" cy="126" r="40"/><circle class="pin" cx="604" cy="126" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="485" cy="619" r="40"/><circle class="pin" cx="485" cy="619" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="508" cy="663" r="40"/><circle class="pin" cx="508" cy="663" r="26" fill="var(--route)"/></g><g><circle cx="412" cy="635" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="412" cy="635" r="40"/><circle class="pin" cx="412" cy="635" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="308" cy="608" r="40"/><circle class="pin" cx="308" cy="608" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="324" cy="742" r="40"/><circle class="pin" cx="324" cy="742" r="26" fill="var(--food)"/></g><g><circle cx="265" cy="685" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="265" cy="685" r="40"/><circle class="pin" cx="265" cy="685" r="26" fill="var(--route)"/></g><g><circle cx="650" cy="964" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="650" cy="964" r="40"/><circle class="pin" cx="650" cy="964" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="623" cy="1074" r="40"/><circle class="pin" cx="623" cy="1074" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="500" cy="1118" r="40"/><circle class="pin" cx="500" cy="1118" r="26" fill="var(--route)"/></g></div>
+    <div class="thumb"><rect width="1000" height="1287" fill="var(--land)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="var(--land-hi)"/><path d="M108 219C151 199,242 198,315 197C388 196,482 203,546 214C610 225,653 235,700 263C747 291,799 336,831 383C863 431,878 484,892 548C906 612,915 694,915 767C915 840,912 918,892 986C873 1055,846 1134,800 1178C754 1222,677 1237,615 1249C554 1261,491 1262,431 1249C371 1236,305 1207,254 1172C203 1138,159 1101,123 1041C87 981,55 895,38 811C22 727,21 619,23 537C26 455,40 371,54 318C68 265,64 239,108 219Z" fill="none" stroke="var(--water)" stroke-width="15" stroke-linejoin="round"/><path d="M-85 -27C-76 -6,-55 62,-31 99C-6 135,38 172,62 192C85 212,100 215,108 219" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M831 383C853 376,921 351,962 340C1003 329,1058 321,1077 318" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><path d="M431 1249C405 1262,329 1304,277 1326C224 1348,142 1371,115 1381" fill="none" stroke="var(--water)" stroke-width="15" stroke-linecap="round"/><g class="rt" data-v="a"><path d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--marker-ring)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/><path class="routeline" d="M604 126C601 151,592 224,585 274C578 324,572 383,562 427C551 471,536 505,523 537C510 569,487 598,485 619C482 640,512 659,508 663C504 667,478 646,462 641C446 636,428 639,412 635C396 632,383 624,365 619C348 614,320 602,308 608C296 614,293 642,292 657C292 673,299 687,304 701C309 715,326 740,324 742C321 744,298 722,288 712C279 703,261 683,265 685C270 687,296 709,315 723C335 737,360 751,385 767C409 783,433 803,462 822C490 840,526 853,558 877C589 900,637 941,650 964C663 987,643 995,638 1013C634 1032,636 1058,623 1074C610 1089,582 1099,562 1107C541 1114,510 1116,500 1118" fill="none" stroke="var(--route)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g><g><circle class="halo" cx="604" cy="126" r="40"/><circle class="pin" cx="604" cy="126" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="485" cy="619" r="40"/><circle class="pin" cx="485" cy="619" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="508" cy="663" r="40"/><circle class="pin" cx="508" cy="663" r="26" fill="var(--route)"/></g><g><circle cx="412" cy="635" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="412" cy="635" r="40"/><circle class="pin" cx="412" cy="635" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="308" cy="608" r="40"/><circle class="pin" cx="308" cy="608" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="324" cy="742" r="40"/><circle class="pin" cx="324" cy="742" r="26" fill="var(--food)"/></g><g><circle cx="265" cy="685" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="265" cy="685" r="40"/><circle class="pin" cx="265" cy="685" r="26" fill="var(--route)"/></g><g><circle cx="650" cy="964" r="31" fill="none" stroke="var(--card)" stroke-width="3"/><circle class="halo" cx="650" cy="964" r="40"/><circle class="pin" cx="650" cy="964" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="623" cy="1074" r="40"/><circle class="pin" cx="623" cy="1074" r="26" fill="var(--route)"/></g><g><circle class="halo" cx="500" cy="1118" r="40"/><circle class="pin" cx="500" cy="1118" r="26" fill="var(--route)"/></g></div>
   </a>
 
   <div class="cardrow">
@@ -269,10 +269,11 @@ footer b{color:var(--ink-soft)}
     </a>
   </div>
 
-  <div class="sechead"><h2>Due itinerari</h2><span class="cnt">la differenza &egrave; Palazzo del Bo</span></div>
+  <div class="sechead"><h2>Tre itinerari</h2><span class="cnt">cambiano ordine, orari e conto</span></div>
   <div class="switch">
     <button type="button" class="sw" data-v="a" aria-pressed="true" aria-controls="var-a"><span class="sig">A</span><span class="tit">Con Palazzo del Bo</span><span class="det">Il Teatro Anatomico costa 75 minuti e 12,00 €, e si prende il posto dell’Orto Botanico. Resta comunque tutto il resto, Battistero compreso.</span><span class="cost">Biglietti <b>52,40 €</b> &nbsp;·&nbsp; con la card <b>44,00 €</b></span></button>
     <button type="button" class="sw" data-v="b" aria-pressed="false" aria-controls="var-b"><span class="sig">B</span><span class="tit">Senza Palazzo del Bo</span><span class="det">Senza l’università la giornata respira: il Battistero passa la mattina, e nel pomeriggio entra l’Orto Botanico. Costa anche 2,00 € in meno.</span><span class="cost">Biglietti <b>50,40 €</b> &nbsp;·&nbsp; con la card <b>42,00 €</b></span></button>
+    <button type="button" class="sw" data-v="ada" aria-pressed="false" aria-controls="var-ada"><span class="sig">★</span><span class="tit">Ada</span><span class="det">Il Santo per primo, appena aprono i musei: è il momento in cui c’è meno gente. Si va in tram direttamente lì, poi si risale in centro. Palazzo del Bo finisce <b>dopo pranzo</b>, perché prima non ci sta (vedi la nota alla tappa).</span><span class="cost">Biglietti <b>37,40 €</b> &nbsp;·&nbsp; con la card <b>44,00 €</b></span></button>
   </div>
 
   <section class="variante" id="var-a">
@@ -364,6 +365,7 @@ footer b{color:var(--ink-soft)}
       <div class="conto"><h3>Biglietti singoli</h3><p class="sub">pagando ogni ingresso, più il tram</p><ul><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo del Bo</span><span>12,00 €</span></li><li><span>Palazzo della Ragione</span><span>8,00 €</span></li><li><span>Duomo e Battistero</span><span>15,00 €</span></li><li><span>Basilica del Santo</span><span>10,00 €</span></li><li><span>Trasporto urbano, due corse</span><span>3,40 €</span></li></ul><div class="tot"><b>Totale</b><em>52,40 €</em></div></div>
       <div class="conto win"><h3>Con la Padova Card</h3><p class="sub">la card copre Ragione, Battistero, Oratorio e i mezzi</p><ul><li><span>Padova Urbs picta Card 48 ore</span><span>28,00 €</span></li><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo del Bo</span><span>12,00 €</span></li><li><span>Trasporto urbano</span><span>compreso</span></li></ul><div class="tot"><b>Totale</b><em>44,00 €</em></div></div>
     </div>
+    <p class="verdetto"><b>Con la card risparmiate 8,40 €.</b> Non tanto per gli ingressi &mdash; senza gli Scrovegni il margine sarebbe sottile &mdash; quanto perch&eacute; la card comprende <b>i mezzi</b>, e la corsa di ritorno vi serve davvero. Conviene ancora di pi&ugrave; se ci aggiungete un altro sito compreso: l&rsquo;Oratorio di San Michele, la Chiesa degli Eremitani, i Musei Civici.</p>
   </section>
 
   <section class="variante" id="var-b" hidden>
@@ -455,13 +457,99 @@ footer b{color:var(--ink-soft)}
       <div class="conto"><h3>Biglietti singoli</h3><p class="sub">pagando ogni ingresso, più il tram</p><ul><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo della Ragione</span><span>8,00 €</span></li><li><span>Duomo e Battistero</span><span>15,00 €</span></li><li><span>Basilica del Santo</span><span>10,00 €</span></li><li><span>Orto Botanico</span><span>10,00 €</span></li><li><span>Trasporto urbano, due corse</span><span>3,40 €</span></li></ul><div class="tot"><b>Totale</b><em>50,40 €</em></div></div>
       <div class="conto win"><h3>Con la Padova Card</h3><p class="sub">la card copre Ragione, Battistero, Oratorio e i mezzi</p><ul><li><span>Padova Urbs picta Card 48 ore</span><span>28,00 €</span></li><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Orto Botanico</span><span>10,00 €</span></li><li><span>Trasporto urbano</span><span>compreso</span></li></ul><div class="tot"><b>Totale</b><em>42,00 €</em></div></div>
     </div>
+    <p class="verdetto"><b>Con la card risparmiate 8,40 €.</b> Non tanto per gli ingressi &mdash; senza gli Scrovegni il margine sarebbe sottile &mdash; quanto perch&eacute; la card comprende <b>i mezzi</b>, e la corsa di ritorno vi serve davvero. Conviene ancora di pi&ugrave; se ci aggiungete un altro sito compreso: l&rsquo;Oratorio di San Michele, la Chiesa degli Eremitani, i Musei Civici.</p>
   </section>
 
-  <p class="verdetto"><b>In tutti e due i casi la card conviene, di 8,40 €.</b> Non perch&eacute; gli ingressi
-  siano tanti &mdash; senza gli Scrovegni il margine sarebbe sottile &mdash; ma perch&eacute; comprende <b>i mezzi</b>,
-  e la corsa di ritorno dal Prato della Valle vi serve davvero. Diventa nettamente conveniente se ci
-  aggiungete anche un solo altro sito compreso: l&rsquo;Oratorio di San Michele, la Chiesa degli Eremitani,
-  i Musei Civici.</p>
+  <section class="variante" id="var-ada" hidden>
+    <div class="sechead"><h2>Itinerario ★ &middot; Ada</h2><span class="cnt">8 tappe &middot; 09:30 &rarr; 18:20</span></div>
+    <ol class="day">
+    <li class="stop">
+      <span class="ora">09:30</span>
+      <span class="bullet"><span>1</span></span>
+      <h3>Stazione FS</h3>
+      <span class="meta"><span class="pill">tram, 20 min</span></span>
+      <p class="testo">Prima cosa: il <b>biglietto del tram</b>, alla biglietteria Busitalia in stazione o al distributore del piazzale. Poi venti minuti a piedi lungo Corso del Popolo, oppure tre fermate di tram fino a Ponti Romani. Si passa accanto agli Eremitani: la Cappella degli Scrovegni resta sulla sinistra.</p>
+      
+    </li>
+    <li class="stop">
+      <span class="ora">09:50</span>
+      <span class="bullet"><span>2</span></span>
+      <h3>Basilica del Santo</h3>
+      <span class="meta"><span class="pill">90 min</span><span class="pill price">10,00 €</span><span class="pill incard">Nella card</span></span>
+      <p class="testo">La basilica è gratuita: cupole orientali, il Donatello dell’altare maggiore, la Cappella del Santo. Fuori, il <b>Gattamelata</b>, primo monumento equestre in bronzo del Rinascimento. Accanto, l’<b>Oratorio di San Giorgio</b> con gli affreschi di Altichiero e la Scoletta del Santo.</p>
+      <p class="nota">Basilica gratuita. Il biglietto è per Oratorio, Scoletta e Museo Antoniano, che <b>chiudono alle 18</b>: è la scadenza più stretta del pomeriggio.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">11:45</span>
+      <span class="bullet"><span>3</span></span>
+      <h3>Caffè Pedrocchi</h3>
+      <span class="meta"><span class="pill">40 min</span><span class="pill price">4,00 €</span></span>
+      <p class="testo">Il <b>caffè senza porte</b>, aperto giorno e notte per un secolo. Un caffè alla menta al banco, poi di sopra: il <b>Piano Nobile</b> di Jappelli è una sfilata di sale egizia, greca, etrusca, rinascimentale.</p>
+      <p class="nota">Il Piano Nobile chiude alle 12:30 e riapre alle 15:30: di mattina non si può rimandare.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">12:35</span>
+      <span class="bullet"><span>4</span></span>
+      <h3>Piazza dei Signori</h3>
+      <span class="meta"><span class="pill">20 min</span><span class="pill free">Gratuito</span></span>
+      <p class="testo">La <b>Torre dell’Orologio</b> del 1344, con il quadrante astronomico che segna ore, fasi lunari e segni zodiacali — e che, per un errore diventato leggenda, la Bilancia non ce l’ha. Accanto, la Loggia del Consiglio.</p>
+      
+    </li>
+    <li class="stop">
+      <span class="ora">13:00</span>
+      <span class="bullet" style="--c:var(--food)"><span>5</span></span>
+      <h3>Bacaro Padovano</h3>
+      <span class="meta"><span class="pill">90 min</span></span>
+      <p class="testo">Pranzo prenotato. Cicchetteria e cucina veneziana in Via San Gregorio Barbarigo, tre minuti dal Duomo e cinque da Piazza dei Signori.</p>
+      <p class="nota">Di sabato serve a pranzo dalle 12:00 alle 15:30: l’orario delle 13 sta comodo.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">14:35</span>
+      <span class="bullet"><span>6</span></span>
+      <h3>Palazzo della Ragione</h3>
+      <span class="meta"><span class="pill">45 min</span><span class="pill price">8,00 €</span><span class="pill incard">Nella card</span></span>
+      <p class="testo">Il <b>Salone</b>: 80 metri di sala pensile senza colonne, sotto una carena di nave rovesciata, e attorno 333 riquadri affrescati con il calendario astrologico di Pietro d’Abano. Sotto, le due piazze del mercato, che di sabato mattina sono nel pieno.</p>
+      
+    </li>
+    <li class="stop">
+      <span class="ora">15:30</span>
+      <span class="bullet"><span>7</span></span>
+      <h3>Palazzo del Bo</h3>
+      <span class="meta"><span class="pill">75 min</span><span class="pill price">12,00 €</span></span>
+      <p class="testo">La sede storica dell’Università. Il <b>Teatro Anatomico del 1594</b>, il più antico al mondo ancora in piedi, la cattedra di Galileo, l’Aula Magna, la statua di Elena Lucrezia Cornaro Piscopia — prima laureata della storia — e, nel fine settimana, anche l’ala razionalista di Gio Ponti.</p>
+      <p class="nota">Di sabato il tour dura <b>75 minuti</b> e costa 12,00 € invece di 7,00: è il giro lungo, che aggiunge il Novecento. <b>Prenotazione obbligatoria.</b> Turni: 9:30, 10:30, 11:30 (EN), 12:30, 14:30 (EN), 15:30, 16:30 (EN), 17:30.</p><p class="nota"><b>Perché dopo pranzo:</b> nell’itinerario Ada si rientra dal Santo verso le 11:30, e i 75 minuti del giro non ci stanno prima delle 13. Il turno delle 11:30 è in inglese; quello delle 12:30 finirebbe alle 13:45, cioè tre quarti d’ora dopo il tavolo prenotato. Resta il turno delle <b>15:30</b>, che chiude la giornata con tutto il tempo per arrivare al Prato.</p>
+    </li>
+    <li class="stop">
+      <span class="ora">17:05</span>
+      <span class="bullet"><span>8</span></span>
+      <h3>Prato della Valle</h3>
+      <span class="meta"><span class="pill">30 min</span><span class="pill free">Gratuito</span></span>
+      <p class="testo">La <b>piazza più grande d’Italia</b>: un’isola ellittica in un canale, 78 statue in doppio anello. Di sabato c’è il mercato, che smonta nel pomeriggio e lascia la piazza libera proprio all’ora giusta.</p>
+      <p class="nota">Dalla fermata <b>Prato della Valle</b> il tram riporta in stazione in una dozzina di minuti. A piedi sono 2,5 km, circa mezz’ora.</p>
+    </li>
+    <li class="stop ritorno">
+      <span class="ora">17:45</span>
+      <span class="bullet"><span>&uarr;</span></span>
+      <h3>Ritorno in stazione</h3>
+      <span class="meta"><span class="pill">tram, 12 min</span></span>
+      <p class="testo">Dalla fermata <b>Prato della Valle</b> il tram SIR1 riporta al piazzale della stazione in una dozzina di minuti: si arriva verso le <b>18:10</b>, con dieci minuti di margine sul treno. A piedi sono 2,5 km e mezz’ora, quindi bisognerebbe partire dal Prato alle 17:45.</p>
+      
+    </li>
+    </ol>
+    <div class="sechead"><h2>Quanto costa</h2><span class="cnt">a testa, ingressi e tram</span></div>
+    <div class="conti">
+      <div class="conto"><h3>Biglietti singoli</h3><p class="sub">pagando ogni ingresso, più il tram</p><ul><li><span>Basilica del Santo</span><span>10,00 €</span></li><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo della Ragione</span><span>8,00 €</span></li><li><span>Palazzo del Bo</span><span>12,00 €</span></li><li><span>Trasporto urbano, due corse</span><span>3,40 €</span></li></ul><div class="tot"><b>Totale</b><em>37,40 €</em></div></div>
+      <div class="conto"><h3>Con la Padova Card</h3><p class="sub">la card copre Ragione, Battistero, Oratorio e i mezzi</p><ul><li><span>Padova Urbs picta Card 48 ore</span><span>28,00 €</span></li><li><span>Caffè Pedrocchi</span><span>4,00 €</span></li><li><span>Palazzo del Bo</span><span>12,00 €</span></li><li><span>Trasporto urbano</span><span>compreso</span></li></ul><div class="tot"><b>Totale</b><em>44,00 €</em></div></div>
+    </div>
+    <p class="verdetto" style="border-left-color:var(--route)"><b>Qui la card non conviene: costereste 6,60 € in pi&ugrave;.</b> Questo itinerario tocca un solo sito compreso nella card oltre al Santo, e spende invece parecchio fuori card (Palazzo del Bo, il Pedrocchi). Con la card tornereste in pari solo aggiungendo due o tre visite comprese &mdash; il Battistero da solo ne vale 15,00 &euro;.</p>
+  </section>
+
+  <div class="sechead"><h2>Dalla stazione</h2><span class="cnt">a piedi o in tram</span></div>
+  <ul class="dove" style="margin-bottom:26px">
+      <li><span class="n">Centro, Caffè Pedrocchi</span><span class="q">1,3 km</span><p class="d">20 min a piedi &nbsp;&middot;&nbsp; tram SIR1, 3 fermate</p></li>
+      <li><span class="n">Basilica del Santo</span><span class="q">2,3 km</span><p class="d">30 min a piedi &nbsp;&middot;&nbsp; tram SIR1 fino a <b>Santo</b>, 6 fermate, ~20 min in tutto</p></li>
+      <li><span class="n">Prato della Valle</span><span class="q">2,5 km</span><p class="d">32 min a piedi &nbsp;&middot;&nbsp; tram SIR1, 7 fermate</p></li>
+  </ul>
 
   <div class="sechead"><h2>Biglietti del bus e del tram</h2><span class="cnt">Busitalia Veneto, zona urbana</span></div>
   <div class="tickets">
@@ -476,6 +564,13 @@ footer b{color:var(--ink-soft)}
       <li><span class="n">Tabaccai, edicole, bar</span><span class="q">orari dei negozi</span><p class="d">La rete più capillare, ma di sabato pomeriggio molti chiudono.</p></li>
       <li><span class="n">Contactless a bordo</span><span class="q">sempre</span><p class="d">Si appoggia la carta al validatore e si paga 1,70 €. Niente code, niente app da installare: per una giornata è il modo più semplice.</p></li>
       <li><span class="n">App Busitalia Veneto, Trenitalia, DropTicket</span><span class="q">sempre</span><p class="d">Comodo se avete già una delle tre installate.</p></li>
+  </ul>
+  <div class="sechead" style="border-bottom-width:1px"><h2 style="font-size:11.5px;color:var(--ink-faint)">Come si usano</h2></div>
+  <ul class="dove">
+      <li><span class="n">Contactless, il modo più rapido</span><p class="d">Si appoggia la carta di credito o il telefono al <b>validatore giallo</b> appena saliti, e si pagano 1,70 €. Non serve comprare nulla prima né installare niente. Ogni persona deve appoggiare la propria carta: una carta sola non vale per due.</p></li>
+      <li><span class="n">Biglietto di carta</span><p class="d">Va <b>obliterato a bordo</b> nella macchinetta appena saliti. Un biglietto non timbrato vale come non averlo, ed è la multa più comune che prendono i turisti.</p></li>
+      <li><span class="n">App</span><p class="d">Si compra e si <b>attiva prima di salire</b>: l’attivazione fa partire i 90 minuti.</p></li>
+      <li><span class="n">Quanto dura</span><p class="d"><b>90 minuti dalla validazione</b>, con cambi liberi fra bus e tram. Per la vostra giornata la corsa del mattino sarà scaduta da un pezzo quando tornate: servono due validazioni distinte.</p></li>
   </ul>
   <p class="verdetto" style="border-left-color:var(--tram)">Per questa giornata servono <b>due corse</b>: stazione &rarr; centro la mattina, Prato della Valle &rarr; stazione la sera. Sono <b>3,40 € a testa</b>, quindi il giornaliero da 4,70 € non conviene. Se prendete la Padova Card, i mezzi sono già dentro e non comprate nulla. La mattina si può anche andare a piedi in venti minuti: la corsa che serve davvero è quella del ritorno.</p>
 
